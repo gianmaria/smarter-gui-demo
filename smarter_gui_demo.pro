@@ -9,16 +9,21 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 TARGET  = smarter_gui_demo
 
 SOURCES += \
-    src/joystick_widget.cpp \
+    src/axis_widget.cpp \
+    src/custom_slider.cpp \
     src/main.cpp \
-    src/main_window.cpp
+    src/main_window.cpp \
+    src/smarter_protocol_streaming.c
 
 HEADERS += \
-    src/joystick_widget.h \
-    src/main_window.h
+    src/axis_widget.h \
+    src/custom_slider.h \
+    src/main_window.h \
+    src/smarter_protocol_streaming.h \
+    Leonardo_msg.h
 
 FORMS += \
-    src/joystick_widget.ui \
+    src/axis_widget.ui \
     src/main_window.ui
 
 OTHER_FILES +=

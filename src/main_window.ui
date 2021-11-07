@@ -13,10 +13,10 @@
   <property name="windowTitle">
    <string>SMAR-TeR GUI Demo</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="central_widget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontal_layout">
       <item>
        <widget class="QLabel" name="label">
         <property name="sizePolicy">
@@ -70,7 +70,7 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QHBoxLayout" name="horizontal_layout_2">
       <item>
        <widget class="QLabel" name="label_2">
         <property name="sizePolicy">
@@ -190,7 +190,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontal_spacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -213,13 +213,70 @@
     </item>
     <item row="2" column="0">
      <widget class="QTabWidget" name="tab_widget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <widget class="QWidget" name="tab_log">
+       <attribute name="title">
+        <string>Log</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPlainTextEdit" name="te_log"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pb_clear_log">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="tab_joystick">
        <attribute name="title">
         <string>Joystick</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="Axis_Widget" name="axis_1" native="true"/>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Axis_Widget" name="axis_2" native="true"/>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Axis_Widget" name="axis_3" native="true"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_ss">
        <property name="toolTipDuration">
@@ -240,6 +297,40 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Axis_Widget</class>
+   <extends>QWidget</extends>
+   <header>axis_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>le_joystick_ip</tabstop>
+  <tabstop>le_joystick_port</tabstop>
+  <tabstop>le_local_port</tabstop>
+  <tabstop>pb_connect</tabstop>
+  <tabstop>pb_send_hello</tabstop>
+  <tabstop>tab_widget</tabstop>
+  <tabstop>le_ips</tabstop>
+ </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pb_clear_log</sender>
+   <signal>released()</signal>
+   <receiver>te_log</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>397</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>442</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

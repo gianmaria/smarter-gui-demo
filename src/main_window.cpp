@@ -2,7 +2,10 @@
 #include "ui_main_window.h"
 
 #include <QCloseEvent>
+#include <QDateTime>
 #include <QHostAddress>
+#include <QKeyEvent>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QNetworkInterface>
 #include <QSettings>
@@ -12,6 +15,7 @@ Main_Window::Main_Window(QWidget *parent)
    , ui(new Ui::Main_Window)
 {
    ui->setupUi(this);
+   installEventFilter(this);
 
    //qInfo() << this << Q_FUNC_INFO;
 
@@ -30,7 +34,9 @@ Main_Window::Main_Window(QWidget *parent)
    }
    ui->le_ips->setCursorPosition(0);
 
-
+   ui->axis_1->set_axis_name("Axis 1");
+   ui->axis_2->set_axis_name("Axis 2");
+   ui->axis_3->set_axis_name("Axis 3");
 }
 
 Main_Window::~Main_Window()
@@ -70,6 +76,12 @@ void Main_Window::write_settings()
    settings.endGroup();
 }
 
+void Main_Window::add_log_msg(const QString& msg)
+{
+   auto now = QDateTime::currentDateTime();
+   QString text = QString("%1 - %2").arg(now.toString("hh:mm:ss")).arg(msg);
+   ui->te_log->appendPlainText(text);
+}
 
 void Main_Window::on_pb_connect_released()
 {
@@ -83,45 +95,49 @@ void Main_Window::on_pb_connect_released()
    QObject::connect(udp_socket, &QUdpSocket::connected, this, [&]
                     ()
    {
-      qInfo() << "socket conncted";
-      ui->statusbar->showMessage("Connected!");
+      QString msg = "Connected!";
+      add_log_msg(msg);
+      ui->statusbar->showMessage(msg);
    });
 
    QObject::connect(udp_socket, &QUdpSocket::errorOccurred, this, [&]
                     (QAbstractSocket::SocketError socket_error)
    {
-      qCritical() << socket_error << udp_socket->errorString();
+      //qCritical() << socket_error << udp_socket->errorString();
 
-      ui->statusbar->showMessage("Cannot connect: " + udp_socket->errorString());
-
-      QString message = "Cannot connect to <" + ui->le_joystick_ip->text() + ":" + ui->le_joystick_port->text() + ">\n" +
+      QString msg = "Cannot connect to <" + ui->le_joystick_ip->text() + ":" + ui->le_joystick_port->text() + ">\n" +
                         udp_socket->errorString();
-      QMessageBox::critical(this, windowTitle(), message);
+      QMessageBox::critical(this, windowTitle(), msg);
+
+      ui->statusbar->showMessage(msg);
+
+      add_log_msg(msg);
    });
 
    QObject::connect(udp_socket, &QUdpSocket::disconnected, this, [&]
                     ()
    {
-      qInfo() << "Socket disconnected";
-
-      ui->statusbar->showMessage("Socket disconnected");
+      QString msg = "Socket disconnected";
+      ui->statusbar->showMessage(msg);
+      add_log_msg(msg);
    });
 
    // NOTE: you need to bind before the connectToHost!
    if (!udp_socket->bind(QHostAddress::LocalHost, ui->le_local_port->text().toUShort(), QAbstractSocket::ReuseAddressHint))
    {
-      QString message = "Cannot bind to port <" + ui->le_local_port->text() + ">\n" +
+      QString msg = "Cannot bind to port <" + ui->le_local_port->text() + ">\n" +
                         udp_socket->errorString();
       QMessageBox::critical(this,
                             windowTitle(),
-                            message);
+                            msg);
+      add_log_msg(msg);
+
       return;
    }
 
    udp_socket->connectToHost(ui->le_joystick_ip->text(),
                              ui->le_joystick_port->text().toUShort());
 }
-
 
 void Main_Window::on_pb_send_hello_released()
 {
@@ -143,10 +159,49 @@ void Main_Window::on_pb_send_hello_released()
    }
 }
 
-
-
 void Main_Window::closeEvent(QCloseEvent* event)
 {
    write_settings();
    event->accept();
+}
+
+bool Main_Window::eventFilter(QObject* watched, QEvent* event)
+{
+   if (watched == this)
+   {
+      if (event->type() == QEvent::KeyPress)
+      {
+         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+         if (keyEvent->matches(QKeySequence::Cancel))
+         {
+            auto ret = QMessageBox::question(this, windowTitle(), "Closing?");
+            switch (ret) {
+              case QMessageBox::Yes:
+                  qApp->quit();
+                  return true;
+                  break;
+              case QMessageBox::No:
+                  return false;
+                  break;
+              default:
+                  // should never be reached
+                  return false;
+                  break;
+            }
+         }
+         else
+         {
+            return false;
+         }
+      }
+      else
+      {
+         return false;
+      }
+   }
+   else
+   {
+      // pass the event on to the parent class
+      return QMainWindow::eventFilter(watched, event);
+   }
 }
