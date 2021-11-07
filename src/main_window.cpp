@@ -42,6 +42,33 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_1->set_axis_name("Axis 1");
    ui->axis_2->set_axis_name("Axis 2");
    ui->axis_3->set_axis_name("Axis 3");
+
+   //register packets that I want to send or read
+   register_packet(SMARTER_MSG_WRITE_STATUS_ID, sizeof(smarter_msg_write_status));
+   register_packet(SMARTER_MSG_READ_STATUS_ID, sizeof(smarter_msg_read_status));
+
+   register_packet(SMARTER_MSG_STATUS_ID, sizeof(smarter_msg_status));
+   register_packet(SMARTER_MSG1_STATE_ID, sizeof(smarter_msg1_state));
+   register_packet(SMARTER_MSG2_STATE_ID, sizeof(smarter_msg2_state));
+   register_packet(SMARTER_MSG3_STATE_ID, sizeof(smarter_msg3_state));
+   register_packet(SMARTER_MSG4_STATE_ID, sizeof(smarter_msg4_state));
+
+   register_packet(SMARTER_MSG_4DOF_ID, sizeof(smarter_msg_4dof));
+   register_packet(SMARTER_MSG_5DOF_ID, sizeof(smarter_msg_5dof));
+   register_packet(SMARTER_MSG_BUTTONS_ID, sizeof(smarter_msg_buttons));
+   register_packet(SMARTER_MSG_SEND_REF_4DOF_ID, sizeof(smarter_msg_send_ref_4dof));
+
+   register_packet(SMARTER_MSG_OK_ID, sizeof(smarter_msg_ok));
+   register_packet(SMARTER_MSG_FAIL_ID, sizeof(smarter_msg_fail));
+
+   register_packet(SMARTER_MSG_SETSTOP_SS_ID, sizeof(smarter_msg_setStop_ss));
+   register_packet(SMARTER_MSG_SETSTOP_ZG_ID, sizeof(smarter_msg_setStop_zg));
+
+   register_packet(SMARTER_MSG_READ_ID, sizeof(smarter_msg_read));
+   register_packet(SMARTER_MSG_SS_ID, sizeof(smarter_msg_ss));
+   register_packet(SMARTER_MSG_WRITE_SS_ID, sizeof(smarter_msg_write_ss));
+
+   register_packet(SMARTER_MSG_SEND_REF_ID, sizeof(smarter_msg_send_ref));
 }
 
 Main_Window::~Main_Window()
@@ -119,12 +146,49 @@ void Main_Window::recv_smarter_msg()
    while (udp_socket->hasPendingDatagrams())
    {
       QNetworkDatagram datagram = udp_socket->receiveDatagram();
+
+      if (datagram.isNull())
+         continue;
+
+      QByteArray data = datagram.data();
+
       auto msg = QString("[INFO] Got msg from %1 from port %2: '%3'")
                  .arg(datagram.senderAddress().toString())
                  .arg(datagram.senderPort())
-                 .arg(QString::fromLatin1(datagram.data())
-                      );
+                 .arg(data.toHex(' '));
       add_log_msg(msg);
+
+      smarter_msg_id id = verify_packet(reinterpret_cast<unsigned char*>(data.data()),
+                                        static_cast<int>(data.size()));
+
+      switch (id)
+      {
+         case SMARTER_MSG_STATUS_ID:
+         {
+            smarter_msg_status msg_status;
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg_status);
+            if (packet_len > 0)
+            {
+               auto msg = QString("%1ms Status: %2")
+                          .arg(static_cast<float>(msg_status.timestamp) / 1000.0f)
+                          .arg(smarter_status_to_str(msg_status.status));
+               add_log_msg(msg);
+            }
+            else
+            {
+               add_log_msg("Error!!!!");
+            }
+         } break;
+
+         case SMARTER_INVALID_PACKET:
+         break;
+
+         default:
+         break;
+      }
+
    }
 
 }
@@ -139,6 +203,9 @@ void Main_Window::on_pb_connect_released()
    QObject::connect(udp_socket.data(), &QUdpSocket::connected, this, [&]
                     ()
    {
+      if (udp_socket->state() != QAbstractSocket::ConnectedState)
+         return ;
+
       QString msg = "Connected!";
       add_log_msg(msg);
       ui->statusbar->showMessage(msg);
@@ -155,7 +222,7 @@ void Main_Window::on_pb_connect_released()
    {
       //qCritical() << socket_error << udp_socket->errorString();
 
-      QString msg = "Cannot connect to <" + ui->le_joystick_ip->text() + ":" + ui->le_joystick_port->text() + ">\n" +
+      QString msg = "Cannot connect to <" + ui->le_joystick_ip->text() + " : " + ui->le_joystick_port->text() + ">\n" +
                         udp_socket->errorString();
       QMessageBox::critical(this, windowTitle(), msg);
 
@@ -202,7 +269,6 @@ void Main_Window::on_pb_send_hello_released()
    if (udp_socket &&
        udp_socket->state() == QAbstractSocket::ConnectedState)
    {
-      qInfo() << "Socket state:" << udp_socket->state();
       static int counter = 1;
       QByteArray data("Hello friend: ");
       data.append(QString::number(counter++).toUtf8());

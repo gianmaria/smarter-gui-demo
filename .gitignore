@@ -5,3 +5,4 @@ smar_ter_gui_demo.ini
 *.vcxproj
 *.vcxproj.*
 ui_*
+.qmake.stash

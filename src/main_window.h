@@ -37,6 +37,22 @@ private:
    QSharedPointer<QUdpSocket> udp_socket;
 
    QString msg_id_to_str(smarter_msg_id msg_id) const;
+   QString smarter_status_to_str(int status_) const
+   {
+       // ACTIVE (2) , PASSIVE (1) or STANDBY (0)
+
+       switch (status_)
+       {
+           case 0:
+               return "STANDBY";
+           case 1:
+               return "PASSIVE";
+           case 2:
+               return "ACTIVE";
+           default:
+               return "Unknown!";
+       }
+   }
 
    // QWidget interface
 protected:
