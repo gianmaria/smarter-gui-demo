@@ -7,8 +7,13 @@
 #include <QKeyEvent>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QNetworkDatagram>
 #include <QNetworkInterface>
 #include <QSettings>
+
+extern "C" {
+#include "smarter_protocol_streaming.h"
+}
 
 Main_Window::Main_Window(QWidget *parent)
    : QMainWindow(parent)
@@ -83,25 +88,70 @@ void Main_Window::add_log_msg(const QString& msg)
    ui->te_log->appendPlainText(text);
 }
 
+void Main_Window::send_smarter_msg(smarter_msg_id msg_id, void* msg)
+{
+   unsigned char buff[512] = {};
+   int byte_encoded = encode(buff, sizeof(buff), msg_id, msg);
+
+   if (byte_encoded < 0)
+   {
+      add_log_msg(QString("[ERROR] Cannot encode msg id %1").arg(msg_id_to_str(msg_id)));
+      return;
+   }
+
+   auto bytes_sent = udp_socket->write(
+                        reinterpret_cast<const char*>(buff),
+                        static_cast<qint64>(byte_encoded));
+
+   if (bytes_sent < 0)
+   {
+      add_log_msg(QString("[ERROR] Sending Data failed for msg id %1: %2")
+                  .arg(msg_id_to_str(msg_id))
+                  .arg(udp_socket->errorString())
+                  );
+      return;
+   }
+
+}
+
+void Main_Window::recv_smarter_msg()
+{
+   while (udp_socket->hasPendingDatagrams())
+   {
+      QNetworkDatagram datagram = udp_socket->receiveDatagram();
+      auto msg = QString("[INFO] Got msg from %1 from port %2: '%3'")
+                 .arg(datagram.senderAddress().toString())
+                 .arg(datagram.senderPort())
+                 .arg(QString::fromLatin1(datagram.data())
+                      );
+      add_log_msg(msg);
+   }
+
+}
+
 void Main_Window::on_pb_connect_released()
 {
    write_settings();
 
-   if (udp_socket)
-      delete udp_socket;
+   udp_socket.clear();
+   udp_socket = QSharedPointer<QUdpSocket>(new QUdpSocket(this));
 
-   udp_socket = new QUdpSocket(this);
-
-   QObject::connect(udp_socket, &QUdpSocket::connected, this, [&]
+   QObject::connect(udp_socket.data(), &QUdpSocket::connected, this, [&]
                     ()
    {
       QString msg = "Connected!";
       add_log_msg(msg);
       ui->statusbar->showMessage(msg);
+
+      smarter_msg_read_status msg_read_status = {};
+      msg_read_status.request_code = 200;
+
+      send_smarter_msg(SMARTER_MSG_READ_STATUS_ID, &msg_read_status);
+
    });
 
-   QObject::connect(udp_socket, &QUdpSocket::errorOccurred, this, [&]
-                    (QAbstractSocket::SocketError socket_error)
+   QObject::connect(udp_socket.data(), &QUdpSocket::errorOccurred, this, [&]
+                    (QAbstractSocket::SocketError)
    {
       //qCritical() << socket_error << udp_socket->errorString();
 
@@ -114,7 +164,7 @@ void Main_Window::on_pb_connect_released()
       add_log_msg(msg);
    });
 
-   QObject::connect(udp_socket, &QUdpSocket::disconnected, this, [&]
+   QObject::connect(udp_socket.data(), &QUdpSocket::disconnected, this, [&]
                     ()
    {
       QString msg = "Socket disconnected";
@@ -122,11 +172,19 @@ void Main_Window::on_pb_connect_released()
       add_log_msg(msg);
    });
 
+
+   QObject::connect(udp_socket.data(), &QUdpSocket::readyRead,
+           this, &Main_Window::recv_smarter_msg);
+
    // NOTE: you need to bind before the connectToHost!
-   if (!udp_socket->bind(QHostAddress::LocalHost, ui->le_local_port->text().toUShort(), QAbstractSocket::ReuseAddressHint))
+   if (!udp_socket->bind(QHostAddress::LocalHost,
+                         ui->le_local_port->text().toUShort(),
+                         QAbstractSocket::ReuseAddressHint))
    {
-      QString msg = "Cannot bind to port <" + ui->le_local_port->text() + ">\n" +
-                        udp_socket->errorString();
+      QString msg = "Cannot bind to port <" +
+                    ui->le_local_port->text() + ">\n" +
+                    udp_socket->errorString();
+
       QMessageBox::critical(this,
                             windowTitle(),
                             msg);
@@ -159,8 +217,53 @@ void Main_Window::on_pb_send_hello_released()
    }
 }
 
+QString Main_Window::msg_id_to_str(smarter_msg_id msg_id) const
+{
+   switch (msg_id)
+   {
+       case SMARTER_INVALID_PACKET: return "INVALID MSG";
+       case SMARTER_MSG1_STATE_ID: return "SMARTER_MSG1_STATE_ID";
+       case SMARTER_MSG2_STATE_ID: return "SMARTER_MSG2_STATE_ID";
+       case SMARTER_MSG3_STATE_ID: return "SMARTER_MSG3_STATE_ID";
+       case SMARTER_MSG4_STATE_ID: return "SMARTER_MSG4_STATE_ID";
+       case SMARTER_MSG5_STATE_ID: return "SMARTER_MSG5_STATE_ID";
+       case SMARTER_MSG6_STATE_ID: return "SMARTER_MSG6_STATE_ID";
+       case SMARTER_MSG_BUTTONS_ID: return "SMARTER_MSG_BUTTONS_ID";
+       case SMARTER_MSG_4DOF_ID: return "SMARTER_MSG_4DOF_ID";
+       case SMARTER_MSG_5DOF_ID: return "SMARTER_MSG_5DOF_ID";
+       case SMARTER_MSG_6DOF_ID: return "SMARTER_MSG_6DOF_ID";
+       case SMARTER_MSG_READ_ID: return "SMARTER_MSG_READ_ID";
+       case SMARTER_MSG_SS_ID: return "SMARTER_MSG_SS_ID";
+       case SMARTER_MSG_ZG_ID: return "SMARTER_MSG_ZG_ID";
+       case SMARTER_MSG_WRITE_SS_ID: return "SMARTER_MSG_WRITE_SS_ID";
+       case SMARTER_MSG_WRITE_ZG_ID: return "SMARTER_MSG_WRITE_ZG_ID";
+       case SMARTER_MSG_OK_ID: return "SMARTER_MSG_OK_ID";
+       case SMARTER_MSG_FAIL_ID: return "SMARTER_MSG_FAIL_ID";
+       case SMARTER_MSG_SET_ACTIVE_ID: return "SMARTER_MSG_SET_ACTIVE_ID";
+       case SMARTER_MSG_SETSTOP_SS_ID: return "SMARTER_MSG_SETSTOP_SS_ID";
+       case SMARTER_MSG_SETSTOP_ZG_ID: return "SMARTER_MSG_SETSTOP_ZG_ID";
+       case SMARTER_MSG_SETDETENT_ID: return "SMARTER_MSG_SETDETENT_ID";
+       case SMARTER_MSG_SETGATE_ID: return "SMARTER_MSG_SETGATE_ID";
+       case SMARTER_MSG_SETDAMPING_ROT_ID: return "SMARTER_MSG_SETDAMPING_ROT_ID";
+       case SMARTER_MSG_SETDAMPING_LIN_ID: return "SMARTER_MSG_SETDAMPING_LIN_ID";
+       case SMARTER_MSG_SEND_REF_ID: return "SMARTER_MSG_SEND_REF_ID";
+       case SMARTER_MSG_SEND_REF_4DOF_ID: return "SMARTER_MSG_SEND_REF_4DOF_ID";
+       case SMARTER_MSG_SEND_REF_5DOF_ID: return "SMARTER_MSG_SEND_REF_5DOF_ID";
+       case SMARTER_MSG_READ_REF_6DOF_ID: return "SMARTER_MSG_READ_REF_6DOF_ID";
+       case SMARTER_MSG_WRITE_STATUS_ID: return "SMARTER_MSG_WRITE_STATUS_ID";
+       case SMARTER_MSG_READ_STATUS_ID: return "SMARTER_MSG_READ_STATUS_ID";
+       case SMARTER_MSG_STATUS_ID: return "SMARTER_MSG_STATUS_ID";
+       case SMARTER_MSG_WRITE_CONFIG_ID: return "SMARTER_MSG_WRITE_CONFIG_ID";
+       case SMARTER_MSG_READ_CONFIG_ID: return "SMARTER_MSG_READ_CONFIG_ID";
+       case SMARTER_MSG_CONFIG_ID: return "SMARTER_MSG_CONFIG_ID";
+       default: return "UNKNOWN MSG ID";
+   }
+}
+
 void Main_Window::closeEvent(QCloseEvent* event)
 {
+   qDebug() << Q_FUNC_INFO;
+
    write_settings();
    event->accept();
 }
@@ -174,6 +277,8 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
          QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
          if (keyEvent->matches(QKeySequence::Cancel))
          {
+            qDebug() << Q_FUNC_INFO;
+
             auto ret = QMessageBox::question(this, windowTitle(), "Closing?");
             switch (ret) {
               case QMessageBox::Yes:

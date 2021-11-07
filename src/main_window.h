@@ -3,6 +3,11 @@
 #include <QMainWindow>
 #include <QUdpSocket>
 
+extern "C"
+{
+#include "smarter_protocol_streaming.h"
+}
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Main_Window; }
 QT_END_NAMESPACE
@@ -20,7 +25,8 @@ public:
 
 public slots:
    void add_log_msg(const QString& msg);
-
+   void send_smarter_msg(smarter_msg_id msg_id, void* msg);
+   void recv_smarter_msg();
 
 private slots:
    void on_pb_connect_released();
@@ -28,7 +34,9 @@ private slots:
 
 private:
    Ui::Main_Window *ui;
-   QUdpSocket* udp_socket = nullptr;
+   QSharedPointer<QUdpSocket> udp_socket;
+
+   QString msg_id_to_str(smarter_msg_id msg_id) const;
 
    // QWidget interface
 protected:
