@@ -20,7 +20,7 @@ HEADERS += \
     src/custom_slider.h \
     src/main_window.h \
     src/smarter_protocol_streaming.h \
-    Leonardo_msg.h
+    src/Leonardo_msg.h
 
 FORMS += \
     src/axis_widget.ui \

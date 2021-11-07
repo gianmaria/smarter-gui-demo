@@ -1,0 +1,7 @@
+﻿.vs
+debug
+release
+smar_ter_gui_demo.ini
+*.vcxproj
+*.vcxproj.*
+ui_*
