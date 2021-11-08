@@ -17,7 +17,7 @@ class Axis_Widget : public QWidget
 public:
 
    // 0:linear, 1: rotational 16 bit
-   enum DOF_Type : unsigned int
+   enum DOF_Type : SM_uchar
    {
       LINEAR = 0,
       ROTATIONAL = 1,
@@ -54,6 +54,10 @@ public slots:
 
 private slots:
    void on_axis_pos_valueChanged(int value);
+
+   void on_axis_velocity_valueChanged(int value);
+
+   void on_axis_force_valueChanged(int value);
 
 private:
    Ui::Axis_Widget *ui;

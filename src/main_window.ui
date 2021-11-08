@@ -211,7 +211,7 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
+    <item row="6" column="0">
      <widget class="QTabWidget" name="tab_widget">
       <property name="enabled">
        <bool>true</bool>
@@ -292,6 +292,38 @@
        </attribute>
       </widget>
      </widget>
+    </item>
+    <item row="3" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pb_read_status">
+        <property name="text">
+         <string>Read Status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

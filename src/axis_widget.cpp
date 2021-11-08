@@ -10,7 +10,7 @@ QString Axis_Widget::DOF_Type_to_str(DOF_Type type)
       case Axis_Widget::DOF_Type::ROTATIONAL:
          return "ROTATIONAL";
       default:
-         return "UNKNOWN DOF TYPE";
+         return "UNKNOWN DOF_Type";
    }
 }
 
@@ -134,5 +134,30 @@ void Axis_Widget::on_axis_pos_valueChanged(int value)
       f_val = 99.99f;
 
    ui->axis_pos_lbl->setText(QString::asprintf("%+06.2f", f_val));
+}
+
+
+void Axis_Widget::on_axis_velocity_valueChanged(int value)
+{
+   float f_val = static_cast<float>(value);
+
+   if (dof_type == DOF_Type::LINEAR)
+      f_val /= SCALING_FACTOR_LINEAR_VEL;
+   else if (dof_type == DOF_Type::ROTATIONAL)
+      f_val /= SCALING_FACTOR_ANGULAR_VEL;
+   else
+      f_val = 99.99f;
+
+   ui->label_velocity->setText(QString::asprintf("Velocity: %.2fmm/s", f_val));
+}
+
+
+void Axis_Widget::on_axis_force_valueChanged(int value)
+{
+   float f_val = static_cast<float>(value);
+
+   f_val /= SCALING_FACTOR_FORCE;
+
+   ui->label_force->setText(QString::asprintf("Force: %.2fN", f_val));
 }
 

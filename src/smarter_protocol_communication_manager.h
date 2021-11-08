@@ -14,12 +14,24 @@ class Smarter_Protocol_Communication_Manager : public QObject
 
 public:
 
+   enum SAIS_Status : SM_uchar
+   {
+      // ACTIVE (2) , PASSIVE (1) or STANDBY (0)
+      STANDBY = 0,
+      PASSIVE = 1,
+      ACTIVE = 2,
+      UNKNOWN
+   };
+
+   static QString SAIS_Status_to_str(SAIS_Status status);
+   static QString smarter_msg_id_to_str(smarter_msg_id msg_id);
+
    explicit Smarter_Protocol_Communication_Manager(QObject *parent = nullptr);
 
    void connect_to_SAIS(const QString& ip, quint16 port, quint16 local_port);
-   void request_SAIS_status();
-   void set_SAIS_status(int status);
-   QString status_to_str(int status_) const;
+   void read_SAIS_status();
+   void set_SAIS_status(SAIS_Status status);
+
 
 signals:
 
@@ -39,8 +51,6 @@ private:
 
    void send_smarter_msg(smarter_msg_id msg_id, void* msg);
    void recv_smarter_msg();
-
-   QString msg_id_to_str(smarter_msg_id msg_id) const;
-
 };
 
+typedef Smarter_Protocol_Communication_Manager SmarterPCM;
