@@ -1,12 +1,8 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QUdpSocket>
 
-extern "C"
-{
-#include "smarter_protocol_streaming.h"
-}
+#include "smarter_protocol_communication_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Main_Window; }
@@ -18,15 +14,18 @@ class Main_Window : public QMainWindow
 
 public:
    Main_Window(QWidget *parent = nullptr);
+   virtual bool eventFilter(QObject* watched, QEvent* event) override;
    ~Main_Window();
 
    void read_settings();
    void write_settings();
 
 public slots:
-   void add_log_msg(const QString& msg);
-   void send_smarter_msg(smarter_msg_id msg_id, void* msg);
-   void recv_smarter_msg();
+   void add_log_msg(QString msg);
+
+protected:
+   virtual void closeEvent(QCloseEvent* event) override;
+
 
 private slots:
    void on_pb_connect_released();
@@ -34,31 +33,5 @@ private slots:
 
 private:
    Ui::Main_Window *ui;
-   QSharedPointer<QUdpSocket> udp_socket;
-
-   QString msg_id_to_str(smarter_msg_id msg_id) const;
-   QString smarter_status_to_str(int status_) const
-   {
-       // ACTIVE (2) , PASSIVE (1) or STANDBY (0)
-
-       switch (status_)
-       {
-           case 0:
-               return "STANDBY";
-           case 1:
-               return "PASSIVE";
-           case 2:
-               return "ACTIVE";
-           default:
-               return "Unknown!";
-       }
-   }
-
-   // QWidget interface
-protected:
-   virtual void closeEvent(QCloseEvent* event) override;
-
-   // QObject interface
-public:
-   virtual bool eventFilter(QObject* watched, QEvent* event) override;
+   Smarter_Protocol_Communication_Manager* spcm = nullptr;
 };

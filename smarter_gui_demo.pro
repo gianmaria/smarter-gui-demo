@@ -13,12 +13,14 @@ SOURCES += \
     src/custom_slider.cpp \
     src/main.cpp \
     src/main_window.cpp \
+    src/smarter_protocol_communication_manager.cpp \
     src/smarter_protocol_streaming.c
 
 HEADERS += \
     src/axis_widget.h \
     src/custom_slider.h \
     src/main_window.h \
+    src/smarter_protocol_communication_manager.h \
     src/smarter_protocol_streaming.h \
     src/Leonardo_msg.h
 
