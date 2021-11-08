@@ -164,6 +164,52 @@ void Main_Window::on_pb_connect_clicked()
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_3, &Axis_Widget::update_4dof);
 
+   connect(spcm, &SmarterPCM::msg_SAIS_4dof,
+           this, [&](smarter_msg_4dof msg)
+   {
+      QList<QPushButton*> all_buttons = ui->tab_widget->findChildren<QPushButton*>();
+
+      for (qsizetype i = 0;
+           i < all_buttons.size();
+           ++i)
+      {
+         QPushButton* b = all_buttons[i];
+
+         for (int j = 0;
+              j < 16;
+              ++j)
+         {
+            if (b->objectName() == QString("pb_b%1").arg(j))
+            {
+               if (msg.buttons_state & (0x1 << j))
+                  b->setChecked(true);
+               else
+                  b->setChecked(false);
+            }
+         }
+      }
+
+      //if (msg.buttons_state & (0x1 << 0))
+      //   ui->pb_b1->setChecked(true);
+      //else
+      //   ui->pb_b1->setChecked(false);
+      //
+      //if (msg.buttons_state & (0x1 << 1))
+      //   ui->pb_b2->setChecked(true);
+      //else
+      //   ui->pb_b2->setChecked(false);
+      //
+      //if (msg.buttons_state & (0x1 << 2))
+      //   ui->pb_b3->setChecked(true);
+      //else
+      //   ui->pb_b3->setChecked(false);
+      //
+      //if (msg.buttons_state & (0x1 << 3))
+      //   ui->pb_b4->setChecked(true);
+      //else
+      //   ui->pb_b4->setChecked(false);
+   });
+
    spcm->connect_to_SAIS(ui->le_joystick_ip->text(),
                          ui->le_joystick_port->text().toUShort(),
                          ui->le_local_port->text().toUShort());
