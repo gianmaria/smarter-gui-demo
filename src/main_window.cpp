@@ -42,32 +42,32 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_1->set_axis_name("Axis 1");
    ui->axis_1->set_dof_id(0);
    ui->axis_1->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
-   ui->axis_1->set_axis_pos_min(-1700);
-   ui->axis_1->set_axis_pos_max(1700);
-   ui->axis_1->set_axis_force_min(0);
-   ui->axis_1->set_axis_force_max(30);
+   ui->axis_1->set_axis_pos_min(-17);
+   ui->axis_1->set_axis_pos_max(17);
    ui->axis_1->set_axis_vel_min(0);
-   ui->axis_1->set_axis_vel_max(30);
+   ui->axis_1->set_axis_vel_max(130);
+   ui->axis_1->set_axis_force_min(0);
+   ui->axis_1->set_axis_force_max(40);
 
    ui->axis_2->set_axis_name("Axis 2");
    ui->axis_2->set_dof_id(1);
    ui->axis_2->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
-   ui->axis_2->set_axis_pos_min(-1700);
-   ui->axis_2->set_axis_pos_max(1700);
-   ui->axis_2->set_axis_force_min(0);
-   ui->axis_2->set_axis_force_max(30);
+   ui->axis_2->set_axis_pos_min(-17);
+   ui->axis_2->set_axis_pos_max(17);
    ui->axis_2->set_axis_vel_min(0);
-   ui->axis_2->set_axis_vel_max(30);
+   ui->axis_2->set_axis_vel_max(130);
+   ui->axis_2->set_axis_force_min(0);
+   ui->axis_2->set_axis_force_max(40);
 
    ui->axis_3->set_axis_name("Axis 3");
    ui->axis_3->set_dof_id(2);
    ui->axis_3->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
-   ui->axis_3->set_axis_pos_min(-1700);
-   ui->axis_3->set_axis_pos_max(1700);
-   ui->axis_3->set_axis_force_min(0);
-   ui->axis_3->set_axis_force_max(30);
+   ui->axis_3->set_axis_pos_min(-17);
+   ui->axis_3->set_axis_pos_max(17);
    ui->axis_3->set_axis_vel_min(0);
-   ui->axis_3->set_axis_vel_max(30);
+   ui->axis_3->set_axis_vel_max(130);
+   ui->axis_3->set_axis_force_min(0);
+   ui->axis_3->set_axis_force_max(40);
 
 }
 

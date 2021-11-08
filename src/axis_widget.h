@@ -24,6 +24,8 @@ public:
       UNKNOWN
    };
 
+   static QString DOF_Type_to_str(DOF_Type type);
+
 
    explicit Axis_Widget(QWidget *parent = nullptr);
    ~Axis_Widget();
@@ -40,13 +42,9 @@ public slots:
    void set_axis_vel_max(int value);
 
    void set_axis_name(const QString& name);
-   void set_axis_type(const QString& type);
 
    void set_dof_id(int id);
-   int get_dof_id();
-
    void set_dof_type(DOF_Type type);
-
 
    void set_axis_pos(int pos);
    void set_axis_vel(int vel);
@@ -67,6 +65,5 @@ private:
    const float SCALING_FACTOR_FORCE = 100.0f;
    const float SCALING_FACTOR_LINEAR_POS = 50.0f;
    const float SCALING_FACTOR_LINEAR_VEL = 50.0f;
-
 };
 
