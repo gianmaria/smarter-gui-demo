@@ -29,8 +29,9 @@ protected:
 
 private slots:
    void on_pb_connect_clicked();
-   void on_pb_go_active_clicked();
    void on_pb_read_status_clicked();
+   void on_pb_go_active_clicked();
+   void on_pb_go_standby_clicked();
 
 private:
    Ui::Main_Window *ui;

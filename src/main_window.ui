@@ -94,14 +94,14 @@
       <item>
        <widget class="QLineEdit" name="le_joystick_ip">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>0</width>
           <height>0</height>
          </size>
         </property>
@@ -109,7 +109,7 @@
          <string/>
         </property>
         <property name="placeholderText">
-         <string>192.168.139.202</string>
+         <string>localhost</string>
         </property>
        </widget>
       </item>
@@ -129,7 +129,7 @@
       <item>
        <widget class="QLineEdit" name="le_joystick_port">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -142,7 +142,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>40</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -170,14 +170,14 @@
       <item>
        <widget class="QLineEdit" name="le_local_port">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="maximumSize">
          <size>
-          <width>40</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -191,28 +191,19 @@
       </item>
       <item>
        <widget class="QPushButton" name="pb_connect">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	font: bold;
+}</string>
+        </property>
         <property name="text">
          <string>&amp;Connect</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontal_spacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pb_go_active">
-        <property name="text">
-         <string>&amp;Go Active</string>
         </property>
        </widget>
       </item>
@@ -263,6 +254,19 @@
         <item>
          <layout class="QHBoxLayout" name="buttons_layout">
           <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pb_b1">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -298,6 +302,19 @@
              <bool>false</bool>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QPushButton" name="pb_b2">
@@ -337,6 +354,19 @@
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pb_b3">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -372,6 +402,19 @@
              <bool>false</bool>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QPushButton" name="pb_b4">
@@ -411,6 +454,19 @@
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pb_b5">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -436,6 +492,19 @@
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pb_b6">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -459,6 +528,19 @@
              <bool>false</bool>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QPushButton" name="pb_b7">
@@ -496,6 +578,19 @@
              <bool>false</bool>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -563,16 +658,23 @@
     <item row="3" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pb_read_status">
+       <widget class="QPushButton" name="pb_go_active">
         <property name="text">
-         <string>Read Status</string>
+         <string>Go Active</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="pb_go_standby">
         <property name="text">
-         <string>PushButton</string>
+         <string>Go Standby</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pb_read_status">
+        <property name="text">
+         <string>Read Status</string>
         </property>
        </widget>
       </item>
@@ -609,7 +711,6 @@
   <tabstop>le_joystick_port</tabstop>
   <tabstop>le_local_port</tabstop>
   <tabstop>pb_connect</tabstop>
-  <tabstop>pb_go_active</tabstop>
   <tabstop>tab_widget</tabstop>
   <tabstop>le_ips</tabstop>
  </tabstops>

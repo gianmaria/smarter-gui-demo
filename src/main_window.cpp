@@ -284,3 +284,13 @@ void Main_Window::on_pb_read_status_clicked()
       add_log_msg("[ERROR] Not connected!");
 }
 
+
+
+void Main_Window::on_pb_go_standby_clicked()
+{
+   if (spcm)
+      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::STANDBY);
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
