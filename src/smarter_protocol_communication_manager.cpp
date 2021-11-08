@@ -164,7 +164,7 @@ void Smarter_Protocol_Communication_Manager::send_smarter_msg(smarter_msg_id msg
 
    if (byte_encoded < 0)
    {
-      qDebug() << QString("[ERROR] Cannot encode msg id %1").arg(msg_id_to_str(msg_id));
+      emit socket_msg(QString("[ERROR] Cannot encode msg id %1").arg(msg_id_to_str(msg_id)));
       return;
    }
 
@@ -174,9 +174,9 @@ void Smarter_Protocol_Communication_Manager::send_smarter_msg(smarter_msg_id msg
 
    if (bytes_sent < 0)
    {
-      qDebug() << QString("[ERROR] Sending Data failed for msg id %1: %2")
-                  .arg(msg_id_to_str(msg_id))
-                  .arg(udp_socket->errorString());
+      emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id %1: '%2'")
+                      .arg(msg_id_to_str(msg_id))
+                      .arg(udp_socket->errorString()));
       return;
    }
 
@@ -206,7 +206,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit SAIS_request_ok(msg);
+               emit msg_SAIS_request_ok(msg);
             }
             else
             {
@@ -223,7 +223,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit SAIS_request_failed(msg);
+               emit msg_SAIS_request_failed(msg);
             }
             else
             {
@@ -239,7 +239,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit SAIS_status(msg);
+               emit mag_SAIS_status(msg);
             }
             else
             {
@@ -255,7 +255,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit SAIS_4dof(msg);
+               emit msg_SAIS_4dof(msg);
             }
             else
             {
@@ -271,7 +271,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit SAIS_buttons(msg);
+               emit msg_SAIS_buttons(msg);
             }
             else
             {
@@ -286,7 +286,6 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
          } break;
 
          default:
-
          break;
       }
 
@@ -295,3 +294,4 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
 
 
 }
+

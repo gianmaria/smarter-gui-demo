@@ -34,7 +34,7 @@
         <number>0</number>
        </property>
        <property name="text">
-        <string>Axis 1</string>
+        <string>Axis N</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -59,7 +59,7 @@
         <number>0</number>
        </property>
        <property name="text">
-        <string>Type: Linear</string>
+        <string>Type: XXXX</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -105,12 +105,6 @@
          <property name="maximum">
           <number>1700</number>
          </property>
-         <property name="singleStep">
-          <number>1</number>
-         </property>
-         <property name="pageStep">
-          <number>100</number>
-         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -137,7 +131,7 @@
           </size>
          </property>
          <property name="text">
-          <string>+01.12</string>
+          <string>+00.00</string>
          </property>
         </widget>
        </item>

@@ -25,11 +25,11 @@ signals:
 
    void socket_msg(QString msg);
 
-   void SAIS_status(smarter_msg_status msg);
-   void SAIS_4dof(smarter_msg_4dof msg);
-   void SAIS_buttons(smarter_msg_buttons msg);
-   void SAIS_request_failed(smarter_msg_fail msg);
-   void SAIS_request_ok(smarter_msg_ok msg);
+   void mag_SAIS_status(smarter_msg_status msg);
+   void msg_SAIS_4dof(smarter_msg_4dof msg);
+   void msg_SAIS_buttons(smarter_msg_buttons msg);
+   void msg_SAIS_request_failed(smarter_msg_fail msg);
+   void msg_SAIS_request_ok(smarter_msg_ok msg);
 
 private:
 

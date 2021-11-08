@@ -40,6 +40,8 @@ Main_Window::Main_Window(QWidget *parent)
    ui->le_ips->setCursorPosition(0);
 
    ui->axis_1->set_axis_name("Axis 1");
+   ui->axis_1->set_dof_id(0);
+   ui->axis_1->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
    ui->axis_1->set_axis_pos_min(-1700);
    ui->axis_1->set_axis_pos_max(1700);
    ui->axis_1->set_axis_force_min(0);
@@ -48,6 +50,8 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_1->set_axis_vel_max(30);
 
    ui->axis_2->set_axis_name("Axis 2");
+   ui->axis_2->set_dof_id(1);
+   ui->axis_2->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
    ui->axis_2->set_axis_pos_min(-1700);
    ui->axis_2->set_axis_pos_max(1700);
    ui->axis_2->set_axis_force_min(0);
@@ -56,6 +60,8 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_2->set_axis_vel_max(30);
 
    ui->axis_3->set_axis_name("Axis 3");
+   ui->axis_3->set_dof_id(2);
+   ui->axis_3->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
    ui->axis_3->set_axis_pos_min(-1700);
    ui->axis_3->set_axis_pos_max(1700);
    ui->axis_3->set_axis_force_min(0);
@@ -121,26 +127,41 @@ void Main_Window::on_pb_connect_released()
    connect(spcm, &Smarter_Protocol_Communication_Manager::socket_msg,
            this, &Main_Window::add_log_msg);
 
-   connect(spcm, &Smarter_Protocol_Communication_Manager::SAIS_status,
+   connect(spcm, &Smarter_Protocol_Communication_Manager::mag_SAIS_status,
            this, [&]
            (smarter_msg_status msg)
    {
-      float at_ms = static_cast<float>(msg.timestamp) / 1000.0f;
-      add_log_msg(QString("%1ms - %2")
-                  .arg(at_ms)
+      //float at_ms = static_cast<float>(msg.timestamp) / 1000.0f;
+      add_log_msg(QString("SAIS status: %1")
                   .arg(spcm->status_to_str(msg.status)));
    });
 
-
-   connect(spcm, &Smarter_Protocol_Communication_Manager::SAIS_4dof,
+   connect(spcm, &Smarter_Protocol_Communication_Manager::msg_SAIS_request_ok,
            this, [&]
-           (smarter_msg_4dof msg)
+           (smarter_msg_ok msg_ok)
    {
-      ui->axis_1->set_axis_type(msg.pvf[0].dof_type == 0 ? "Linear" : "Rotational"); // 0:linear, 1: rotational 16 bit
-      ui->axis_1->set_axis_pos(msg.pvf[0].position);
-      ui->axis_1->set_axis_force(msg.pvf[0].force);
-      ui->axis_1->set_axis_vel(msg.pvf[0].velocity);
+      QString msg = QString("OK for request: %1").arg(msg_ok.request_code);
+      add_log_msg(msg);
    });
+
+   connect(spcm, &Smarter_Protocol_Communication_Manager::msg_SAIS_request_failed,
+           this, [&]
+           (smarter_msg_fail msg_fail)
+   {
+      QString msg = QString("FAILED for request: %1 ('%2' code: %3)")
+                    .arg(msg_fail.request_code)
+                    .arg(reinterpret_cast<char*>(msg_fail.error_string))
+                    .arg(msg_fail.error_code);
+      add_log_msg(msg);
+   });
+
+
+   connect(spcm, &Smarter_Protocol_Communication_Manager::msg_SAIS_4dof,
+           ui->axis_1, &Axis_Widget::update_4dof);
+   connect(spcm, &Smarter_Protocol_Communication_Manager::msg_SAIS_4dof,
+           ui->axis_2, &Axis_Widget::update_4dof);
+   connect(spcm, &Smarter_Protocol_Communication_Manager::msg_SAIS_4dof,
+           ui->axis_3, &Axis_Widget::update_4dof);
 
    spcm->connect_to_SAIS(ui->le_joystick_ip->text(),
                          ui->le_joystick_port->text().toUShort(),
