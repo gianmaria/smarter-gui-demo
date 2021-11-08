@@ -184,85 +184,17 @@ void Smarter_Protocol_Communication_Manager::send_smarter_msg(smarter_msg_id msg
 
 void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
 {
-   unsigned char udp_buffer[512] = {};
-   unsigned char packet_buffer[512] = {};
-   int rx_byte_counter = 0;
-   int packet_buffer_dim = 0;
-   int udp_buffer_dim = 1;
-
-   QByteArray completed_data;
-   completed_data.reserve(512);
-
-   while (udp_buffer_dim > 0)
+   while (udp_socket->hasPendingDatagrams())
    {
-      if (udp_socket->hasPendingDatagrams())
-      {
-         QNetworkDatagram datagram = udp_socket->receiveDatagram();
+      QNetworkDatagram datagram = udp_socket->receiveDatagram();
 
-         if (datagram.isNull())
-            continue;
+      if (datagram.isNull())
+         continue;
 
-         QByteArray data = datagram.data();
-
-         udp_buffer_dim = data.size();
-
-         //here udp_buffer contains udp_buffer_dim bytes => pass them one by one to assemble_packet
-         rx_byte_counter = 0;
-         while (rx_byte_counter < udp_buffer_dim)
-         {
-            while (TRUE)
-            {
-                unsigned char byte = data[rx_byte_counter++];
-               packet_buffer_dim = assemble_packet(byte, 
-                                                   (unsigned char*)completed_data.data(), 
-                                                   completed_data.size());
-
-               if (packet_buffer_dim > 0)
-               {
-                  //a full packet was found => stop and proceed with packet verification and decoding
-                  break;
-               }
-               else
-               {
-                  //chcek if all bytes were processed
-                  if (rx_byte_counter == udp_buffer_dim)
-                  {
-                     //all bytes were processed => stop
-                     break;
-                  }
-                  else
-                  {
-                     //the packet is not  complete yet and udp_buffer contains other bytes = > pass another byte
-                     ;
-                  }
-               }
-            }
-
-         }
-
-         // here if packet_buffer_dim>0 then a full packet was recieved and can be verified and decoded, otherwise cannot do anything
-         if (packet_buffer_dim > 0)
-         {
-            completed_data.append((const char*)packet_buffer,
-                                  (qsizetype)packet_buffer_dim);
-
-            break;
-         }
-
-      }
-   }
-
-
-
-
-
-      QByteArray data = completed_data;
-
+      QByteArray data = datagram.data();
 
       smarter_msg_id id = verify_packet(reinterpret_cast<unsigned char*>(data.data()),
                                         static_cast<int>(data.size()));
-
-      qDebug() << "got msg id:" << msg_id_to_str(id);
 
       switch (id)
       {
@@ -350,6 +282,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
          case SMARTER_INVALID_PACKET:
          {
             // TODO: do something?
+             emit socket_msg(QString("[WARN] Got invalid packet: <%1>").arg(data.toHex(' ')));
          } break;
 
          default:
@@ -357,6 +290,8 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
          break;
       }
 
+
+   }
 
 
 }

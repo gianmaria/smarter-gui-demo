@@ -203,9 +203,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pb_send_hello">
+       <widget class="QPushButton" name="pb_go_active">
         <property name="text">
-         <string>&amp;Send Hello</string>
+         <string>&amp;Go Active</string>
         </property>
        </widget>
       </item>
@@ -310,7 +310,7 @@
   <tabstop>le_joystick_port</tabstop>
   <tabstop>le_local_port</tabstop>
   <tabstop>pb_connect</tabstop>
-  <tabstop>pb_send_hello</tabstop>
+  <tabstop>pb_go_active</tabstop>
   <tabstop>tab_widget</tabstop>
   <tabstop>le_ips</tabstop>
  </tabstops>

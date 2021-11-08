@@ -40,8 +40,29 @@ Main_Window::Main_Window(QWidget *parent)
    ui->le_ips->setCursorPosition(0);
 
    ui->axis_1->set_axis_name("Axis 1");
+   ui->axis_1->set_axis_pos_min(-1700);
+   ui->axis_1->set_axis_pos_max(1700);
+   ui->axis_1->set_axis_force_min(0);
+   ui->axis_1->set_axis_force_max(30);
+   ui->axis_1->set_axis_vel_min(0);
+   ui->axis_1->set_axis_vel_max(30);
+
    ui->axis_2->set_axis_name("Axis 2");
+   ui->axis_2->set_axis_pos_min(-1700);
+   ui->axis_2->set_axis_pos_max(1700);
+   ui->axis_2->set_axis_force_min(0);
+   ui->axis_2->set_axis_force_max(30);
+   ui->axis_2->set_axis_vel_min(0);
+   ui->axis_2->set_axis_vel_max(30);
+
    ui->axis_3->set_axis_name("Axis 3");
+   ui->axis_3->set_axis_pos_min(-1700);
+   ui->axis_3->set_axis_pos_max(1700);
+   ui->axis_3->set_axis_force_min(0);
+   ui->axis_3->set_axis_force_max(30);
+   ui->axis_3->set_axis_vel_min(0);
+   ui->axis_3->set_axis_vel_max(30);
+
 }
 
 Main_Window::~Main_Window()
@@ -104,9 +125,21 @@ void Main_Window::on_pb_connect_released()
            this, [&]
            (smarter_msg_status msg)
    {
+      float at_ms = static_cast<float>(msg.timestamp) / 1000.0f;
       add_log_msg(QString("%1ms - %2")
-                  .arg((float)msg.timestamp / 1000.0f)
+                  .arg(at_ms)
                   .arg(spcm->status_to_str(msg.status)));
+   });
+
+
+   connect(spcm, &Smarter_Protocol_Communication_Manager::SAIS_4dof,
+           this, [&]
+           (smarter_msg_4dof msg)
+   {
+      ui->axis_1->set_axis_type(msg.pvf[0].dof_type == 0 ? "Linear" : "Rotational"); // 0:linear, 1: rotational 16 bit
+      ui->axis_1->set_axis_pos(msg.pvf[0].position);
+      ui->axis_1->set_axis_force(msg.pvf[0].force);
+      ui->axis_1->set_axis_vel(msg.pvf[0].velocity);
    });
 
    spcm->connect_to_SAIS(ui->le_joystick_ip->text(),
@@ -114,11 +147,6 @@ void Main_Window::on_pb_connect_released()
                          ui->le_local_port->text().toUShort());
 }
 
-void Main_Window::on_pb_send_hello_released()
-{
-   spcm->set_SAIS_status(2);
-
-}
 
 void Main_Window::closeEvent(QCloseEvent* event)
 {
@@ -170,3 +198,10 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
       return QMainWindow::eventFilter(watched, event);
    }
 }
+
+void Main_Window::on_pb_go_active_released()
+{
+   spcm->set_SAIS_status(2);
+   spcm->request_SAIS_status();
+}
+

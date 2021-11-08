@@ -29,7 +29,7 @@ protected:
 
 private slots:
    void on_pb_connect_released();
-   void on_pb_send_hello_released();
+   void on_pb_go_active_released();
 
 private:
    Ui::Main_Window *ui;
