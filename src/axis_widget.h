@@ -36,7 +36,7 @@ public slots:
 
    void set_axis_name(const QString& name);
 
-   void set_dof_id(int id);
+   void set_dof_id(DOF_Id id);
    void set_dof_type(DOF_Type type);
 
    void set_axis_pos(int pos);
@@ -54,7 +54,7 @@ private slots:
 
 private:
    Ui::Axis_Widget *ui;
-   int dof_id = -1;
+   DOF_Id dof_id = DOF_Id::INVALID;
    DOF_Type dof_type = DOF_Type::INVALID;
 
    const float SCALING_FACTOR_ANGULAR_POS = 100.0f;

@@ -68,7 +68,7 @@ void Axis_Widget::set_axis_name(const QString& new_name)
    ui->axis_name->setText(new_name);
 }
 
-void Axis_Widget::set_dof_id(int id)
+void Axis_Widget::set_dof_id(DOF_Id id)
 {
    dof_id = id;
 }
@@ -94,9 +94,9 @@ void Axis_Widget::set_axis_force(int force)
    ui->axis_force->setValue(force);
 }
 
-void Axis_Widget::update_4dof(smarter_msg_4dof msg)
+void Axis_Widget::refresh_4dof(smarter_msg_4dof msg)
 {
-   pos_vel_force& pvf = msg.pvf[dof_id];
+   pos_vel_force& pvf = msg.pvf[static_cast<SM_uchar>(dof_id)];
 
    set_dof_type(static_cast<DOF_Type>(pvf.dof_type));
 
