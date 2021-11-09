@@ -228,7 +228,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_log">
        <attribute name="title">
@@ -692,23 +692,23 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QLabel" name="label_7">
+             <widget class="QLabel" name="lbl_hc_dof_id">
               <property name="text">
-               <string>TextLabel</string>
+               <string>DOF: XXX</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel" name="lbl_hc_dof_type">
               <property name="text">
-               <string>TextLabel</string>
+               <string>DOF Type: XXX</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_5">
+             <widget class="QLabel" name="lbl_hc_hc_type">
               <property name="text">
-               <string>TextLabel</string>
+               <string>Haptic Config Type: XX</string>
               </property>
              </widget>
             </item>
@@ -881,6 +881,54 @@
     <hint type="destinationlabel">
      <x>438</x>
      <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_clear_haptic_conf</sender>
+   <signal>clicked()</signal>
+   <receiver>lbl_hc_dof_id</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>372</x>
+     <y>547</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_clear_haptic_conf</sender>
+   <signal>clicked()</signal>
+   <receiver>lbl_hc_dof_type</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>548</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>323</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_clear_haptic_conf</sender>
+   <signal>clicked()</signal>
+   <receiver>lbl_hc_hc_type</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>534</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>556</x>
+     <y>194</y>
     </hint>
    </hints>
   </connection>

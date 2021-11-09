@@ -62,7 +62,7 @@ void Smarter_Protocol_CM::connect_to_SAIS(
    QObject::connect(udp_socket, &QUdpSocket::errorOccurred, this, [&]
                     (QAbstractSocket::SocketError)
    {
-      emit socket_msg(QString("[ERROR] Socket error (%1)").arg(udp_socket->errorString()));
+      emit socket_msg(QString("[ERROR] Socket error (%1), SAIS offline?").arg(udp_socket->errorString()));
    });
 
    QObject::connect(udp_socket, &QUdpSocket::readyRead,

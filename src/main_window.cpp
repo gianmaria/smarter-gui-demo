@@ -172,6 +172,20 @@ void Main_Window::on_pb_connect_clicked()
 
       ui->te_haptic_conf->setPlainText(
                QString::fromUtf8(json.toJson()));
+
+      QString dof_id_str =
+            json.object()["dof"].toString();
+      QString dof_type_str =
+            json.object()["ss_table"].toObject()["dof_type"].toString();
+      QString hc_type_str =
+            json.object()["haptic_configuration_type"].toString();
+
+      ui->lbl_hc_dof_id->setText(QString("DOF: %1")
+                                 .arg(dof_id_str));
+      ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
+                                   .arg(dof_type_str));
+      ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
+                                  .arg(hc_type_str));
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
@@ -181,6 +195,20 @@ void Main_Window::on_pb_connect_clicked()
 
       ui->te_haptic_conf->setPlainText(
                QString::fromUtf8(json.toJson()));
+
+      QString dof_id_str =
+            json.object()["dof"].toString();
+      QString dof_type_str =
+            json.object()["zg_table"].toObject()["dof_type"].toString();
+      QString hc_type_str =
+            json.object()["haptic_configuration_type"].toString();
+
+      ui->lbl_hc_dof_id->setText(QString("DOF: %1")
+                                 .arg(dof_id_str));
+      ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
+                                   .arg(dof_type_str));
+      ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
+                                  .arg(hc_type_str));
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
