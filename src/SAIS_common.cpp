@@ -30,7 +30,7 @@ QString to_str(SAIS_Status status)
    }
 }
 
-QString to_str(smarter_msg_id msg_id)
+QString smarter_msg_id_to_str(smarter_msg_id msg_id)
 {
    switch (msg_id)
    {

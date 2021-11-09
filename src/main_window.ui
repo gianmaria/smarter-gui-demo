@@ -42,7 +42,7 @@
          <string notr="true"/>
         </property>
         <property name="text">
-         <string>Your IPs</string>
+         <string>Your IPs:</string>
         </property>
        </widget>
       </item>

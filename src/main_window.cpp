@@ -141,7 +141,7 @@ void Main_Window::on_pb_connect_clicked()
            (smarter_msg_ok msg_ok)
    {
       QString msg = QString("OK for request: %1")
-                    .arg(to_str(msg_ok.request_code));
+                    .arg(smarter_msg_id_to_str(msg_ok.request_code));
       add_log_msg(msg);
    });
 
@@ -150,7 +150,7 @@ void Main_Window::on_pb_connect_clicked()
            (smarter_msg_fail msg_fail)
    {
       QString msg = QString("FAIL for request: %1 SAIS say: '%2' error code: %3")
-                    .arg(to_str(msg_fail.request_code))
+                    .arg(smarter_msg_id_to_str(msg_fail.request_code))
                     .arg(reinterpret_cast<char*>(msg_fail.error_string))
                     .arg(msg_fail.error_code);
       add_log_msg(msg);
@@ -196,26 +196,6 @@ void Main_Window::on_pb_connect_clicked()
             }
          }
       }
-
-      //if (msg.buttons_state & (0x1 << 0))
-      //   ui->pb_b1->setChecked(true);
-      //else
-      //   ui->pb_b1->setChecked(false);
-      //
-      //if (msg.buttons_state & (0x1 << 1))
-      //   ui->pb_b2->setChecked(true);
-      //else
-      //   ui->pb_b2->setChecked(false);
-      //
-      //if (msg.buttons_state & (0x1 << 2))
-      //   ui->pb_b3->setChecked(true);
-      //else
-      //   ui->pb_b3->setChecked(false);
-      //
-      //if (msg.buttons_state & (0x1 << 3))
-      //   ui->pb_b4->setChecked(true);
-      //else
-      //   ui->pb_b4->setChecked(false);
    });
 
    spcm->connect_to_SAIS(ui->le_joystick_ip->text(),

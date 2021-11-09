@@ -27,4 +27,4 @@ enum class SAIS_Status : SM_uchar
 
 QString to_str(DOF_Type type);
 QString to_str(SAIS_Status status);
-QString to_str(smarter_msg_id msg_id);
+QString smarter_msg_id_to_str(smarter_msg_id msg_id);

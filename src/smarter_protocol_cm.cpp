@@ -116,7 +116,8 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 
    if (byte_encoded < 0)
    {
-      emit socket_msg(QString("[ERROR] Cannot encode msg id %1").arg(to_str(msg_id)));
+      emit socket_msg(QString("[ERROR] Cannot encode msg id %1")
+                      .arg(smarter_msg_id_to_str(msg_id)));
       return;
    }
 
@@ -127,7 +128,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
    if (bytes_sent < 0)
    {
       emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id %1: '%2'")
-                      .arg(to_str(msg_id))
+                      .arg(smarter_msg_id_to_str(msg_id))
                       .arg(udp_socket->errorString()));
       return;
    }
@@ -239,6 +240,8 @@ void Smarter_Protocol_CM::recv_smarter_msg()
 
          case SMARTER_MSG_SS_ID:
          {
+            qInfo() << "GOT SMARTER_MSG_SS_ID";
+
             smarter_msg_ss msg = {};
 
             int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
@@ -274,7 +277,7 @@ void Smarter_Protocol_CM::recv_smarter_msg()
          default:
             emit socket_msg(QString("[WARN] Got non handled packet id: %1 (%2)")
                             .arg(id)
-                            .arg(to_str(id)));
+                            .arg(smarter_msg_id_to_str(id)));
          break;
       }
 
