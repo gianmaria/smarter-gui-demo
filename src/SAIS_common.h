@@ -6,13 +6,15 @@ extern "C" {
 #include "smarter_protocol_streaming.h"
 }
 
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QString>
 
 enum class DOF_Id : SM_uchar
 {
    ROLL = 0,
    PITCH = 1,
-   YAW = 3,
+   YAW = 2,
    INVALID
 };
 
@@ -35,4 +37,7 @@ enum class SAIS_Status : SM_uchar
 
 QString to_str(DOF_Type type);
 QString to_str(SAIS_Status status);
+QString to_str(DOF_Id id);
 QString smarter_msg_id_to_str(smarter_msg_id msg_id);
+
+QJsonDocument to_json(smarter_msg_ss msg);

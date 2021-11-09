@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <QDateTime>
 #include <QHostAddress>
+#include <QJsonObject>
 #include <QKeyEvent>
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -22,8 +23,6 @@ Main_Window::Main_Window(QWidget *parent)
    ui->setupUi(this);
    installEventFilter(this);
 
-   //qInfo() << this << Q_FUNC_INFO;
-
    read_settings();
 
    QList<QHostAddress> all_address = QNetworkInterface::allAddresses();
@@ -32,7 +31,6 @@ Main_Window::Main_Window(QWidget *parent)
       if (host_addr.protocol() == QAbstractSocket::IPv4Protocol &&
           host_addr != QHostAddress::LocalHost)
       {
-         //qInfo() << host_addr.toString();
          ui->le_ips->insert(host_addr.toString());
          ui->le_ips->insert(", ");
       }
@@ -171,7 +169,11 @@ void Main_Window::on_pb_connect_clicked()
            this, [&]
            (smarter_msg_ss msg_ss)
    {
-      ui->te_haptic_conf->appendPlainText("YOOOOOOOOOOOOOOOOOOOO");
+
+      QJsonDocument json = to_json(msg_ss);
+
+      ui->te_haptic_conf->setPlainText(
+               QString::fromUtf8(json.toJson()));
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,

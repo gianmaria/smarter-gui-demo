@@ -1,5 +1,7 @@
 #include "SAIS_common.h"
 
+#include <QJsonArray>
+
 QString to_str(DOF_Type type)
 {
    switch (type)
@@ -28,6 +30,23 @@ QString to_str(SAIS_Status status)
       default:
       return "INVALID SAIS_Status";
    }
+}
+
+
+QString to_str(DOF_Id id)
+{
+   switch(id)
+   {
+      case DOF_Id::ROLL:
+      return "ROLL";
+      case DOF_Id::PITCH:
+      return "PITCH";
+      case DOF_Id::YAW:
+      return "YAW";
+      default:
+      return "INVALID DOF_Id";
+   }
+
 }
 
 QString smarter_msg_id_to_str(smarter_msg_id msg_id)
@@ -72,3 +91,57 @@ QString smarter_msg_id_to_str(smarter_msg_id msg_id)
       default: return "UNKNOWN MSG ID";
    }
 }
+
+QJsonDocument to_json(smarter_msg_ss msg)
+{
+   QJsonObject root;
+
+   root["haptic_configuration_type"] = "SS";
+
+   root["dof"] = to_str(static_cast<DOF_Id>
+                        (msg.dof));
+
+   QJsonObject ss_table;
+   ss_table["dof_type"] = to_str(static_cast<DOF_Type>
+                                 (msg.ss_table.dof_type));
+   ss_table["force_BO"] = msg.ss_table.force_BO;
+   ss_table["pos_BO"] = msg.ss_table.pos_BO;
+   ss_table["pos_STOP_positive"] = msg.ss_table.pos_STOP_positive;
+   ss_table["pos_STOP_negative"] = msg.ss_table.pos_STOP_negative;
+   ss_table["damping"] = msg.ss_table.damping;
+
+   root["ss_table"] = ss_table;
+
+   QJsonArray pg_negative;
+
+   for (unsigned i = 0;
+        i < NUMBER_POINTS;
+        ++i)
+   {
+      QJsonObject pos_grad;
+      pos_grad["pos"] = msg.ss_table.pg_negative[i].pos;
+      pos_grad["grad"] = msg.ss_table.pg_negative[i].grad;
+
+      pg_negative.append(pos_grad);
+   }
+
+   root["pg_negative"] = pg_negative;
+
+   QJsonArray pg_positive;
+
+   for (unsigned i = 0;
+        i < NUMBER_POINTS;
+        ++i)
+   {
+      QJsonObject pos_grad;
+      pos_grad["pos"] = msg.ss_table.pg_positive[i].pos;
+      pos_grad["grad"] = msg.ss_table.pg_positive[i].grad;
+
+      pg_positive.append(pos_grad);
+   }
+
+   root["pg_positive"] = pg_positive;
+
+   return QJsonDocument(root);
+}
+
