@@ -7,6 +7,9 @@
 Smarter_Protocol_CM::Smarter_Protocol_CM(QObject *parent) : QObject(parent)
 {
    //register packets that I want to send or read
+   register_packet(SMARTER_MSG_OK_ID, sizeof(smarter_msg_ok));
+   register_packet(SMARTER_MSG_FAIL_ID, sizeof(smarter_msg_fail));
+
    register_packet(SMARTER_MSG_WRITE_STATUS_ID, sizeof(smarter_msg_write_status));
    register_packet(SMARTER_MSG_READ_STATUS_ID, sizeof(smarter_msg_read_status));
 
@@ -19,19 +22,20 @@ Smarter_Protocol_CM::Smarter_Protocol_CM(QObject *parent) : QObject(parent)
    register_packet(SMARTER_MSG_4DOF_ID, sizeof(smarter_msg_4dof));
    register_packet(SMARTER_MSG_5DOF_ID, sizeof(smarter_msg_5dof));
    register_packet(SMARTER_MSG_BUTTONS_ID, sizeof(smarter_msg_buttons));
-   register_packet(SMARTER_MSG_SEND_REF_4DOF_ID, sizeof(smarter_msg_send_ref_4dof));
-
-   register_packet(SMARTER_MSG_OK_ID, sizeof(smarter_msg_ok));
-   register_packet(SMARTER_MSG_FAIL_ID, sizeof(smarter_msg_fail));
 
    register_packet(SMARTER_MSG_SETSTOP_SS_ID, sizeof(smarter_msg_setStop_ss));
    register_packet(SMARTER_MSG_SETSTOP_ZG_ID, sizeof(smarter_msg_setStop_zg));
 
    register_packet(SMARTER_MSG_READ_ID, sizeof(smarter_msg_read));
    register_packet(SMARTER_MSG_SS_ID, sizeof(smarter_msg_ss));
-   register_packet(SMARTER_MSG_WRITE_SS_ID, sizeof(smarter_msg_write_ss));
+   register_packet(SMARTER_MSG_ZG_ID, sizeof(smarter_msg_zg));
 
+   register_packet(SMARTER_MSG_WRITE_SS_ID, sizeof(smarter_msg_write_ss));
+   register_packet(SMARTER_MSG_WRITE_ZG_ID, sizeof(smarter_msg_write_zg));
+
+   // NOTE: autopilot
    register_packet(SMARTER_MSG_SEND_REF_ID, sizeof(smarter_msg_send_ref));
+   register_packet(SMARTER_MSG_SEND_REF_4DOF_ID, sizeof(smarter_msg_send_ref_4dof));
 }
 
 void Smarter_Protocol_CM::connect_to_SAIS(
@@ -153,6 +157,13 @@ void Smarter_Protocol_CM::recv_smarter_msg()
 
       switch (id)
       {
+
+         case SMARTER_INVALID_PACKET:
+         {
+            emit socket_msg(QString("[WARN] Got invalid packet: <%1> Maybe is not registered?")
+                            .arg(data.toHex(' ')));
+         } break;
+
          case SMARTER_MSG_OK_ID:
          {
             smarter_msg_ok msg = {};
@@ -234,12 +245,6 @@ void Smarter_Protocol_CM::recv_smarter_msg()
             }
          } break;
 
-         case SMARTER_INVALID_PACKET:
-         {
-            // TODO: do something?
-            emit socket_msg(QString("[WARN] Got invalid packet: <%1>").arg(data.toHex(' ')));
-         } break;
-
          case SMARTER_MSG_SS_ID:
          {
             smarter_msg_ss msg = {};
@@ -275,7 +280,7 @@ void Smarter_Protocol_CM::recv_smarter_msg()
          } break;
 
          default:
-            emit socket_msg(QString("[WARN] Got non handled packet id: %1 (%2)")
+            emit socket_msg(QString("[WARN] Got unhandled packet with id: %1 (%2)")
                             .arg(id)
                             .arg(smarter_msg_id_to_str(id)));
          break;

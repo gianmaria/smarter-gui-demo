@@ -41,3 +41,4 @@ QString to_str(DOF_Id id);
 QString smarter_msg_id_to_str(smarter_msg_id msg_id);
 
 QJsonDocument to_json(smarter_msg_ss msg);
+QJsonDocument to_json(smarter_msg_zg msg);

@@ -166,11 +166,18 @@ void Main_Window::on_pb_connect_clicked()
 
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
-           this, [&]
-           (smarter_msg_ss msg_ss)
+           this, [&] (smarter_msg_ss msg_ss)
    {
-
       QJsonDocument json = to_json(msg_ss);
+
+      ui->te_haptic_conf->setPlainText(
+               QString::fromUtf8(json.toJson()));
+   });
+
+   connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
+           this, [&] (smarter_msg_zg msg_zg)
+   {
+      QJsonDocument json = to_json(msg_zg);
 
       ui->te_haptic_conf->setPlainText(
                QString::fromUtf8(json.toJson()));
@@ -234,16 +241,19 @@ void Main_Window::on_pb_go_standby_clicked()
 void Main_Window::on_pb_read_config_dof_1_clicked()
 {
    if (spcm) spcm->read_haptic_conf_for_dof_id(0);
+   else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_2_clicked()
 {
    if (spcm) spcm->read_haptic_conf_for_dof_id(1);
+   else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_3_clicked()
 {
    if (spcm) spcm->read_haptic_conf_for_dof_id(2);
+   else add_log_msg("[ERROR] Not connected!");
 }
 
 

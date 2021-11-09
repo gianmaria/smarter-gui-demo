@@ -145,3 +145,54 @@ QJsonDocument to_json(smarter_msg_ss msg)
    return QJsonDocument(root);
 }
 
+
+QJsonDocument to_json(smarter_msg_zg msg)
+{
+   QJsonObject root;
+
+   root["haptic_configuration_type"] = "ZG";
+
+   root["dof"] = to_str(static_cast<DOF_Id>
+                        (msg.dof));
+
+   QJsonObject zg_table;
+   zg_table["dof_type"] = to_str(static_cast<DOF_Type>
+                                 (msg.zg_table.dof_type));
+   zg_table["damping"] = msg.zg_table.damping;
+   zg_table["pos_stop1"] = msg.zg_table.pos_stop1;
+   zg_table["pos_stop2"] = msg.zg_table.pos_stop2;
+
+   root["zg_table"] = zg_table;
+
+   QJsonArray de;
+
+   for (unsigned i = 0;
+        i < NUMBER_POINTS;
+        ++i)
+   {
+      QJsonObject detent;
+      detent["pos"]   = msg.zg_table.de[i].pos;
+      detent["force"] = msg.zg_table.de[i].force;
+
+      de.append(detent);
+   }
+
+   root["de"] = de;
+
+   QJsonArray ga;
+
+   for (unsigned i = 0;
+        i < NUMBER_POINTS;
+        ++i)
+   {
+      QJsonObject gate;
+      gate["pos"]   = msg.zg_table.ga[i].pos;
+      gate["force"] = msg.zg_table.ga[i].force;
+
+      ga.append(gate);
+   }
+
+   root["ga"] = ga;
+
+   return QJsonDocument(root);
+}
