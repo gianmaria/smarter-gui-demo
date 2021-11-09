@@ -28,10 +28,13 @@ public:
 
    explicit Smarter_Protocol_Communication_Manager(QObject *parent = nullptr);
 
+public slots:
    void connect_to_SAIS(const QString& ip, quint16 port, quint16 local_port);
-   void read_SAIS_status();
-   void set_SAIS_status(SAIS_Status status);
 
+   void read_SAIS_status();
+   void read_haptic_conf_for_dof_id(unsigned short dof_id);
+
+   void set_SAIS_status(SAIS_Status status);
 
 signals:
 
@@ -42,6 +45,11 @@ signals:
    void msg_SAIS_buttons(smarter_msg_buttons msg);
    void msg_SAIS_request_failed(smarter_msg_fail msg);
    void msg_SAIS_request_ok(smarter_msg_ok msg);
+
+   // Haptic Configuration for single dof of SS type.
+   void msg_SAIS_haptic_conf_ss(smarter_msg_ss msg);
+   // Haptic Configuration for single dof of ZG type.
+   void msg_SAIS_haptic_conf_zg(smarter_msg_zg msg);
 
 private:
 

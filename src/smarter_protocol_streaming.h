@@ -169,7 +169,8 @@ typedef struct struct_smarter_msg_read {
 	SM_int32 request_code;// 32 bit
 }smarter_msg_read;
 
-//SMARTER_msg12: message from SAIS, reply to read command from FCS (SS config). NUMBER_POINTS corresponds to a fixed number of gradient for SS
+//SMARTER_msg12: message from SAIS, reply to read command from FCS (SS config).
+//NUMBER_POINTS corresponds to a fixed number of gradient for SS
 #define SMARTER_MSG_SS_ID (smarter_msg_id)12
 #define NUMBER_POINTS	10
 //sub-struct that provides the couple (pos, gradient) 

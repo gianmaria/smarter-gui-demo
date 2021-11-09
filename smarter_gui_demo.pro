@@ -17,6 +17,7 @@ SOURCES += \
 
 HEADERS += \
     src/axis_widget.h \
+    src/common.h \
     src/main_window.h \
     src/smarter_protocol_communication_manager.h \
     src/smarter_protocol_streaming.h \

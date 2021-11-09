@@ -108,20 +108,20 @@ void Main_Window::write_settings()
    settings.endGroup();
 }
 
-void Main_Window::add_log_msg(QString msg)
+void Main_Window::add_log_msg(const QString& msg)
 {
    auto now = QDateTime::currentDateTime();
-   QString text = QString("%1 - %2").arg(now.toString("hh:mm:ss")).arg(msg);
+   QString text = QString("%1 - %2").arg(now.toString("hh:mm:ss"), msg);
    ui->te_log->appendPlainText(text);
 }
+
+
 
 void Main_Window::on_pb_connect_clicked()
 {
    write_settings();
 
-   if (spcm)
-      delete spcm;
-
+   delete spcm;
    spcm = new Smarter_Protocol_Communication_Manager(this);
 
    connect(spcm, &SmarterPCM::socket_msg,
@@ -149,7 +149,7 @@ void Main_Window::on_pb_connect_clicked()
            this, [&]
            (smarter_msg_fail msg_fail)
    {
-      QString msg = QString("FAILED for request: %1 ('%2' code: %3)")
+      QString msg = QString("FAIL for request: %1 SAIS say: '%2' error code: %3")
                     .arg(SmarterPCM::smarter_msg_id_to_str(msg_fail.request_code))
                     .arg(reinterpret_cast<char*>(msg_fail.error_string))
                     .arg(msg_fail.error_code);
@@ -164,6 +164,14 @@ void Main_Window::on_pb_connect_clicked()
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_3, &Axis_Widget::update_4dof);
 
+
+   connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
+           this, [&]
+           (smarter_msg_ss msg_ss)
+   {
+      ui->te_haptic_conf->appendPlainText("YOOOOOOOOOOOOOOOOOOOO");
+   });
+
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
            this, [&](smarter_msg_4dof msg)
    {
@@ -175,13 +183,13 @@ void Main_Window::on_pb_connect_clicked()
       {
          QPushButton* b = all_buttons[i];
 
-         for (int j = 0;
+         for (unsigned j = 0;
               j < 16;
               ++j)
          {
             if (b->objectName() == QString("pb_b%1").arg(j))
             {
-               if (msg.buttons_state & (0x1 << j))
+               if (msg.buttons_state & (static_cast<unsigned>(0x1) << j))
                   b->setChecked(true);
                else
                   b->setChecked(false);
@@ -215,11 +223,50 @@ void Main_Window::on_pb_connect_clicked()
                          ui->le_local_port->text().toUShort());
 }
 
+void Main_Window::on_pb_go_active_clicked()
+{
+   if (spcm)
+      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::ACTIVE);
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::on_pb_read_status_clicked()
+{
+   if (spcm)
+      spcm->read_SAIS_status();
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::on_pb_go_standby_clicked()
+{
+   if (spcm)
+      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::STANDBY);
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::on_pb_read_config_dof_1_clicked()
+{
+   if (spcm) spcm->read_haptic_conf_for_dof_id(0);
+}
+
+void Main_Window::on_pb_read_config_dof_2_clicked()
+{
+   if (spcm) spcm->read_haptic_conf_for_dof_id(1);
+}
+
+void Main_Window::on_pb_read_config_dof_3_clicked()
+{
+   if (spcm) spcm->read_haptic_conf_for_dof_id(2);
+}
+
+
+
 
 void Main_Window::closeEvent(QCloseEvent* event)
 {
-   qDebug() << Q_FUNC_INFO;
-
    write_settings();
    event->accept();
 }
@@ -233,8 +280,6 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
          QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
          if (keyEvent->matches(QKeySequence::Cancel))
          {
-            qDebug() << Q_FUNC_INFO;
-
             auto ret = QMessageBox::question(this, windowTitle(), "Closing?");
             switch (ret) {
               case QMessageBox::Yes:
@@ -267,30 +312,4 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
    }
 }
 
-void Main_Window::on_pb_go_active_clicked()
-{
-   if (spcm)
-      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::ACTIVE);
-   else
-      add_log_msg("[ERROR] Not connected!");
-}
-
-
-void Main_Window::on_pb_read_status_clicked()
-{
-   if (spcm)
-      spcm->read_SAIS_status();
-   else
-      add_log_msg("[ERROR] Not connected!");
-}
-
-
-
-void Main_Window::on_pb_go_standby_clicked()
-{
-   if (spcm)
-      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::STANDBY);
-   else
-      add_log_msg("[ERROR] Not connected!");
-}
 

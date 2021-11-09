@@ -88,7 +88,7 @@ void Axis_Widget::set_dof_id(int id)
    dof_id = id;
 }
 
-void Axis_Widget::set_dof_type(DOF_Type type)
+void Axis_Widget::set_dof_type(Axis_Widget::DOF_Type type)
 {
    dof_type = type;
    ui->axis_type->setText(QString("Type: %1").arg(DOF_Type_to_str(dof_type)));

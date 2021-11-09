@@ -215,7 +215,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_log">
        <attribute name="title">
@@ -223,7 +223,11 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPlainTextEdit" name="te_log"/>
+         <widget class="QPlainTextEdit" name="te_log">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pb_clear_log">
@@ -640,6 +644,59 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_haptic_conf">
+       <attribute name="title">
+        <string>Haptic Configuration</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="pb_read_config_dof_1">
+              <property name="text">
+               <string>Read Config DOF1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pb_read_config_dof_2">
+              <property name="text">
+               <string>Read Config DOF2</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pb_read_config_dof_3">
+              <property name="text">
+               <string>Read Config DOF3</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="te_haptic_conf">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="plainText">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pb_clear_haptic_conf">
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="tab_ss">
        <property name="toolTipDuration">
         <number>-1</number>
@@ -729,6 +786,22 @@
     <hint type="destinationlabel">
      <x>442</x>
      <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pb_clear_haptic_conf</sender>
+   <signal>clicked()</signal>
+   <receiver>te_haptic_conf</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>551</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>438</x>
+     <y>392</y>
     </hint>
    </hints>
   </connection>

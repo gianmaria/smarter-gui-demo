@@ -21,7 +21,7 @@ public:
    void write_settings();
 
 public slots:
-   void add_log_msg(QString msg);
+   void add_log_msg(const QString& msg);
 
 protected:
    virtual void closeEvent(QCloseEvent* event) override;
@@ -32,6 +32,9 @@ private slots:
    void on_pb_read_status_clicked();
    void on_pb_go_active_clicked();
    void on_pb_go_standby_clicked();
+   void on_pb_read_config_dof_1_clicked();
+   void on_pb_read_config_dof_2_clicked();
+   void on_pb_read_config_dof_3_clicked();
 
 private:
    Ui::Main_Window *ui;

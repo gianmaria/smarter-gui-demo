@@ -44,7 +44,7 @@ public slots:
    void set_axis_name(const QString& name);
 
    void set_dof_id(int id);
-   void set_dof_type(DOF_Type type);
+   void set_dof_type(Axis_Widget::DOF_Type type);
 
    void set_axis_pos(int pos);
    void set_axis_vel(int vel);

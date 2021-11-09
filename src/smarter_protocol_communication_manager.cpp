@@ -27,42 +27,42 @@ QString Smarter_Protocol_Communication_Manager::smarter_msg_id_to_str(smarter_ms
 {
    switch (msg_id)
    {
-       case SMARTER_INVALID_PACKET: return "INVALID MSG";
-       case SMARTER_MSG1_STATE_ID: return "SMARTER_MSG1_STATE_ID";
-       case SMARTER_MSG2_STATE_ID: return "SMARTER_MSG2_STATE_ID";
-       case SMARTER_MSG3_STATE_ID: return "SMARTER_MSG3_STATE_ID";
-       case SMARTER_MSG4_STATE_ID: return "SMARTER_MSG4_STATE_ID";
-       case SMARTER_MSG5_STATE_ID: return "SMARTER_MSG5_STATE_ID";
-       case SMARTER_MSG6_STATE_ID: return "SMARTER_MSG6_STATE_ID";
-       case SMARTER_MSG_BUTTONS_ID: return "SMARTER_MSG_BUTTONS_ID";
-       case SMARTER_MSG_4DOF_ID: return "SMARTER_MSG_4DOF_ID";
-       case SMARTER_MSG_5DOF_ID: return "SMARTER_MSG_5DOF_ID";
-       case SMARTER_MSG_6DOF_ID: return "SMARTER_MSG_6DOF_ID";
-       case SMARTER_MSG_READ_ID: return "SMARTER_MSG_READ_ID";
-       case SMARTER_MSG_SS_ID: return "SMARTER_MSG_SS_ID";
-       case SMARTER_MSG_ZG_ID: return "SMARTER_MSG_ZG_ID";
-       case SMARTER_MSG_WRITE_SS_ID: return "SMARTER_MSG_WRITE_SS_ID";
-       case SMARTER_MSG_WRITE_ZG_ID: return "SMARTER_MSG_WRITE_ZG_ID";
-       case SMARTER_MSG_OK_ID: return "SMARTER_MSG_OK_ID";
-       case SMARTER_MSG_FAIL_ID: return "SMARTER_MSG_FAIL_ID";
-       case SMARTER_MSG_SET_ACTIVE_ID: return "SMARTER_MSG_SET_ACTIVE_ID";
-       case SMARTER_MSG_SETSTOP_SS_ID: return "SMARTER_MSG_SETSTOP_SS_ID";
-       case SMARTER_MSG_SETSTOP_ZG_ID: return "SMARTER_MSG_SETSTOP_ZG_ID";
-       case SMARTER_MSG_SETDETENT_ID: return "SMARTER_MSG_SETDETENT_ID";
-       case SMARTER_MSG_SETGATE_ID: return "SMARTER_MSG_SETGATE_ID";
-       case SMARTER_MSG_SETDAMPING_ROT_ID: return "SMARTER_MSG_SETDAMPING_ROT_ID";
-       case SMARTER_MSG_SETDAMPING_LIN_ID: return "SMARTER_MSG_SETDAMPING_LIN_ID";
-       case SMARTER_MSG_SEND_REF_ID: return "SMARTER_MSG_SEND_REF_ID";
-       case SMARTER_MSG_SEND_REF_4DOF_ID: return "SMARTER_MSG_SEND_REF_4DOF_ID";
-       case SMARTER_MSG_SEND_REF_5DOF_ID: return "SMARTER_MSG_SEND_REF_5DOF_ID";
-       case SMARTER_MSG_READ_REF_6DOF_ID: return "SMARTER_MSG_READ_REF_6DOF_ID";
-       case SMARTER_MSG_WRITE_STATUS_ID: return "SMARTER_MSG_WRITE_STATUS_ID";
-       case SMARTER_MSG_READ_STATUS_ID: return "SMARTER_MSG_READ_STATUS_ID";
-       case SMARTER_MSG_STATUS_ID: return "SMARTER_MSG_STATUS_ID";
-       case SMARTER_MSG_WRITE_CONFIG_ID: return "SMARTER_MSG_WRITE_CONFIG_ID";
-       case SMARTER_MSG_READ_CONFIG_ID: return "SMARTER_MSG_READ_CONFIG_ID";
-       case SMARTER_MSG_CONFIG_ID: return "SMARTER_MSG_CONFIG_ID";
-       default: return "UNKNOWN MSG ID";
+      case SMARTER_INVALID_PACKET: return "INVALID MSG";
+      case SMARTER_MSG1_STATE_ID: return "SMARTER_MSG1_STATE_ID";
+      case SMARTER_MSG2_STATE_ID: return "SMARTER_MSG2_STATE_ID";
+      case SMARTER_MSG3_STATE_ID: return "SMARTER_MSG3_STATE_ID";
+      case SMARTER_MSG4_STATE_ID: return "SMARTER_MSG4_STATE_ID";
+      case SMARTER_MSG5_STATE_ID: return "SMARTER_MSG5_STATE_ID";
+      case SMARTER_MSG6_STATE_ID: return "SMARTER_MSG6_STATE_ID";
+      case SMARTER_MSG_BUTTONS_ID: return "SMARTER_MSG_BUTTONS_ID";
+      case SMARTER_MSG_4DOF_ID: return "SMARTER_MSG_4DOF_ID";
+      case SMARTER_MSG_5DOF_ID: return "SMARTER_MSG_5DOF_ID";
+      case SMARTER_MSG_6DOF_ID: return "SMARTER_MSG_6DOF_ID";
+      case SMARTER_MSG_READ_ID: return "SMARTER_MSG_READ_ID";
+      case SMARTER_MSG_SS_ID: return "SMARTER_MSG_SS_ID";
+      case SMARTER_MSG_ZG_ID: return "SMARTER_MSG_ZG_ID";
+      case SMARTER_MSG_WRITE_SS_ID: return "SMARTER_MSG_WRITE_SS_ID";
+      case SMARTER_MSG_WRITE_ZG_ID: return "SMARTER_MSG_WRITE_ZG_ID";
+      case SMARTER_MSG_OK_ID: return "SMARTER_MSG_OK_ID";
+      case SMARTER_MSG_FAIL_ID: return "SMARTER_MSG_FAIL_ID";
+      case SMARTER_MSG_SET_ACTIVE_ID: return "SMARTER_MSG_SET_ACTIVE_ID";
+      case SMARTER_MSG_SETSTOP_SS_ID: return "SMARTER_MSG_SETSTOP_SS_ID";
+      case SMARTER_MSG_SETSTOP_ZG_ID: return "SMARTER_MSG_SETSTOP_ZG_ID";
+      case SMARTER_MSG_SETDETENT_ID: return "SMARTER_MSG_SETDETENT_ID";
+      case SMARTER_MSG_SETGATE_ID: return "SMARTER_MSG_SETGATE_ID";
+      case SMARTER_MSG_SETDAMPING_ROT_ID: return "SMARTER_MSG_SETDAMPING_ROT_ID";
+      case SMARTER_MSG_SETDAMPING_LIN_ID: return "SMARTER_MSG_SETDAMPING_LIN_ID";
+      case SMARTER_MSG_SEND_REF_ID: return "SMARTER_MSG_SEND_REF_ID";
+      case SMARTER_MSG_SEND_REF_4DOF_ID: return "SMARTER_MSG_SEND_REF_4DOF_ID";
+      case SMARTER_MSG_SEND_REF_5DOF_ID: return "SMARTER_MSG_SEND_REF_5DOF_ID";
+      case SMARTER_MSG_READ_REF_6DOF_ID: return "SMARTER_MSG_READ_REF_6DOF_ID";
+      case SMARTER_MSG_WRITE_STATUS_ID: return "SMARTER_MSG_WRITE_STATUS_ID";
+      case SMARTER_MSG_READ_STATUS_ID: return "SMARTER_MSG_READ_STATUS_ID";
+      case SMARTER_MSG_STATUS_ID: return "SMARTER_MSG_STATUS_ID";
+      case SMARTER_MSG_WRITE_CONFIG_ID: return "SMARTER_MSG_WRITE_CONFIG_ID";
+      case SMARTER_MSG_READ_CONFIG_ID: return "SMARTER_MSG_READ_CONFIG_ID";
+      case SMARTER_MSG_CONFIG_ID: return "SMARTER_MSG_CONFIG_ID";
+      default: return "UNKNOWN MSG ID";
    }
 }
 
@@ -102,9 +102,7 @@ void Smarter_Protocol_Communication_Manager::connect_to_SAIS(
       const QString& ip, quint16 port,
       quint16 local_port)
 {
-   if (udp_socket)
-      delete udp_socket;
-
+   delete udp_socket;
    udp_socket = new QUdpSocket(this);
 
    QObject::connect(udp_socket, &QUdpSocket::connected, this, [&]
@@ -148,6 +146,21 @@ void Smarter_Protocol_Communication_Manager::read_SAIS_status()
    msg_read_status.request_code = SMARTER_MSG_READ_STATUS_ID;
 
    send_smarter_msg(SMARTER_MSG_READ_STATUS_ID, &msg_read_status);
+}
+
+void Smarter_Protocol_Communication_Manager::read_haptic_conf_for_dof_id(SM_uchar dof_id)
+{
+   smarter_msg_read msg_read = {};
+   msg_read.request_code = SMARTER_MSG_READ_ID;
+   msg_read.dof = dof_id;
+
+   // NOTE: The field dof_table is used to specify if the read operation
+   //       should return the active configuration (dof_table = 0) or
+   //       a configuration stored in the SAIS memory (dof_table > 0)
+   //       in position dof_table
+   msg_read.dof_table = 0;
+
+   send_smarter_msg(SMARTER_MSG_READ_ID, &msg_read);
 }
 
 void Smarter_Protocol_Communication_Manager::set_SAIS_status(SAIS_Status status)
@@ -287,16 +300,51 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
          case SMARTER_INVALID_PACKET:
          {
             // TODO: do something?
-             emit socket_msg(QString("[WARN] Got invalid packet: <%1>").arg(data.toHex(' ')));
+            emit socket_msg(QString("[WARN] Got invalid packet: <%1>").arg(data.toHex(' ')));
+         } break;
+
+         case SMARTER_MSG_SS_ID:
+         {
+            smarter_msg_ss msg = {};
+
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_haptic_conf_ss(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
+         } break;
+
+         case SMARTER_MSG_ZG_ID:
+         {
+            smarter_msg_zg msg = {};
+
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_haptic_conf_zg(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
          } break;
 
          default:
+            emit socket_msg(QString("[WARN] Got non handled packet id: %1 (%2)")
+                            .arg(id)
+                            .arg(SmarterPCM::smarter_msg_id_to_str(id)));
          break;
       }
 
-
    }
-
 
 }
 
