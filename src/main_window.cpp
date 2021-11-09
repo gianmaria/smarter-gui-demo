@@ -158,11 +158,11 @@ void Main_Window::on_pb_connect_clicked()
 
 
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
-           ui->axis_1, &Axis_Widget::update_4dof);
+           ui->axis_1, &Axis_Widget::refresh_4dof);
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
-           ui->axis_2, &Axis_Widget::update_4dof);
+           ui->axis_2, &Axis_Widget::refresh_4dof);
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
-           ui->axis_3, &Axis_Widget::update_4dof);
+           ui->axis_3, &Axis_Widget::refresh_4dof);
 
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
