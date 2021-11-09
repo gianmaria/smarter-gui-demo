@@ -38,6 +38,8 @@ void Smarter_Protocol_CM::connect_to_SAIS(
       const QString& ip, quint16 port,
       quint16 local_port)
 {
+   if (udp_socket) udp_socket->disconnectFromHost();
+
    delete udp_socket;
    udp_socket = new QUdpSocket(this);
 
