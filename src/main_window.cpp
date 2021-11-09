@@ -258,19 +258,19 @@ void Main_Window::on_pb_read_status_clicked()
 
 void Main_Window::on_pb_read_config_dof_1_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(0);
+   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::ROLL);
    else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_2_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(1);
+   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::PITCH);
    else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_3_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(2);
+   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
    else add_log_msg("[ERROR] Not connected!");
 }
 

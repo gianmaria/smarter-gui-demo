@@ -105,11 +105,11 @@ void Smarter_Protocol_CM::read_SAIS_status()
    send_smarter_msg(SMARTER_MSG_READ_STATUS_ID, &msg_read_status);
 }
 
-void Smarter_Protocol_CM::read_haptic_conf_for_dof_id(SM_uchar dof_id)
+void Smarter_Protocol_CM::read_haptic_conf_for_dof_id(DOF_Id dof_id)
 {
    smarter_msg_read msg_read = {};
    msg_read.request_code = SMARTER_MSG_READ_ID;
-   msg_read.dof = dof_id;
+   msg_read.dof = static_cast<SM_uchar>(dof_id);
 
    // NOTE: The field dof_table is used to specify if the read operation
    //       should return the active configuration (dof_table = 0) or

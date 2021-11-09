@@ -23,7 +23,7 @@ public slots:
    void disconnect_from_SAIS();
 
    void read_SAIS_status();
-   void read_haptic_conf_for_dof_id(unsigned short dof_id);
+   void read_haptic_conf_for_dof_id(DOF_Id dof_id);
 
    void set_SAIS_status(SAIS_Status status);
 
