@@ -9,17 +9,18 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 TARGET  = smarter_gui_demo
 
 SOURCES += \
+    src/SAIS_common.cpp \
     src/axis_widget.cpp \
     src/main.cpp \
     src/main_window.cpp \
-    src/smarter_protocol_communication_manager.cpp \
+    src/smarter_protocol_cm.cpp \
     src/smarter_protocol_streaming.c
 
 HEADERS += \
+    src/SAIS_common.h \
     src/axis_widget.h \
-    src/common.h \
     src/main_window.h \
-    src/smarter_protocol_communication_manager.h \
+    src/smarter_protocol_cm.h \
     src/smarter_protocol_streaming.h \
     src/Leonardo_msg.h
 

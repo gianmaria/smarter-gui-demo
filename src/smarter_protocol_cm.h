@@ -3,30 +3,20 @@
 #include <QObject>
 #include <QUdpSocket>
 
+#include "SAIS_common.h"
+
 extern "C"
 {
 #include "smarter_protocol_streaming.h"
 }
 
-class Smarter_Protocol_Communication_Manager : public QObject
+class Smarter_Protocol_CM : public QObject
 {
    Q_OBJECT
 
 public:
 
-   enum SAIS_Status : SM_uchar
-   {
-      // ACTIVE (2) , PASSIVE (1) or STANDBY (0)
-      STANDBY = 0,
-      PASSIVE = 1,
-      ACTIVE = 2,
-      UNKNOWN
-   };
-
-   static QString SAIS_Status_to_str(SAIS_Status status);
-   static QString smarter_msg_id_to_str(smarter_msg_id msg_id);
-
-   explicit Smarter_Protocol_Communication_Manager(QObject *parent = nullptr);
+   explicit Smarter_Protocol_CM(QObject *parent = nullptr);
 
 public slots:
    void connect_to_SAIS(const QString& ip, quint16 port, quint16 local_port);
@@ -61,4 +51,4 @@ private:
    void recv_smarter_msg();
 };
 
-typedef Smarter_Protocol_Communication_Manager SmarterPCM;
+typedef Smarter_Protocol_CM SmarterPCM;

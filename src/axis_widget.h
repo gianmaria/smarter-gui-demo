@@ -2,12 +2,16 @@
 
 #include <QWidget>
 
-namespace Ui {
-class Axis_Widget;
-}
+#include "SAIS_common.h"
 
 extern "C" {
 #include "smarter_protocol_streaming.h"
+}
+
+
+
+namespace Ui {
+class Axis_Widget;
 }
 
 class Axis_Widget : public QWidget
@@ -15,17 +19,6 @@ class Axis_Widget : public QWidget
    Q_OBJECT
 
 public:
-
-   // 0:linear, 1: rotational 16 bit
-   enum DOF_Type : SM_uchar
-   {
-      LINEAR = 0,
-      ROTATIONAL = 1,
-      UNKNOWN
-   };
-
-   static QString DOF_Type_to_str(DOF_Type type);
-
 
    explicit Axis_Widget(QWidget *parent = nullptr);
    ~Axis_Widget();
@@ -44,7 +37,7 @@ public slots:
    void set_axis_name(const QString& name);
 
    void set_dof_id(int id);
-   void set_dof_type(Axis_Widget::DOF_Type type);
+   void set_dof_type(DOF_Type type);
 
    void set_axis_pos(int pos);
    void set_axis_vel(int vel);

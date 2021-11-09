@@ -1,74 +1,10 @@
-#include "smarter_protocol_communication_manager.h"
+#include "smarter_protocol_cm.h"
 
 #include <time.h>
 
 #include <QNetworkDatagram>
 
-
-QString Smarter_Protocol_Communication_Manager::SAIS_Status_to_str(SAIS_Status status)
-{
-   // ACTIVE (2) , PASSIVE (1) or STANDBY (0)
-
-   switch (status)
-   {
-      case SAIS_Status::STANDBY:
-      return "STANDBY";
-      case SAIS_Status::PASSIVE:
-      return "PASSIVE";
-      case SAIS_Status::ACTIVE:
-      return "ACTIVE";
-      default:
-      return "UNKNOWN SAIS_Status";
-   }
-}
-
-
-QString Smarter_Protocol_Communication_Manager::smarter_msg_id_to_str(smarter_msg_id msg_id)
-{
-   switch (msg_id)
-   {
-      case SMARTER_INVALID_PACKET: return "INVALID MSG";
-      case SMARTER_MSG1_STATE_ID: return "SMARTER_MSG1_STATE_ID";
-      case SMARTER_MSG2_STATE_ID: return "SMARTER_MSG2_STATE_ID";
-      case SMARTER_MSG3_STATE_ID: return "SMARTER_MSG3_STATE_ID";
-      case SMARTER_MSG4_STATE_ID: return "SMARTER_MSG4_STATE_ID";
-      case SMARTER_MSG5_STATE_ID: return "SMARTER_MSG5_STATE_ID";
-      case SMARTER_MSG6_STATE_ID: return "SMARTER_MSG6_STATE_ID";
-      case SMARTER_MSG_BUTTONS_ID: return "SMARTER_MSG_BUTTONS_ID";
-      case SMARTER_MSG_4DOF_ID: return "SMARTER_MSG_4DOF_ID";
-      case SMARTER_MSG_5DOF_ID: return "SMARTER_MSG_5DOF_ID";
-      case SMARTER_MSG_6DOF_ID: return "SMARTER_MSG_6DOF_ID";
-      case SMARTER_MSG_READ_ID: return "SMARTER_MSG_READ_ID";
-      case SMARTER_MSG_SS_ID: return "SMARTER_MSG_SS_ID";
-      case SMARTER_MSG_ZG_ID: return "SMARTER_MSG_ZG_ID";
-      case SMARTER_MSG_WRITE_SS_ID: return "SMARTER_MSG_WRITE_SS_ID";
-      case SMARTER_MSG_WRITE_ZG_ID: return "SMARTER_MSG_WRITE_ZG_ID";
-      case SMARTER_MSG_OK_ID: return "SMARTER_MSG_OK_ID";
-      case SMARTER_MSG_FAIL_ID: return "SMARTER_MSG_FAIL_ID";
-      case SMARTER_MSG_SET_ACTIVE_ID: return "SMARTER_MSG_SET_ACTIVE_ID";
-      case SMARTER_MSG_SETSTOP_SS_ID: return "SMARTER_MSG_SETSTOP_SS_ID";
-      case SMARTER_MSG_SETSTOP_ZG_ID: return "SMARTER_MSG_SETSTOP_ZG_ID";
-      case SMARTER_MSG_SETDETENT_ID: return "SMARTER_MSG_SETDETENT_ID";
-      case SMARTER_MSG_SETGATE_ID: return "SMARTER_MSG_SETGATE_ID";
-      case SMARTER_MSG_SETDAMPING_ROT_ID: return "SMARTER_MSG_SETDAMPING_ROT_ID";
-      case SMARTER_MSG_SETDAMPING_LIN_ID: return "SMARTER_MSG_SETDAMPING_LIN_ID";
-      case SMARTER_MSG_SEND_REF_ID: return "SMARTER_MSG_SEND_REF_ID";
-      case SMARTER_MSG_SEND_REF_4DOF_ID: return "SMARTER_MSG_SEND_REF_4DOF_ID";
-      case SMARTER_MSG_SEND_REF_5DOF_ID: return "SMARTER_MSG_SEND_REF_5DOF_ID";
-      case SMARTER_MSG_READ_REF_6DOF_ID: return "SMARTER_MSG_READ_REF_6DOF_ID";
-      case SMARTER_MSG_WRITE_STATUS_ID: return "SMARTER_MSG_WRITE_STATUS_ID";
-      case SMARTER_MSG_READ_STATUS_ID: return "SMARTER_MSG_READ_STATUS_ID";
-      case SMARTER_MSG_STATUS_ID: return "SMARTER_MSG_STATUS_ID";
-      case SMARTER_MSG_WRITE_CONFIG_ID: return "SMARTER_MSG_WRITE_CONFIG_ID";
-      case SMARTER_MSG_READ_CONFIG_ID: return "SMARTER_MSG_READ_CONFIG_ID";
-      case SMARTER_MSG_CONFIG_ID: return "SMARTER_MSG_CONFIG_ID";
-      default: return "UNKNOWN MSG ID";
-   }
-}
-
-
-
-Smarter_Protocol_Communication_Manager::Smarter_Protocol_Communication_Manager(QObject *parent) : QObject(parent)
+Smarter_Protocol_CM::Smarter_Protocol_CM(QObject *parent) : QObject(parent)
 {
    //register packets that I want to send or read
    register_packet(SMARTER_MSG_WRITE_STATUS_ID, sizeof(smarter_msg_write_status));
@@ -98,7 +34,7 @@ Smarter_Protocol_Communication_Manager::Smarter_Protocol_Communication_Manager(Q
    register_packet(SMARTER_MSG_SEND_REF_ID, sizeof(smarter_msg_send_ref));
 }
 
-void Smarter_Protocol_Communication_Manager::connect_to_SAIS(
+void Smarter_Protocol_CM::connect_to_SAIS(
       const QString& ip, quint16 port,
       quint16 local_port)
 {
@@ -124,7 +60,7 @@ void Smarter_Protocol_Communication_Manager::connect_to_SAIS(
    });
 
    QObject::connect(udp_socket, &QUdpSocket::readyRead,
-                    this, &Smarter_Protocol_Communication_Manager::recv_smarter_msg);
+                    this, &Smarter_Protocol_CM::recv_smarter_msg);
 
    // NOTE: you need to bind before the connectToHost!
    if (!udp_socket->bind(QHostAddress::LocalHost,
@@ -140,7 +76,7 @@ void Smarter_Protocol_Communication_Manager::connect_to_SAIS(
    udp_socket->connectToHost(ip, port);
 }
 
-void Smarter_Protocol_Communication_Manager::read_SAIS_status()
+void Smarter_Protocol_CM::read_SAIS_status()
 {
    smarter_msg_read_status msg_read_status = {};
    msg_read_status.request_code = SMARTER_MSG_READ_STATUS_ID;
@@ -148,7 +84,7 @@ void Smarter_Protocol_Communication_Manager::read_SAIS_status()
    send_smarter_msg(SMARTER_MSG_READ_STATUS_ID, &msg_read_status);
 }
 
-void Smarter_Protocol_Communication_Manager::read_haptic_conf_for_dof_id(SM_uchar dof_id)
+void Smarter_Protocol_CM::read_haptic_conf_for_dof_id(SM_uchar dof_id)
 {
    smarter_msg_read msg_read = {};
    msg_read.request_code = SMARTER_MSG_READ_ID;
@@ -163,7 +99,7 @@ void Smarter_Protocol_Communication_Manager::read_haptic_conf_for_dof_id(SM_ucha
    send_smarter_msg(SMARTER_MSG_READ_ID, &msg_read);
 }
 
-void Smarter_Protocol_Communication_Manager::set_SAIS_status(SAIS_Status status)
+void Smarter_Protocol_CM::set_SAIS_status(SAIS_Status status)
 {
    smarter_msg_write_status msg_write_status = {};
    msg_write_status.timestamp = (clock() / (double)(CLOCKS_PER_SEC)) * 1000000.0;
@@ -173,16 +109,14 @@ void Smarter_Protocol_Communication_Manager::set_SAIS_status(SAIS_Status status)
    send_smarter_msg(SMARTER_MSG_WRITE_STATUS_ID, &msg_write_status);
 }
 
-
-
-void Smarter_Protocol_Communication_Manager::send_smarter_msg(smarter_msg_id msg_id, void* msg)
+void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 {
    unsigned char buff[512] = {};
    int byte_encoded = encode(buff, sizeof(buff), msg_id, msg);
 
    if (byte_encoded < 0)
    {
-      emit socket_msg(QString("[ERROR] Cannot encode msg id %1").arg(smarter_msg_id_to_str(msg_id)));
+      emit socket_msg(QString("[ERROR] Cannot encode msg id %1").arg(to_str(msg_id)));
       return;
    }
 
@@ -193,14 +127,14 @@ void Smarter_Protocol_Communication_Manager::send_smarter_msg(smarter_msg_id msg
    if (bytes_sent < 0)
    {
       emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id %1: '%2'")
-                      .arg(smarter_msg_id_to_str(msg_id))
+                      .arg(to_str(msg_id))
                       .arg(udp_socket->errorString()));
       return;
    }
 
 }
 
-void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
+void Smarter_Protocol_CM::recv_smarter_msg()
 {
    while (udp_socket->hasPendingDatagrams())
    {
@@ -340,7 +274,7 @@ void Smarter_Protocol_Communication_Manager::recv_smarter_msg()
          default:
             emit socket_msg(QString("[WARN] Got non handled packet id: %1 (%2)")
                             .arg(id)
-                            .arg(SmarterPCM::smarter_msg_id_to_str(id)));
+                            .arg(to_str(id)));
          break;
       }
 

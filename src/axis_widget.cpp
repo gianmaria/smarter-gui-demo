@@ -1,19 +1,6 @@
 #include "axis_widget.h"
 #include "ui_axis_widget.h"
 
-QString Axis_Widget::DOF_Type_to_str(DOF_Type type)
-{
-   switch (type)
-   {
-      case Axis_Widget::DOF_Type::LINEAR:
-         return "LINEAR";
-      case Axis_Widget::DOF_Type::ROTATIONAL:
-         return "ROTATIONAL";
-      default:
-         return "UNKNOWN DOF_Type";
-   }
-}
-
 Axis_Widget::Axis_Widget(QWidget *parent) :
    QWidget(parent),
    ui(new Ui::Axis_Widget)
@@ -88,10 +75,10 @@ void Axis_Widget::set_dof_id(int id)
    dof_id = id;
 }
 
-void Axis_Widget::set_dof_type(Axis_Widget::DOF_Type type)
+void Axis_Widget::set_dof_type(DOF_Type type)
 {
    dof_type = type;
-   ui->axis_type->setText(QString("Type: %1").arg(DOF_Type_to_str(dof_type)));
+   ui->axis_type->setText(QString("Type: %1").arg(to_str(dof_type)));
 }
 
 void Axis_Widget::set_axis_pos(int pos)

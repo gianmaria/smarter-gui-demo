@@ -2,7 +2,7 @@
 
 #include <QMainWindow>
 
-#include "smarter_protocol_communication_manager.h"
+#include "smarter_protocol_cm.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Main_Window; }
@@ -38,5 +38,5 @@ private slots:
 
 private:
    Ui::Main_Window *ui;
-   Smarter_Protocol_Communication_Manager* spcm = nullptr;
+   Smarter_Protocol_CM* spcm = nullptr;
 };

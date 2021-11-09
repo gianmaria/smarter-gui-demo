@@ -41,7 +41,7 @@ Main_Window::Main_Window(QWidget *parent)
 
    ui->axis_1->set_axis_name("Axis 1");
    ui->axis_1->set_dof_id(0);
-   ui->axis_1->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
+   ui->axis_1->set_dof_type(DOF_Type::ROTATIONAL);
    ui->axis_1->set_axis_pos_min(-17);
    ui->axis_1->set_axis_pos_max(17);
    ui->axis_1->set_axis_vel_min(0);
@@ -51,7 +51,7 @@ Main_Window::Main_Window(QWidget *parent)
 
    ui->axis_2->set_axis_name("Axis 2");
    ui->axis_2->set_dof_id(1);
-   ui->axis_2->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
+   ui->axis_2->set_dof_type(DOF_Type::ROTATIONAL);
    ui->axis_2->set_axis_pos_min(-17);
    ui->axis_2->set_axis_pos_max(17);
    ui->axis_2->set_axis_vel_min(0);
@@ -61,7 +61,7 @@ Main_Window::Main_Window(QWidget *parent)
 
    ui->axis_3->set_axis_name("Axis 3");
    ui->axis_3->set_dof_id(2);
-   ui->axis_3->set_dof_type(Axis_Widget::DOF_Type::ROTATIONAL);
+   ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
    ui->axis_3->set_axis_pos_min(-17);
    ui->axis_3->set_axis_pos_max(17);
    ui->axis_3->set_axis_vel_min(0);
@@ -122,7 +122,7 @@ void Main_Window::on_pb_connect_clicked()
    write_settings();
 
    delete spcm;
-   spcm = new Smarter_Protocol_Communication_Manager(this);
+   spcm = new Smarter_Protocol_CM(this);
 
    connect(spcm, &SmarterPCM::socket_msg,
            this, &Main_Window::add_log_msg);
@@ -133,7 +133,7 @@ void Main_Window::on_pb_connect_clicked()
    {
       //float at_ms = static_cast<float>(msg.timestamp) / 1000.0f;
       add_log_msg(QString("SAIS status: %1")
-                  .arg(SmarterPCM::SAIS_Status_to_str(static_cast<SmarterPCM::SAIS_Status>(msg.status))));
+                  .arg(to_str(static_cast<SAIS_Status>(msg.status))));
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_request_ok,
@@ -141,7 +141,7 @@ void Main_Window::on_pb_connect_clicked()
            (smarter_msg_ok msg_ok)
    {
       QString msg = QString("OK for request: %1")
-                    .arg(SmarterPCM::smarter_msg_id_to_str(msg_ok.request_code));
+                    .arg(to_str(msg_ok.request_code));
       add_log_msg(msg);
    });
 
@@ -150,7 +150,7 @@ void Main_Window::on_pb_connect_clicked()
            (smarter_msg_fail msg_fail)
    {
       QString msg = QString("FAIL for request: %1 SAIS say: '%2' error code: %3")
-                    .arg(SmarterPCM::smarter_msg_id_to_str(msg_fail.request_code))
+                    .arg(to_str(msg_fail.request_code))
                     .arg(reinterpret_cast<char*>(msg_fail.error_string))
                     .arg(msg_fail.error_code);
       add_log_msg(msg);
@@ -226,7 +226,7 @@ void Main_Window::on_pb_connect_clicked()
 void Main_Window::on_pb_go_active_clicked()
 {
    if (spcm)
-      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::ACTIVE);
+      spcm->set_SAIS_status(SAIS_Status::ACTIVE);
    else
       add_log_msg("[ERROR] Not connected!");
 }
@@ -242,7 +242,7 @@ void Main_Window::on_pb_read_status_clicked()
 void Main_Window::on_pb_go_standby_clicked()
 {
    if (spcm)
-      spcm->set_SAIS_status(SmarterPCM::SAIS_Status::STANDBY);
+      spcm->set_SAIS_status(SAIS_Status::STANDBY);
    else
       add_log_msg("[ERROR] Not connected!");
 }
