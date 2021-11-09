@@ -8,12 +8,20 @@ extern "C" {
 
 #include <QString>
 
+enum class DOF_Id : SM_uchar
+{
+   ROLL = 0,
+   PITCH = 1,
+   YAW = 3,
+   INVALID
+};
+
 enum class DOF_Type : SM_uchar
 {
    // 0:linear, 1: rotational 16 bit
    LINEAR = 0,
    ROTATIONAL = 1,
-   UNKNOWN
+   INVALID
 };
 
 enum class SAIS_Status : SM_uchar
@@ -22,7 +30,7 @@ enum class SAIS_Status : SM_uchar
    STANDBY = 0,
    PASSIVE = 1,
    ACTIVE = 2,
-   UNKNOWN
+   INVALID
 };
 
 QString to_str(DOF_Type type);

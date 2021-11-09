@@ -113,6 +113,8 @@ void Main_Window::add_log_msg(const QString& msg)
    auto now = QDateTime::currentDateTime();
    QString text = QString("%1 - %2").arg(now.toString("hh:mm:ss"), msg);
    ui->te_log->appendPlainText(text);
+
+   ui->statusbar->showMessage(msg, 5000);
 }
 
 

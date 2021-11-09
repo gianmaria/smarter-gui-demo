@@ -242,8 +242,6 @@ void Smarter_Protocol_CM::recv_smarter_msg()
 
          case SMARTER_MSG_SS_ID:
          {
-            qInfo() << "GOT SMARTER_MSG_SS_ID";
-
             smarter_msg_ss msg = {};
 
             int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),

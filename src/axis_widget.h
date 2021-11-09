@@ -55,7 +55,7 @@ private slots:
 private:
    Ui::Axis_Widget *ui;
    int dof_id = -1;
-   DOF_Type dof_type = DOF_Type::UNKNOWN;
+   DOF_Type dof_type = DOF_Type::INVALID;
 
    const float SCALING_FACTOR_ANGULAR_POS = 100.0f;
    const float SCALING_FACTOR_ANGULAR_VEL = 100.0f;

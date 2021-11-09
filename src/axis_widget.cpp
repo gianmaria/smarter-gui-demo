@@ -61,8 +61,6 @@ void Axis_Widget::set_axis_vel_max(int value)
       ui->axis_velocity->setMaximum(value * SCALING_FACTOR_ANGULAR_VEL);
    else
       ui->axis_velocity->setMaximum(69420);
-
-//   if (dof_id==0) qInfo() << "set_axis_vel_max" << ui->axis_velocity->maximum();
 }
 
 void Axis_Widget::set_axis_name(const QString& new_name)
@@ -88,7 +86,6 @@ void Axis_Widget::set_axis_pos(int pos)
 
 void Axis_Widget::set_axis_vel(int vel)
 {
-//   if (dof_id == 0) qInfo() << "set_axis_vel:" << vel;
    ui->axis_velocity->setValue(vel);
 }
 

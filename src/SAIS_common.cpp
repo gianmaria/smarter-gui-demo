@@ -9,7 +9,7 @@ QString to_str(DOF_Type type)
       case DOF_Type::ROTATIONAL:
          return "ROTATIONAL";
       default:
-         return "UNKNOWN DOF_Type";
+         return "INVALID DOF_Type";
    }
 }
 
@@ -26,7 +26,7 @@ QString to_str(SAIS_Status status)
       case SAIS_Status::ACTIVE:
       return "ACTIVE";
       default:
-      return "UNKNOWN SAIS_Status";
+      return "INVALID SAIS_Status";
    }
 }
 
