@@ -29,9 +29,13 @@ protected:
 
 private slots:
    void on_pb_connect_clicked();
-   void on_pb_read_status_clicked();
+   void on_pb_disconnect_clicked();
+
    void on_pb_go_active_clicked();
+   void on_pb_go_passive_clicked();
    void on_pb_go_standby_clicked();
+   void on_pb_read_status_clicked();
+
    void on_pb_read_config_dof_1_clicked();
    void on_pb_read_config_dof_2_clicked();
    void on_pb_read_config_dof_3_clicked();

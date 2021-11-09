@@ -214,10 +214,34 @@ void Main_Window::on_pb_connect_clicked()
                          ui->le_local_port->text().toUShort());
 }
 
+void Main_Window::on_pb_disconnect_clicked()
+{
+    if (spcm)
+       spcm->disconnect_from_SAIS();
+}
+
+
+
 void Main_Window::on_pb_go_active_clicked()
 {
    if (spcm)
       spcm->set_SAIS_status(SAIS_Status::ACTIVE);
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::on_pb_go_passive_clicked()
+{
+   if (spcm)
+      spcm->set_SAIS_status(SAIS_Status::PASSIVE);
+   else
+      add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::on_pb_go_standby_clicked()
+{
+   if (spcm)
+      spcm->set_SAIS_status(SAIS_Status::STANDBY);
    else
       add_log_msg("[ERROR] Not connected!");
 }
@@ -230,13 +254,7 @@ void Main_Window::on_pb_read_status_clicked()
       add_log_msg("[ERROR] Not connected!");
 }
 
-void Main_Window::on_pb_go_standby_clicked()
-{
-   if (spcm)
-      spcm->set_SAIS_status(SAIS_Status::STANDBY);
-   else
-      add_log_msg("[ERROR] Not connected!");
-}
+
 
 void Main_Window::on_pb_read_config_dof_1_clicked()
 {
@@ -255,7 +273,6 @@ void Main_Window::on_pb_read_config_dof_3_clicked()
    if (spcm) spcm->read_haptic_conf_for_dof_id(2);
    else add_log_msg("[ERROR] Not connected!");
 }
-
 
 
 
@@ -305,5 +322,4 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
       return QMainWindow::eventFilter(watched, event);
    }
 }
-
 

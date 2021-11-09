@@ -42,13 +42,13 @@ void Smarter_Protocol_CM::connect_to_SAIS(
       const QString& ip, quint16 port,
       quint16 local_port)
 {
-   if (udp_socket) udp_socket->disconnectFromHost();
+   if (udp_socket) disconnect_from_SAIS();
 
    delete udp_socket;
    udp_socket = new QUdpSocket(this);
 
-   QObject::connect(udp_socket, &QUdpSocket::connected, this, [&]
-                    ()
+   QObject::connect(udp_socket, &QUdpSocket::connected,
+                    this, [&] ()
    {
       emit socket_msg(QString("[INFO] Socket connected (%1)").arg(udp_socket->state()));
    });
@@ -80,6 +80,21 @@ void Smarter_Protocol_CM::connect_to_SAIS(
    }
 
    udp_socket->connectToHost(ip, port);
+}
+
+void Smarter_Protocol_CM::disconnect_from_SAIS()
+{
+   if (udp_socket)
+   {
+      if (udp_socket->state() == QAbstractSocket::UnconnectedState)
+      {
+         emit socket_msg(QString("[INFO] Socket already disconnected!"));
+      }
+      else
+      {
+         udp_socket->disconnectFromHost();
+      }
+   }
 }
 
 void Smarter_Protocol_CM::read_SAIS_status()
@@ -122,7 +137,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 
    if (byte_encoded < 0)
    {
-      emit socket_msg(QString("[ERROR] Cannot encode msg id %1")
+      emit socket_msg(QString("[ERROR] Cannot encode msg id: %1")
                       .arg(smarter_msg_id_to_str(msg_id)));
       return;
    }
@@ -133,7 +148,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 
    if (bytes_sent < 0)
    {
-      emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id %1: '%2'")
+      emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id: %1 '%2'")
                       .arg(smarter_msg_id_to_str(msg_id))
                       .arg(udp_socket->errorString()));
       return;

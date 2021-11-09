@@ -20,6 +20,7 @@ public:
 
 public slots:
    void connect_to_SAIS(const QString& ip, quint16 port, quint16 local_port);
+   void disconnect_from_SAIS();
 
    void read_SAIS_status();
    void read_haptic_conf_for_dof_id(unsigned short dof_id);
