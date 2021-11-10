@@ -44,6 +44,10 @@ private slots:
                                     const QString& dof_type,
                                     const QString& hc_type);
 
+   void on_pb_refresh_ips_clicked();
+
+   void on_pb_clear_haptic_conf_clicked();
+
 private:
    Ui::Main_Window *ui;
    Smarter_Protocol_CM* spcm = nullptr;

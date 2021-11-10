@@ -74,6 +74,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="pb_refresh_ips">
+        <property name="text">
+         <string>Refresh IPs</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item row="1" column="0">

@@ -25,23 +25,7 @@ Main_Window::Main_Window(QWidget *parent)
 
    read_settings();
 
-   QObject::connect(ui->pb_clear_haptic_conf, &QPushButton::clicked,
-                    this, [&] (bool)
-   {
-      update_labels_haptic_config("", "", "");
-   });
-
-   QList<QHostAddress> all_address = QNetworkInterface::allAddresses();
-   for (const QHostAddress& host_addr : all_address)
-   {
-      if (host_addr.protocol() == QAbstractSocket::IPv4Protocol &&
-          host_addr != QHostAddress::LocalHost)
-      {
-         ui->le_ips->insert(host_addr.toString());
-         ui->le_ips->insert(", ");
-      }
-   }
-   ui->le_ips->setCursorPosition(0);
+   on_pb_refresh_ips_clicked();
 
    ui->axis_1->set_axis_name("Axis ROLL (0)");
    ui->axis_1->set_dof_id(DOF_Id::ROLL);
@@ -361,5 +345,28 @@ bool Main_Window::eventFilter(QObject* watched, QEvent* event)
       // pass the event on to the parent class
       return QMainWindow::eventFilter(watched, event);
    }
+}
+
+
+void Main_Window::on_pb_refresh_ips_clicked()
+{
+   QStringList all_ips;
+
+   QList<QHostAddress> all_address = QNetworkInterface::allAddresses();
+   for (const QHostAddress& host_addr : all_address)
+   {
+      if (host_addr.protocol() == QAbstractSocket::IPv4Protocol &&
+          host_addr != QHostAddress::LocalHost)
+      {
+         all_ips << host_addr.toString();
+      }
+   }
+   ui->le_ips->setText(all_ips.join(","));
+}
+
+
+void Main_Window::on_pb_clear_haptic_conf_clicked()
+{
+    update_labels_haptic_config("", "", "");
 }
 
