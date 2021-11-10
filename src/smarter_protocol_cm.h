@@ -31,11 +31,19 @@ signals:
 
    void socket_msg(QString msg);
 
-   void mag_SAIS_status(smarter_msg_status msg);
-   void msg_SAIS_4dof(smarter_msg_4dof msg);
-   void msg_SAIS_buttons(smarter_msg_buttons msg);
-   void msg_SAIS_request_failed(smarter_msg_fail msg);
    void msg_SAIS_request_ok(smarter_msg_ok msg);
+   void msg_SAIS_request_failed(smarter_msg_fail msg);
+
+   void msg_SAIS_status(smarter_msg_status msg);
+
+   void msg_SAIS_msg1_state(smarter_msg1_state msg);
+   void msg_SAIS_msg2_state(smarter_msg2_state msg);
+   void msg_SAIS_msg3_state(smarter_msg3_state msg);
+   void msg_SAIS_msg4_state(smarter_msg4_state msg);
+   void msg_SAIS_4dof(smarter_msg_4dof msg);
+
+   void msg_SAIS_buttons(smarter_msg_buttons msg);
+
 
    // Haptic Configuration for single dof of SS type.
    void msg_SAIS_haptic_conf_ss(smarter_msg_ss msg);

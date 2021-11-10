@@ -105,6 +105,15 @@ void Axis_Widget::refresh_4dof(smarter_msg_4dof msg)
    set_axis_force(pvf.force);
 }
 
+void Axis_Widget::refresh_dof(pos_vel_force pvf)
+{
+   set_dof_type(static_cast<DOF_Type>(pvf.dof_type));
+
+   set_axis_pos(pvf.position);
+   set_axis_vel(pvf.velocity);
+   set_axis_force(pvf.force);
+}
+
 
 void Axis_Widget::on_axis_pos_valueChanged(int value)
 {
@@ -117,7 +126,7 @@ void Axis_Widget::on_axis_pos_valueChanged(int value)
    else
       f_val = 99.99f;
 
-   ui->axis_pos_lbl->setText(QString::asprintf("%+06.2f", f_val));
+   ui->axis_pos_lbl->setText(QString::asprintf("%+06.2f mm", f_val));
 }
 
 

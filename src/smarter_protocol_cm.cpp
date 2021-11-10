@@ -212,6 +212,71 @@ void Smarter_Protocol_CM::recv_smarter_msg()
             }
          } break;
 
+
+         case SMARTER_MSG1_STATE_ID:
+         {
+            smarter_msg1_state msg = {};
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_msg1_state(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
+         } break;
+
+         case SMARTER_MSG2_STATE_ID:
+         {
+            smarter_msg2_state msg = {};
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_msg2_state(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
+         } break;
+
+         case SMARTER_MSG3_STATE_ID:
+         {
+            smarter_msg3_state msg = {};
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_msg3_state(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
+         } break;
+
+         case SMARTER_MSG4_STATE_ID:
+         {
+            smarter_msg4_state msg = {};
+            int packet_len = decode(reinterpret_cast<unsigned char*>(data.data()),
+                                    static_cast<int>(data.size()),
+                                    id, &msg);
+            if (packet_len > 0)
+            {
+               emit msg_SAIS_msg4_state(msg);
+            }
+            else
+            {
+               // discard packet i guess
+            }
+         } break;
+
          case SMARTER_MSG_STATUS_ID:
          {
             smarter_msg_status msg = {};
@@ -220,7 +285,7 @@ void Smarter_Protocol_CM::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
-               emit mag_SAIS_status(msg);
+               emit msg_SAIS_status(msg);
             }
             else
             {

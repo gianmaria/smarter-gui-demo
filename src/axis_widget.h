@@ -44,6 +44,7 @@ public slots:
    void set_axis_force(int force);
 
    void refresh_4dof(smarter_msg_4dof msg);
+   void refresh_dof(pos_vel_force pvf);
 
 private slots:
    void on_axis_pos_valueChanged(int value);
