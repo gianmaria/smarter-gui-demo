@@ -69,7 +69,7 @@ void Smarter_Protocol_CM::connect_to_SAIS(
                     this, &Smarter_Protocol_CM::recv_smarter_msg);
 
    // NOTE: you need to bind before the connectToHost!
-   if (!udp_socket->bind(QHostAddress::LocalHost,
+   if (!udp_socket->bind(QHostAddress::Any,
                          local_port,
                          QAbstractSocket::ReuseAddressHint))
    {
