@@ -40,6 +40,10 @@ private slots:
    void on_pb_read_config_dof_2_clicked();
    void on_pb_read_config_dof_3_clicked();
 
+   void update_labels_haptic_config(const QString& dof_id,
+                                    const QString& dof_type,
+                                    const QString& hc_type);
+
 private:
    Ui::Main_Window *ui;
    Smarter_Protocol_CM* spcm = nullptr;

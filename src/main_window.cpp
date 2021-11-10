@@ -25,6 +25,12 @@ Main_Window::Main_Window(QWidget *parent)
 
    read_settings();
 
+   QObject::connect(ui->pb_clear_haptic_conf, &QPushButton::clicked,
+                    this, [&] (bool)
+   {
+      update_labels_haptic_config("", "", "");
+   });
+
    QList<QHostAddress> all_address = QNetworkInterface::allAddresses();
    for (const QHostAddress& host_addr : all_address)
    {
@@ -180,12 +186,9 @@ void Main_Window::on_pb_connect_clicked()
       QString hc_type_str =
             json.object()["haptic_configuration_type"].toString();
 
-      ui->lbl_hc_dof_id->setText(QString("DOF: %1")
-                                 .arg(dof_id_str));
-      ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
-                                   .arg(dof_type_str));
-      ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
-                                  .arg(hc_type_str));
+      update_labels_haptic_config(dof_id_str,
+                                  dof_type_str,
+                                  hc_type_str);
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
@@ -203,12 +206,9 @@ void Main_Window::on_pb_connect_clicked()
       QString hc_type_str =
             json.object()["haptic_configuration_type"].toString();
 
-      ui->lbl_hc_dof_id->setText(QString("DOF: %1")
-                                 .arg(dof_id_str));
-      ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
-                                   .arg(dof_type_str));
-      ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
-                                  .arg(hc_type_str));
+      update_labels_haptic_config(dof_id_str,
+                                  dof_type_str,
+                                  hc_type_str);
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
@@ -300,6 +300,18 @@ void Main_Window::on_pb_read_config_dof_3_clicked()
 {
    if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
    else add_log_msg("[ERROR] Not connected!");
+}
+
+void Main_Window::update_labels_haptic_config(const QString& dof_id,
+                                              const QString& dof_type,
+                                              const QString& hc_type)
+{
+   ui->lbl_hc_dof_id->setText(QString("DOF: %1")
+                              .arg(dof_id));
+   ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
+                                .arg(dof_type));
+   ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
+                               .arg(hc_type));
 }
 
 

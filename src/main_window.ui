@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>801</width>
     <height>600</height>
    </rect>
   </property>
@@ -228,7 +228,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_log">
        <attribute name="title">
@@ -237,6 +237,12 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPlainTextEdit" name="te_log">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -668,6 +674,18 @@
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QPushButton" name="pb_read_config_dof_1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
               <property name="text">
                <string>Read Config DOF1</string>
               </property>
@@ -675,6 +693,18 @@
             </item>
             <item>
              <widget class="QPushButton" name="pb_read_config_dof_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
               <property name="text">
                <string>Read Config DOF2</string>
               </property>
@@ -682,6 +712,18 @@
             </item>
             <item>
              <widget class="QPushButton" name="pb_read_config_dof_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
               <property name="text">
                <string>Read Config DOF3</string>
               </property>
@@ -728,6 +770,18 @@
         </item>
         <item row="1" column="0">
          <widget class="QPushButton" name="pb_clear_haptic_conf">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
           <property name="text">
            <string>Clear</string>
           </property>
@@ -859,8 +913,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>549</y>
+     <x>410</x>
+     <y>548</y>
     </hint>
     <hint type="destinationlabel">
      <x>442</x>
@@ -875,60 +929,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>437</x>
-     <y>551</y>
+     <x>384</x>
+     <y>517</y>
     </hint>
     <hint type="destinationlabel">
-     <x>438</x>
-     <y>392</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pb_clear_haptic_conf</sender>
-   <signal>clicked()</signal>
-   <receiver>lbl_hc_dof_id</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>372</x>
-     <y>547</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>70</x>
-     <y>190</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pb_clear_haptic_conf</sender>
-   <signal>clicked()</signal>
-   <receiver>lbl_hc_dof_type</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>332</x>
-     <y>548</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>323</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pb_clear_haptic_conf</sender>
-   <signal>clicked()</signal>
-   <receiver>lbl_hc_hc_type</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>534</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>556</x>
-     <y>194</y>
+     <x>356</x>
+     <y>358</y>
     </hint>
    </hints>
   </connection>
