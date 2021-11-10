@@ -38,11 +38,11 @@ QString to_str(DOF_Id id)
    switch(id)
    {
       case DOF_Id::ROLL:
-      return "ROLL (Axis 0)";
+      return "Axis 0 (ROLL)";
       case DOF_Id::PITCH:
-      return "PITCH (Axis 1)";
+      return "Axis 1 (PITCH)";
       case DOF_Id::YAW:
-      return "YAW (Axis 2)";
+      return "Axis 2 (YAW)";
       default:
       return "INVALID DOF_Id";
    }
