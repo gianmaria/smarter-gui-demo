@@ -21,23 +21,25 @@ Main_Window::Main_Window(QWidget *parent)
    , ui(new Ui::Main_Window)
 {
    ui->setupUi(this);
+
    installEventFilter(this);
 
    read_settings();
+   showMaximized();
 
    on_pb_refresh_ips_clicked();
 
-   ui->axis_1->set_axis_name("Axis ROLL (0)");
+   ui->axis_1->set_axis_name("Axis 0 (ROLL)");
    ui->axis_1->set_dof_id(DOF_Id::ROLL);
    ui->axis_1->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_1->set_axis_pos_min(-17);
-   ui->axis_1->set_axis_pos_max(17);
+   ui->axis_1->set_axis_pos_min(10);
+   ui->axis_1->set_axis_pos_max(60);
    ui->axis_1->set_axis_vel_min(0);
    ui->axis_1->set_axis_vel_max(60);
    ui->axis_1->set_axis_force_min(0);
-   ui->axis_1->set_axis_force_max(240);
+   ui->axis_1->set_axis_force_max(50);
 
-   ui->axis_2->set_axis_name("Axis PITCH (1)");
+   ui->axis_2->set_axis_name("Axis 1 (PITCH)");
    ui->axis_2->set_dof_id(DOF_Id::PITCH);
    ui->axis_2->set_dof_type(DOF_Type::ROTATIONAL);
    ui->axis_2->set_axis_pos_min(-17);
@@ -47,7 +49,7 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_2->set_axis_force_min(0);
    ui->axis_2->set_axis_force_max(240);
 
-   ui->axis_3->set_axis_name("Axis YAW (2)");
+   ui->axis_3->set_axis_name("Axis 2 (YAW)");
    ui->axis_3->set_dof_id(DOF_Id::YAW);
    ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
    ui->axis_3->set_axis_pos_min(-17);
@@ -117,7 +119,7 @@ void Main_Window::on_pb_connect_clicked()
    connect(spcm, &SmarterPCM::socket_msg,
            this, &Main_Window::add_log_msg);
 
-   connect(spcm, &SmarterPCM::mag_SAIS_status,
+   connect(spcm, &SmarterPCM::msg_SAIS_status,
            this, [&]
            (smarter_msg_status msg)
    {
@@ -154,6 +156,12 @@ void Main_Window::on_pb_connect_clicked()
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_3, &Axis_Widget::refresh_4dof);
 
+// TODO: aggiungere per tutti gli altri messaggi
+   connect(spcm, &SmarterPCM::msg_SAIS_msg1_state,
+           this, [&](smarter_msg1_state msg)
+   {
+      ui->axis_1->refresh_dof(msg.pvf);
+   });
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
            this, [&] (smarter_msg_ss msg_ss)
