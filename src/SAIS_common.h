@@ -42,3 +42,23 @@ QString smarter_msg_id_to_str(smarter_msg_id msg_id);
 
 QJsonDocument to_json(smarter_msg_ss msg);
 QJsonDocument to_json(smarter_msg_zg msg);
+
+struct Haptic_Config_Json_Res
+{
+   bool valid {false};
+   QString error;
+
+   operator bool()
+   {
+      return valid;
+   }
+};
+
+Haptic_Config_Json_Res
+verify_haptic_config_json(const QJsonDocument& doc);
+
+smarter_msg_write_ss
+build_msg_write_ss_from_json_doc(const QJsonDocument& doc);
+
+smarter_msg_write_zg
+build_msg_write_zg_from_json_doc(const QJsonDocument& doc);

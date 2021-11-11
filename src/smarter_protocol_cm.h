@@ -25,7 +25,8 @@ public slots:
    void read_SAIS_status();
    void read_haptic_conf_for_dof_id(DOF_Id dof_id);
 
-   void set_SAIS_status(SAIS_Status status);
+   void write_SAIS_status(SAIS_Status status);
+   void write_haptic_conf(const QJsonDocument& json_doc);
 
 signals:
 

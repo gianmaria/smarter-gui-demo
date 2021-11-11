@@ -48,7 +48,13 @@ private slots:
 
    void on_pb_clear_haptic_conf_clicked();
 
+   void on_pb_write_config_dof_1_clicked();
+   void on_pb_write_config_dof_2_clicked();
+   void on_pb_write_config_dof_3_clicked();
+
+   void prepare_msg_for_write_haptic_configuration();
+
 private:
    Ui::Main_Window *ui;
-   Smarter_Protocol_CM* spcm = nullptr;
+   Smarter_Protocol_CM* smarter_protocol_cm = nullptr;
 };

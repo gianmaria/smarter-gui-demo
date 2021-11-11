@@ -94,13 +94,13 @@ void Main_Window::on_pb_connect_clicked()
 {
    write_settings();
 
-   delete spcm;
-   spcm = new Smarter_Protocol_CM(this);
+   delete smarter_protocol_cm;
+   smarter_protocol_cm = new Smarter_Protocol_CM(this);
 
-   connect(spcm, &SmarterPCM::socket_msg,
+   connect(smarter_protocol_cm, &SmarterPCM::socket_msg,
            this, &Main_Window::add_log_msg);
 
-   connect(spcm, &SmarterPCM::msg_SAIS_status,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_status,
            this, [&]
            (smarter_msg_status msg)
    {
@@ -109,7 +109,7 @@ void Main_Window::on_pb_connect_clicked()
                   .arg(to_str(static_cast<SAIS_Status>(msg.status))));
    });
 
-   connect(spcm, &SmarterPCM::msg_SAIS_request_ok,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_request_ok,
            this, [&]
            (smarter_msg_ok msg_ok)
    {
@@ -118,7 +118,7 @@ void Main_Window::on_pb_connect_clicked()
       add_log_msg(msg);
    });
 
-   connect(spcm, &SmarterPCM::msg_SAIS_request_failed,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_request_failed,
            this, [&]
            (smarter_msg_fail msg_fail)
    {
@@ -130,21 +130,21 @@ void Main_Window::on_pb_connect_clicked()
    });
 
 
-   connect(spcm, &SmarterPCM::msg_SAIS_4dof,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_1, &Axis_Widget::refresh_4dof);
-   connect(spcm, &SmarterPCM::msg_SAIS_4dof,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_2, &Axis_Widget::refresh_4dof);
-   connect(spcm, &SmarterPCM::msg_SAIS_4dof,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_3, &Axis_Widget::refresh_4dof);
 
 // TODO: aggiungere per tutti gli altri messaggi
-   connect(spcm, &SmarterPCM::msg_SAIS_msg1_state,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_msg1_state,
            this, [&](smarter_msg1_state msg)
    {
       ui->axis_1->refresh_dof(msg.pvf);
    });
 
-   connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
            this, [&] (smarter_msg_ss msg_ss)
    {
       QJsonDocument json = to_json(msg_ss);
@@ -183,7 +183,7 @@ void Main_Window::on_pb_connect_clicked()
 
    });
 
-   connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
            this, [&] (smarter_msg_zg msg_zg)
    {
       QJsonDocument json = to_json(msg_zg);
@@ -221,7 +221,7 @@ void Main_Window::on_pb_connect_clicked()
       }
    });
 
-   connect(spcm, &SmarterPCM::msg_SAIS_4dof,
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            this, [&](smarter_msg_4dof msg)
    {
       //qInfo() << "Axis1:" << msg.axis1 <<
@@ -252,47 +252,47 @@ void Main_Window::on_pb_connect_clicked()
       }
    });
 
-   spcm->connect_to_SAIS(ui->le_joystick_ip->text(),
+   smarter_protocol_cm->connect_to_SAIS(ui->le_joystick_ip->text(),
                          ui->le_joystick_port->text().toUShort(),
                          ui->le_local_port->text().toUShort());
 }
 
 void Main_Window::on_pb_disconnect_clicked()
 {
-    if (spcm)
-       spcm->disconnect_from_SAIS();
+    if (smarter_protocol_cm)
+       smarter_protocol_cm->disconnect_from_SAIS();
 }
 
 
 
 void Main_Window::on_pb_go_active_clicked()
 {
-   if (spcm)
-      spcm->set_SAIS_status(SAIS_Status::ACTIVE);
+   if (smarter_protocol_cm)
+      smarter_protocol_cm->write_SAIS_status(SAIS_Status::ACTIVE);
    else
       add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_go_passive_clicked()
 {
-   if (spcm)
-      spcm->set_SAIS_status(SAIS_Status::PASSIVE);
+   if (smarter_protocol_cm)
+      smarter_protocol_cm->write_SAIS_status(SAIS_Status::PASSIVE);
    else
       add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_go_standby_clicked()
 {
-   if (spcm)
-      spcm->set_SAIS_status(SAIS_Status::STANDBY);
+   if (smarter_protocol_cm)
+      smarter_protocol_cm->write_SAIS_status(SAIS_Status::STANDBY);
    else
       add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_status_clicked()
 {
-   if (spcm)
-      spcm->read_SAIS_status();
+   if (smarter_protocol_cm)
+      smarter_protocol_cm->read_SAIS_status();
    else
       add_log_msg("[ERROR] Not connected!");
 }
@@ -301,19 +301,19 @@ void Main_Window::on_pb_read_status_clicked()
 
 void Main_Window::on_pb_read_config_dof_1_clicked()
 {
-   if (spcm)
+   if (smarter_protocol_cm)
    {
       ui->pb_clear_haptic_conf->click();
-      spcm->read_haptic_conf_for_dof_id(DOF_Id::ROLL);
+      smarter_protocol_cm->read_haptic_conf_for_dof_id(DOF_Id::ROLL);
    }
    else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_2_clicked()
 {
-   if (spcm)
+   if (smarter_protocol_cm)
    {
-      spcm->read_haptic_conf_for_dof_id(DOF_Id::PITCH);
+      smarter_protocol_cm->read_haptic_conf_for_dof_id(DOF_Id::PITCH);
       ui->pb_clear_haptic_conf->click();
    }
    else add_log_msg("[ERROR] Not connected!");
@@ -321,9 +321,9 @@ void Main_Window::on_pb_read_config_dof_2_clicked()
 
 void Main_Window::on_pb_read_config_dof_3_clicked()
 {
-   if (spcm)
+   if (smarter_protocol_cm)
    {
-      spcm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
+      smarter_protocol_cm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
       ui->pb_clear_haptic_conf->click();
    }
    else add_log_msg("[ERROR] Not connected!");
@@ -407,12 +407,80 @@ void Main_Window::on_pb_refresh_ips_clicked()
    ui->le_ips->setText(all_ips.join(","));
 }
 
-
 void Main_Window::on_pb_clear_haptic_conf_clicked()
 {
     update_labels_haptic_config("", "", "");
     ui->pb_write_config_dof_1->setEnabled(false);
     ui->pb_write_config_dof_2->setEnabled(false);
     ui->pb_write_config_dof_3->setEnabled(false);
+}
+
+
+void Main_Window::on_pb_write_config_dof_1_clicked()
+{
+   prepare_msg_for_write_haptic_configuration();
+}
+
+
+void Main_Window::on_pb_write_config_dof_2_clicked()
+{
+   prepare_msg_for_write_haptic_configuration();
+}
+
+
+void Main_Window::on_pb_write_config_dof_3_clicked()
+{
+   prepare_msg_for_write_haptic_configuration();
+}
+
+void Main_Window::prepare_msg_for_write_haptic_configuration()
+{
+   // read text
+   // conver to json and check that all the fiels are present
+   // based on haptic_configuration_type send message
+   //   smarter_msg_write_ss or smarter_msg_write_zg
+
+   QString haptic_cons_str = ui->te_haptic_conf->toPlainText();
+
+   QJsonParseError error;
+   QJsonDocument json_doc = QJsonDocument::fromJson(
+                               haptic_cons_str.toLatin1(),
+                               &error);
+
+   if (json_doc.isNull())
+   {
+      QMessageBox::warning(this,
+                           windowTitle(),
+                           QString("Haptic Configuration is malformed!\n"
+                                   "'%1' at offset: %2")
+                           .arg(error.errorString())
+                           .arg(error.offset)
+                           );
+      // TODO: highlight line where error occurred
+
+      //auto text_cursor = ui->te_haptic_conf->textCursor();
+      //qInfo() << "text_cursor.position" << text_cursor.position();
+      //qInfo() << "text_cursor.positionInBlock" << text_cursor.positionInBlock();
+      //
+      //text_cursor.setPosition(error.offset);
+      //ui->te_haptic_conf->setTextCursor(text_cursor);
+
+      return;
+   }
+
+
+   if (const auto& res = verify_haptic_config_json(json_doc);
+       !res.valid)
+   {
+      QMessageBox::warning(this,
+                           windowTitle(),
+                           QString("Haptic Configuration is invalid!\n%1")
+                           .arg(res.error));
+
+      return;
+   }
+
+   // TODO: re enable this
+   // smarter_protocol_cm->write_haptic_conf(json_doc);
 }
 

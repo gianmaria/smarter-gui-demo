@@ -2,6 +2,7 @@
 
 #include <time.h>
 
+#include <QJsonArray>
 #include <QNetworkDatagram>
 
 Smarter_Protocol_CM::Smarter_Protocol_CM(QObject *parent) : QObject(parent)
@@ -120,14 +121,41 @@ void Smarter_Protocol_CM::read_haptic_conf_for_dof_id(DOF_Id dof_id)
    send_smarter_msg(SMARTER_MSG_READ_ID, &msg_read);
 }
 
-void Smarter_Protocol_CM::set_SAIS_status(SAIS_Status status)
+void Smarter_Protocol_CM::write_SAIS_status(SAIS_Status status)
 {
    smarter_msg_write_status msg_write_status = {};
-   msg_write_status.timestamp = (clock() / (double)(CLOCKS_PER_SEC)) * 1000000.0;
+   msg_write_status.timestamp = 0;
    msg_write_status.request_code = SMARTER_MSG_WRITE_STATUS_ID;
-   msg_write_status.status = (SM_uchar)status;
+   msg_write_status.status = static_cast<SM_uchar>(status);
 
    send_smarter_msg(SMARTER_MSG_WRITE_STATUS_ID, &msg_write_status);
+}
+
+void Smarter_Protocol_CM::write_haptic_conf(const QJsonDocument& json_doc)
+{
+   // TODO:
+
+   const QString& haptic_conf_type =
+       json_doc.object()["haptic_configuration_type"].toString();
+
+   if (haptic_conf_type == "SS")
+   {
+      auto msg = build_msg_write_ss_from_json_doc(json_doc);
+
+      send_smarter_msg(SMARTER_MSG_WRITE_SS_ID, &msg);
+   }
+   else if(haptic_conf_type == "ZG")
+   {
+      auto msg = build_msg_write_zg_from_json_doc(json_doc);
+
+      send_smarter_msg(SMARTER_MSG_WRITE_ZG_ID, &msg);
+   }
+   else
+   {
+      emit socket_msg(
+               QString("haptic_configuration_type in json is unexpected: '%1'")
+               .arg(haptic_conf_type));
+   }
 }
 
 void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
