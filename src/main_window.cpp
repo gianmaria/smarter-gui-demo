@@ -27,7 +27,7 @@ Main_Window::Main_Window(QWidget *parent)
    read_settings();
 //   showMaximized();
 
-   on_pb_refresh_ips_clicked();
+   ui->pb_refresh_ips->click();
 
    ui->axis_1->set_axis_name("Axis 0 (ROLL)");
    ui->axis_1->set_dof_id(DOF_Id::ROLL);
@@ -153,15 +153,34 @@ void Main_Window::on_pb_connect_clicked()
                QString::fromUtf8(json.toJson()));
 
       QString dof_id_str =
-            json.object()["dof"].toString();
+            to_str(static_cast<DOF_Id>(json.object()["dof"].toInt()));
       QString dof_type_str =
-            json.object()["ss_table"].toObject()["dof_type"].toString();
+            to_str(static_cast<DOF_Type>(json.object()["ss_table"].toObject()["dof_type"].toInt()));
       QString hc_type_str =
             json.object()["haptic_configuration_type"].toString();
 
       update_labels_haptic_config(dof_id_str,
                                   dof_type_str,
                                   hc_type_str);
+
+      switch(static_cast<DOF_Id>(json.object()["dof"].toInt()))
+      {
+         case DOF_Id::ROLL:
+            ui->pb_write_config_dof_1->setEnabled(true);
+         break;
+
+         case DOF_Id::PITCH:
+            ui->pb_write_config_dof_2->setEnabled(true);
+         break;
+
+         case DOF_Id::YAW:
+            ui->pb_write_config_dof_3->setEnabled(true);
+         break;
+
+         default:
+         break;
+      }
+
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_haptic_conf_zg,
@@ -173,15 +192,33 @@ void Main_Window::on_pb_connect_clicked()
                QString::fromUtf8(json.toJson()));
 
       QString dof_id_str =
-            json.object()["dof"].toString();
+            to_str(static_cast<DOF_Id>(json.object()["dof"].toInt()));
       QString dof_type_str =
-            json.object()["zg_table"].toObject()["dof_type"].toString();
+            to_str(static_cast<DOF_Type>(json.object()["zg_table"].toObject()["dof_type"].toInt()));
       QString hc_type_str =
             json.object()["haptic_configuration_type"].toString();
 
       update_labels_haptic_config(dof_id_str,
                                   dof_type_str,
                                   hc_type_str);
+
+      switch(static_cast<DOF_Id>(json.object()["dof"].toInt()))
+      {
+         case DOF_Id::ROLL:
+            ui->pb_write_config_dof_1->setEnabled(true);
+         break;
+
+         case DOF_Id::PITCH:
+            ui->pb_write_config_dof_2->setEnabled(true);
+         break;
+
+         case DOF_Id::YAW:
+            ui->pb_write_config_dof_3->setEnabled(true);
+         break;
+
+         default:
+         break;
+      }
    });
 
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
@@ -264,19 +301,31 @@ void Main_Window::on_pb_read_status_clicked()
 
 void Main_Window::on_pb_read_config_dof_1_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::ROLL);
+   if (spcm)
+   {
+      ui->pb_clear_haptic_conf->click();
+      spcm->read_haptic_conf_for_dof_id(DOF_Id::ROLL);
+   }
    else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_2_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::PITCH);
+   if (spcm)
+   {
+      spcm->read_haptic_conf_for_dof_id(DOF_Id::PITCH);
+      ui->pb_clear_haptic_conf->click();
+   }
    else add_log_msg("[ERROR] Not connected!");
 }
 
 void Main_Window::on_pb_read_config_dof_3_clicked()
 {
-   if (spcm) spcm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
+   if (spcm)
+   {
+      spcm->read_haptic_conf_for_dof_id(DOF_Id::YAW);
+      ui->pb_clear_haptic_conf->click();
+   }
    else add_log_msg("[ERROR] Not connected!");
 }
 
@@ -288,7 +337,7 @@ void Main_Window::update_labels_haptic_config(const QString& dof_id,
                               .arg(dof_id));
    ui->lbl_hc_dof_type->setText(QString("DOF type: %1")
                                 .arg(dof_type));
-   ui->lbl_hc_hc_type->setText(QString("Haptic Config Type:: %1")
+   ui->lbl_hc_hc_type->setText(QString("Haptic Config Type: %1")
                                .arg(hc_type));
 }
 
@@ -362,5 +411,8 @@ void Main_Window::on_pb_refresh_ips_clicked()
 void Main_Window::on_pb_clear_haptic_conf_clicked()
 {
     update_labels_haptic_config("", "", "");
+    ui->pb_write_config_dof_1->setEnabled(false);
+    ui->pb_write_config_dof_2->setEnabled(false);
+    ui->pb_write_config_dof_3->setEnabled(false);
 }
 

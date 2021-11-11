@@ -98,12 +98,10 @@ QJsonDocument to_json(smarter_msg_ss msg)
 
    root["haptic_configuration_type"] = "SS";
 
-   root["dof"] = to_str(static_cast<DOF_Id>
-                        (msg.dof));
+   root["dof"] = msg.dof;
 
    QJsonObject ss_table;
-   ss_table["dof_type"] = to_str(static_cast<DOF_Type>
-                                 (msg.ss_table.dof_type));
+   ss_table["dof_type"] = msg.ss_table.dof_type;
    ss_table["force_BO"] = msg.ss_table.force_BO;
    ss_table["pos_BO"] = msg.ss_table.pos_BO;
    ss_table["pos_STOP_positive"] = msg.ss_table.pos_STOP_positive;
@@ -152,12 +150,10 @@ QJsonDocument to_json(smarter_msg_zg msg)
 
    root["haptic_configuration_type"] = "ZG";
 
-   root["dof"] = to_str(static_cast<DOF_Id>
-                        (msg.dof));
+   root["dof"] = msg.dof;
 
    QJsonObject zg_table;
-   zg_table["dof_type"] = to_str(static_cast<DOF_Type>
-                                 (msg.zg_table.dof_type));
+   zg_table["dof_type"] = msg.zg_table.dof_type;
    zg_table["damping"] = msg.zg_table.damping;
    zg_table["pos_stop1"] = msg.zg_table.pos_stop1;
    zg_table["pos_stop2"] = msg.zg_table.pos_stop2;
