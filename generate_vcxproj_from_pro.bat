@@ -2,6 +2,7 @@ call C:\Qt\6.2.1\msvc2019_64\bin\qtenv2.bat
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 @echo on
 cd %~dp0
+if not exist vs-sol (mkdir vs-sol)
 pushd vs-sol
 del /f /q *.vcxproj.*
 rmdir /s /q .vs debug release
