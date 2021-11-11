@@ -122,7 +122,7 @@ void Main_Window::on_pb_connect_clicked()
            this, [&]
            (smarter_msg_fail msg_fail)
    {
-      QString msg = QString("FAIL for request: %1 SAIS say: '%2' error code: %3")
+      QString msg = QString("FAIL for request '%1' - SAIS says: <%2>  (error code: %3)")
                     .arg(smarter_msg_id_to_str(msg_fail.request_code))
                     .arg(reinterpret_cast<char*>(msg_fail.error_string))
                     .arg(msg_fail.error_code);
@@ -137,7 +137,8 @@ void Main_Window::on_pb_connect_clicked()
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_3, &Axis_Widget::refresh_4dof);
 
-// TODO: aggiungere per tutti gli altri messaggi
+   // TODO: aggiungere per tutti gli altri messaggi
+   //       msg2_state, msg3_state, msg4_state
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_msg1_state,
            this, [&](smarter_msg1_state msg)
    {
@@ -435,11 +436,6 @@ void Main_Window::on_pb_write_config_dof_3_clicked()
 
 void Main_Window::prepare_msg_for_write_haptic_configuration()
 {
-   // read text
-   // conver to json and check that all the fiels are present
-   // based on haptic_configuration_type send message
-   //   smarter_msg_write_ss or smarter_msg_write_zg
-
    QString haptic_cons_str = ui->te_haptic_conf->toPlainText();
 
    QJsonParseError error;
@@ -480,7 +476,6 @@ void Main_Window::prepare_msg_for_write_haptic_configuration()
       return;
    }
 
-   // TODO: re enable this
-   // smarter_protocol_cm->write_haptic_conf(json_doc);
+   smarter_protocol_cm->write_haptic_conf(json_doc);
 }
 

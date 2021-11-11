@@ -133,8 +133,6 @@ void Smarter_Protocol_CM::write_SAIS_status(SAIS_Status status)
 
 void Smarter_Protocol_CM::write_haptic_conf(const QJsonDocument& json_doc)
 {
-   // TODO:
-
    const QString& haptic_conf_type =
        json_doc.object()["haptic_configuration_type"].toString();
 
