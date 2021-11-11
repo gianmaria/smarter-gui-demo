@@ -232,7 +232,6 @@ verify_haptic_config_json(const QJsonDocument& doc)
                  "does not exist or is not a string!");
    }
 
-
    if (json["haptic_configuration_type"].toString()
        == "SS")
    {
@@ -350,27 +349,27 @@ verify_haptic_config_json(const QJsonDocument& doc)
 
 
       {
-         const auto& ga = json["ga"].toArray();
+         const auto& pg_negative = json["pg_negative"].toArray();
 
-         if (ga.count() != NUMBER_POINTS)
+         if (pg_negative.count() != NUMBER_POINTS)
          {
-            return err(QString("key 'ga' does not contains the correct number of elements,"
+            return err(QString("key 'pg_negative' does not contains the correct number of elements,"
                                "expected %1 found: %2")
                        .arg(NUMBER_POINTS)
-                       .arg(ga.count()));
+                       .arg(pg_negative.count()));
          }
 
-         for (const auto& elem : ga)
+         for (const auto& elem : pg_negative)
          {
             if (!elem.isObject())
-               return err("elements inside array 'ga' are not all object!");
+               return err("elements inside array 'pg_negative' are not all object!");
 
             const auto& elem_obj = elem.toObject();
 
-            if (!key_exist_and_is_type(elem_obj, "force",
+            if (!key_exist_and_is_type(elem_obj, "grad",
                                        QJsonValue::Double))
             {
-               return err("key 'force' does not exist or is not a number");
+               return err("key 'grad' does not exist or is not a number");
             }
 
             if (!key_exist_and_is_type(elem_obj, "pos",
@@ -384,27 +383,27 @@ verify_haptic_config_json(const QJsonDocument& doc)
       }
 
       {
-         const auto& de = json["de"].toArray();
+         const auto& pg_positive = json["pg_positive"].toArray();
 
-         if (de.count() != NUMBER_POINTS)
+         if (pg_positive.count() != NUMBER_POINTS)
          {
-            return err(QString("key 'de' does not contains the correct number of elements,"
+            return err(QString("key 'pg_positive' does not contains the correct number of elements,"
                                "expected %1 found: %2")
                        .arg(NUMBER_POINTS)
-                       .arg(de.count()));
+                       .arg(pg_positive.count()));
          }
 
-         for (const auto& elem : de)
+         for (const auto& elem : pg_positive)
          {
             if (!elem.isObject())
-               return err("elements inside array 'de' are not all object!");
+               return err("elements inside array 'pg_positive' are not all object!");
 
             const auto& elem_obj = elem.toObject();
 
-            if (!key_exist_and_is_type(elem_obj, "force",
+            if (!key_exist_and_is_type(elem_obj, "grad",
                                        QJsonValue::Double))
             {
-               return err("key 'force' does not exist or is not a number");
+               return err("key 'grad' does not exist or is not a number");
             }
 
             if (!key_exist_and_is_type(elem_obj, "pos",
