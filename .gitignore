@@ -7,3 +7,4 @@ smar_ter_gui_demo.ini
 *.vcxproj.*
 ui_*
 .qmake.stash
+src/main_window.ui.autosave
