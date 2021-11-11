@@ -25,32 +25,21 @@ public:
 
 public slots:
 
-   void set_axis_pos_min(int value);
-   void set_axis_pos_max(int value);
-
-   void set_axis_force_min(int value);
-   void set_axis_force_max(int value);
-
-   void set_axis_vel_min(int value);
-   void set_axis_vel_max(int value);
-
    void set_axis_name(const QString& name);
-
    void set_dof_id(DOF_Id id);
    void set_dof_type(DOF_Type type);
+
+   void refresh_4dof(smarter_msg_4dof msg);
+   void refresh_dof(pos_vel_force pvf);
+
+protected slots:
 
    void set_axis_pos(int pos);
    void set_axis_vel(int vel);
    void set_axis_force(int force);
 
-   void refresh_4dof(smarter_msg_4dof msg);
-   void refresh_dof(pos_vel_force pvf);
-
-private slots:
    void on_axis_pos_valueChanged(int value);
-
    void on_axis_velocity_valueChanged(int value);
-
    void on_axis_force_valueChanged(int value);
 
 private:

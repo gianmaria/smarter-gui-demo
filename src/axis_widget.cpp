@@ -1,6 +1,8 @@
 #include "axis_widget.h"
 #include "ui_axis_widget.h"
 
+#include <QtMath>
+
 Axis_Widget::Axis_Widget(QWidget *parent) :
    QWidget(parent),
    ui(new Ui::Axis_Widget)
@@ -13,55 +15,6 @@ Axis_Widget::~Axis_Widget()
    delete ui;
 }
 
-void Axis_Widget::set_axis_pos_min(int value)
-{
-   if (dof_type == DOF_Type::LINEAR)
-      ui->axis_pos->setMinimum(value * SCALING_FACTOR_LINEAR_POS);
-   else if(dof_type == DOF_Type::ROTATIONAL)
-      ui->axis_pos->setMinimum(value * SCALING_FACTOR_ANGULAR_POS);
-   else
-      ui->axis_pos->setMinimum(69420);
-}
-
-void Axis_Widget::set_axis_pos_max(int value)
-{
-   if (dof_type == DOF_Type::LINEAR)
-      ui->axis_pos->setMaximum(value * SCALING_FACTOR_LINEAR_POS);
-   else if(dof_type == DOF_Type::ROTATIONAL)
-      ui->axis_pos->setMaximum(value * SCALING_FACTOR_ANGULAR_POS);
-   else
-      ui->axis_pos->setMaximum(69420);
-}
-
-void Axis_Widget::set_axis_force_min(int value)
-{
-   ui->axis_force->setMinimum(value * SCALING_FACTOR_FORCE);
-}
-
-void Axis_Widget::set_axis_force_max(int value)
-{
-   ui->axis_force->setMaximum(value * SCALING_FACTOR_FORCE);
-}
-
-void Axis_Widget::set_axis_vel_min(int value)
-{
-   if (dof_type == DOF_Type::LINEAR)
-      ui->axis_velocity->setMinimum(value * SCALING_FACTOR_LINEAR_VEL);
-   else if(dof_type == DOF_Type::ROTATIONAL)
-      ui->axis_velocity->setMinimum(value * SCALING_FACTOR_ANGULAR_VEL);
-   else
-      ui->axis_velocity->setMinimum(69420);
-}
-
-void Axis_Widget::set_axis_vel_max(int value)
-{
-   if (dof_type == DOF_Type::LINEAR)
-      ui->axis_velocity->setMaximum(value * SCALING_FACTOR_LINEAR_VEL);
-   else if(dof_type == DOF_Type::ROTATIONAL)
-      ui->axis_velocity->setMaximum(value * SCALING_FACTOR_ANGULAR_VEL);
-   else
-      ui->axis_velocity->setMaximum(69420);
-}
 
 void Axis_Widget::set_axis_name(const QString& new_name)
 {
@@ -81,17 +34,34 @@ void Axis_Widget::set_dof_type(DOF_Type type)
 
 void Axis_Widget::set_axis_pos(int pos)
 {
+   if (pos > ui->axis_pos->maximum())
+      ui->axis_pos->setMaximum(pos + ui->axis_pos->tickInterval());
+   else if (pos < ui->axis_pos->minimum())
+      ui->axis_pos->setMinimum(pos - ui->axis_pos->tickInterval());
+
    ui->axis_pos->setValue(pos);
+}
+
+
+
+void Axis_Widget::set_axis_force(int force)
+{
+   int force_abs = qFabs<int>(force);
+
+   if (force_abs > ui->axis_force->maximum())
+      ui->axis_force->setMaximum(force_abs);
+
+   ui->axis_force->setValue(force_abs);
 }
 
 void Axis_Widget::set_axis_vel(int vel)
 {
-   ui->axis_velocity->setValue(vel);
-}
+   int vel_abs = qFabs<int>(vel);
 
-void Axis_Widget::set_axis_force(int force)
-{
-   ui->axis_force->setValue(force);
+   if (vel_abs > ui->axis_velocity->maximum())
+      ui->axis_velocity->setMaximum(vel_abs);
+
+   ui->axis_velocity->setValue(vel_abs);
 }
 
 void Axis_Widget::refresh_4dof(smarter_msg_4dof msg)
@@ -126,7 +96,7 @@ void Axis_Widget::on_axis_pos_valueChanged(int value)
    else
       f_val = 99.99f;
 
-   ui->axis_pos_lbl->setText(QString::asprintf("%+06.2f mm", f_val));
+   ui->axis_pos_lbl->setText(QString::asprintf("%+5.2f mm", f_val));
 }
 
 
@@ -141,7 +111,7 @@ void Axis_Widget::on_axis_velocity_valueChanged(int value)
    else
       f_val = 99.99f;
 
-   ui->label_velocity->setText(QString::asprintf("Velocity: %.2fmm/s", f_val));
+   ui->label_velocity->setText(QString::asprintf("Velocity: %5.2f mm/s", f_val));
 }
 
 
@@ -151,6 +121,6 @@ void Axis_Widget::on_axis_force_valueChanged(int value)
 
    f_val /= SCALING_FACTOR_FORCE;
 
-   ui->label_force->setText(QString::asprintf("Force: %.2fN", f_val));
+   ui->label_force->setText(QString::asprintf("Force: %5.2f N", f_val));
 }
 

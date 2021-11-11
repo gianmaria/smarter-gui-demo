@@ -25,40 +25,21 @@ Main_Window::Main_Window(QWidget *parent)
    installEventFilter(this);
 
    read_settings();
-   showMaximized();
+//   showMaximized();
 
    on_pb_refresh_ips_clicked();
 
    ui->axis_1->set_axis_name("Axis 0 (ROLL)");
    ui->axis_1->set_dof_id(DOF_Id::ROLL);
    ui->axis_1->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_1->set_axis_pos_min(-9);
-   ui->axis_1->set_axis_pos_max(9);
-   ui->axis_1->set_axis_vel_min(-60);
-   ui->axis_1->set_axis_vel_max(60);
-   ui->axis_1->set_axis_force_min(-50);
-   ui->axis_1->set_axis_force_max(50);
 
    ui->axis_2->set_axis_name("Axis 1 (PITCH)");
    ui->axis_2->set_dof_id(DOF_Id::PITCH);
    ui->axis_2->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_2->set_axis_pos_min(-9);
-   ui->axis_2->set_axis_pos_max(9);
-   ui->axis_2->set_axis_vel_min(-60);
-   ui->axis_2->set_axis_vel_max(60);
-   ui->axis_2->set_axis_force_min(-50);
-   ui->axis_2->set_axis_force_max(50);
 
    ui->axis_3->set_axis_name("Axis 2 (YAW)");
    ui->axis_3->set_dof_id(DOF_Id::YAW);
    ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_3->set_axis_pos_min(-9);
-   ui->axis_3->set_axis_pos_max(9);
-   ui->axis_3->set_axis_vel_min(-60);
-   ui->axis_3->set_axis_vel_max(60);
-   ui->axis_3->set_axis_force_min(-50);
-   ui->axis_3->set_axis_force_max(50);
-
 }
 
 Main_Window::~Main_Window()
@@ -206,6 +187,11 @@ void Main_Window::on_pb_connect_clicked()
    connect(spcm, &SmarterPCM::msg_SAIS_4dof,
            this, [&](smarter_msg_4dof msg)
    {
+      //qInfo() << "Axis1:" << msg.axis1 <<
+      //           "Axis2:" << msg.axis2 <<
+      //           "Axis3:" << msg.axis3 <<
+      //           "Axis4:" << msg.axis4;
+
       QList<QPushButton*> all_buttons = ui->tab_widget->findChildren<QPushButton*>();
 
       for (qsizetype i = 0;
