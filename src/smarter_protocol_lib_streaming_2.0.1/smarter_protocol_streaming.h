@@ -9,7 +9,7 @@ TODO: update this disclaimer and discuss with the consortium and leonardo on sw 
 #ifndef __SMARTER_H__
 #define __SMARTER_H__
 
-const char* smarter_protocol_streaming_version = "2.0.1";
+extern const char* smarter_protocol_streaming_version;
 
 //this version is modified to support C2000 architecture that does not have 8-bit data types
 

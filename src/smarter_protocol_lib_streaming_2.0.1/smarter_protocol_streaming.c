@@ -7,6 +7,8 @@ TODO: update this disclaimer and discuss with the consortium and leonardo on sw 
 
 #include  "smarter_protocol_streaming.h"
 
+const char* smarter_protocol_streaming_version = "2.0.1";
+
 //Global variables
 msg_table_entry Registered_Packets[MAX_PACK];
 int number_registered_packets = 0; //keep memory of the number of registered packet
