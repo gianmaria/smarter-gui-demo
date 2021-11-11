@@ -9,6 +9,7 @@ TODO: update this disclaimer and discuss with the consortium and leonardo on sw 
 #ifndef __SMARTER_H__
 #define __SMARTER_H__
 
+const char* smarter_protocol_streaming_version = "2.0.1";
 
 //this version is modified to support C2000 architecture that does not have 8-bit data types
 
@@ -136,6 +137,10 @@ typedef struct struct_smarter_msg6_state {
 typedef struct struct_smarter_msg_buttons {
 	SM_uint32 timestamp; // 32 bit, us
 	SM_uint16 buttons_state;// 16 bit
+   SM_int16 axis1; // pads, value from -100 to 100 %
+   SM_int16 axis2;
+   SM_int16 axis3;
+   SM_int16 axis4;
 } smarter_msg_buttons;
 
 //SMARTER_msg8 : message for 4 dof + buttons state, from SAIS to FCS
@@ -144,6 +149,10 @@ typedef struct struct_smarter_msg_4dof {
 	SM_uint32 timestamp; // 32 bit, us
 	pos_vel_force pvf[4];// 4*64 bit
 	SM_uint16 buttons_state; //16 bit buttons logic state  (HLL = "pressed")
+   SM_int16 axis1;
+   SM_int16 axis2;
+   SM_int16 axis3;
+   SM_int16 axis4;
 }smarter_msg_4dof;
 
 //SMARTER_msg9 : message for 5 dof + buttons state, from SAIS to FCS
@@ -152,6 +161,10 @@ typedef struct struct_smarter_msg_5dof {
 	SM_uint32 timestamp; // 32 bit, us
 	pos_vel_force pvf[5];//5*64 bit
 	SM_uint16 buttons_state; //16 bit buttons logic state  (HLL = "pressed")
+	SM_uint16 axis1;
+	SM_uint16 axis2;
+	SM_uint16 axis3;
+	SM_uint16 axis4;
 }smarter_msg_5dof;
 //SMARTER_msg10 : message for all dof + buttons state, from SAIS to FCS
 #define SMARTER_MSG_6DOF_ID (smarter_msg_id)10
@@ -159,10 +172,13 @@ typedef struct struct_smarter_msg_6dof{
 	SM_uint32 timestamp; // 32 bit, us
 	pos_vel_force pvf[6];//6*64 bit
 	SM_uint16 buttons_state; //16 bit buttons logic state  (HLL = "pressed")
+	SM_uint16 axis1;
+	SM_uint16 axis2;
+	SM_uint16 axis3;
+	SM_uint16 axis4;
 }smarter_msg_6dof;
 
-//SMARTER_msg11 , message from FCS to SAIS to read the haptic configuration
-//of a single dof (active or stored)
+//SMARTER_msg11 , message from FCS to SAIS to read the haptic configuration of a single dof (active or stored)
 #define SMARTER_MSG_READ_ID (smarter_msg_id)11 
 typedef struct struct_smarter_msg_read {
 	SM_uchar dof;// 16 bit
@@ -170,8 +186,7 @@ typedef struct struct_smarter_msg_read {
 	SM_int32 request_code;// 32 bit
 }smarter_msg_read;
 
-//SMARTER_msg12: message from SAIS, reply to read command from FCS (SS config).
-//NUMBER_POINTS corresponds to a fixed number of gradient for SS
+//SMARTER_msg12: message from SAIS, reply to read command from FCS (SS config). NUMBER_POINTS corresponds to a fixed number of gradient for SS
 #define SMARTER_MSG_SS_ID (smarter_msg_id)12
 #define NUMBER_POINTS	10
 //sub-struct that provides the couple (pos, gradient) 
@@ -266,8 +281,7 @@ typedef struct struct_smarter_msg_fail {
 #endif
 }smarter_msg_fail;
 
-//SMARTER_msg18, set active haptic configuration from memory
-// (SS o ZG of a single dof), from FCS to SAIS
+//SMARTER_msg18, set active haptic configuration from memory (SS o ZG of a single dof), from FCS to SAIS
 #define SMARTER_MSG_SET_ACTIVE_ID (smarter_msg_id)18 
 typedef struct struct_smarter_msg_set_active {
 	SM_int32 request_code; // 32 bit
@@ -302,8 +316,7 @@ typedef struct struct_smarter_msg_setDetent {
 	SM_int32 request_code;// 32 bit
     detent pos_detent;// 16*2 bit
 	SM_uchar dof;// 16 bit
-   SM_uchar STOP_id; // 16 bit, identifies the detent position in the array, 0-9
-                    // !!!!!!!!!!!! errore nel nome!!!!!!!
+	SM_uchar STOP_id; // 16 bit, identifies the detent position in the array, 0-9  !!!!!!!!!!!! errore nel nome!!!!!!!
 }smarter_msg_setDetent;
 
 //SMARTER_msg22, set gate position, from FCS to SAIS
@@ -313,8 +326,7 @@ typedef struct struct_smarter_msg_setGate {
 	SM_int32 request_code;// 32 bit
     gate pos_gate;// 16*2 bit
 	SM_uchar dof;// 16 bit
-   SM_uchar STOP_id;// 16 bit, identifies the detent position, 0-9
-                    // !!!!!!!!!!!! errore nel nome!!!!!!!
+	SM_uchar STOP_id;// 16 bit, identifies the detent position, 0-9   !!!!!!!!!!!! errore nel nome!!!!!!!
 }smarter_msg_setGate;
 
 //SMARTER_msg23, set damping of rotary motion dof, from FCS to SAIS

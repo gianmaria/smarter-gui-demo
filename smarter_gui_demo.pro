@@ -14,15 +14,17 @@ SOURCES += \
     src/main.cpp \
     src/main_window.cpp \
     src/smarter_protocol_cm.cpp \
-    src/smarter_protocol_streaming.c
+    src/smarter_protocol_lib_streaming_2.0.1/smarter_protocol_streaming.c
 
 HEADERS += \
     src/SAIS_common.h \
     src/axis_widget.h \
     src/main_window.h \
     src/smarter_protocol_cm.h \
-    src/smarter_protocol_streaming.h \
-    src/Leonardo_msg.h
+    src/smarter_protocol_lib_streaming_2.0.1/smarter_protocol_streaming.h \
+    src/smarter_protocol_lib_streaming_2.0.1/Leonardo_msg.h
+
+INCLUDEPATH += src/smarter_protocol_lib_streaming_2.0.1
 
 FORMS += \
     src/axis_widget.ui \
