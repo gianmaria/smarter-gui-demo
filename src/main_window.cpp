@@ -32,32 +32,32 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_1->set_axis_name("Axis 0 (ROLL)");
    ui->axis_1->set_dof_id(DOF_Id::ROLL);
    ui->axis_1->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_1->set_axis_pos_min(10);
-   ui->axis_1->set_axis_pos_max(60);
-   ui->axis_1->set_axis_vel_min(0);
+   ui->axis_1->set_axis_pos_min(-9);
+   ui->axis_1->set_axis_pos_max(9);
+   ui->axis_1->set_axis_vel_min(-60);
    ui->axis_1->set_axis_vel_max(60);
-   ui->axis_1->set_axis_force_min(0);
+   ui->axis_1->set_axis_force_min(-50);
    ui->axis_1->set_axis_force_max(50);
 
    ui->axis_2->set_axis_name("Axis 1 (PITCH)");
    ui->axis_2->set_dof_id(DOF_Id::PITCH);
    ui->axis_2->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_2->set_axis_pos_min(-17);
-   ui->axis_2->set_axis_pos_max(17);
-   ui->axis_2->set_axis_vel_min(0);
+   ui->axis_2->set_axis_pos_min(-9);
+   ui->axis_2->set_axis_pos_max(9);
+   ui->axis_2->set_axis_vel_min(-60);
    ui->axis_2->set_axis_vel_max(60);
-   ui->axis_2->set_axis_force_min(0);
-   ui->axis_2->set_axis_force_max(240);
+   ui->axis_2->set_axis_force_min(-50);
+   ui->axis_2->set_axis_force_max(50);
 
    ui->axis_3->set_axis_name("Axis 2 (YAW)");
    ui->axis_3->set_dof_id(DOF_Id::YAW);
    ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
-   ui->axis_3->set_axis_pos_min(-17);
-   ui->axis_3->set_axis_pos_max(17);
-   ui->axis_3->set_axis_vel_min(0);
+   ui->axis_3->set_axis_pos_min(-9);
+   ui->axis_3->set_axis_pos_max(9);
+   ui->axis_3->set_axis_vel_min(-60);
    ui->axis_3->set_axis_vel_max(60);
-   ui->axis_3->set_axis_force_min(0);
-   ui->axis_3->set_axis_force_max(240);
+   ui->axis_3->set_axis_force_min(-50);
+   ui->axis_3->set_axis_force_max(50);
 
 }
 
