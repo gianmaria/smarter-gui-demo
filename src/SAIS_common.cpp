@@ -260,7 +260,7 @@ verify_haptic_config_json(const QJsonDocument& doc)
 
       const auto& ss_table = json["ss_table"].toObject();
 
-      if (!key_exist_and_is_type(ss_table, "damping",
+      if (key_exist_and_is_type(ss_table, "damping",
                                  QJsonValue::Double))
       {
          if (ss_table["damping"].toDouble() < 0.0)
@@ -446,16 +446,19 @@ verify_haptic_config_json(const QJsonDocument& doc)
 
       const auto& zg_table = json["zg_table"].toObject();
 
-      if (!key_exist_and_is_type(zg_table, "damping",
+      if (key_exist_and_is_type(zg_table, "damping",
                                  QJsonValue::Double))
+      {
+         if (zg_table["damping"].toDouble() < 0.0)
+         {
+            return err("key 'damping' can only be positive");
+         }
+      }
+      else
       {
          return err("key 'damping' does not exist or is not a number");
       }
 
-      if (zg_table["damping"].toDouble() < 0.0)
-      {
-         return err("key 'damping' can only be positive");
-      }
 
       if (!key_exist_and_is_type(zg_table, "pos_stop1",
                                  QJsonValue::Double))
@@ -573,8 +576,7 @@ verify_haptic_config_json(const QJsonDocument& doc)
                  .arg(json["haptic_configuration_type"].toString()));
    }
 
-   // TODO: safety mechanism while developing
-   return {false, "set back to true"};
+   return {true, ""};
 }
 
 smarter_msg_write_ss
@@ -599,7 +601,7 @@ build_msg_write_ss_from_json_doc(const QJsonDocument& doc)
    msg.ss_table.damping = ss_table["damping"].toInt();
 
    const QJsonArray& pg_positive =
-         ss_table["pg_positive"].toArray();
+         json["pg_positive"].toArray();
 
    for (auto i = 0;
         i < pg_positive.count();
@@ -612,7 +614,7 @@ build_msg_write_ss_from_json_doc(const QJsonDocument& doc)
    }
 
    const QJsonArray& pg_negative =
-         ss_table["pg_negative"].toArray();
+         json["pg_negative"].toArray();
 
    for (auto i = 0;
         i < pg_negative.count();
@@ -647,7 +649,7 @@ build_msg_write_zg_from_json_doc(const QJsonDocument& doc)
    msg.zg_table.pos_stop2 = zg_table["pos_stop2"].toInt();
 
    const QJsonArray& de =
-         zg_table["de"].toArray();
+         json["de"].toArray();
 
    for (auto i = 0;
         i < de.count();
@@ -660,7 +662,7 @@ build_msg_write_zg_from_json_doc(const QJsonDocument& doc)
    }
 
    const QJsonArray& ga =
-         zg_table["ga"].toArray();
+         json["ga"].toArray();
 
    for (auto i = 0;
         i < ga.count();
