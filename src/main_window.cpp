@@ -97,7 +97,7 @@ void Main_Window::on_pb_connect_clicked()
    delete smarter_protocol_cm;
    smarter_protocol_cm = new Smarter_Protocol_CM(this);
 
-   connect(smarter_protocol_cm, &SmarterPCM::socket_msg,
+   connect(smarter_protocol_cm, &SmarterPCM::smarter_protocol_cm_msg,
            this, &Main_Window::add_log_msg);
 
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_status,

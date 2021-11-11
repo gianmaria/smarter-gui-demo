@@ -51,19 +51,19 @@ void Smarter_Protocol_CM::connect_to_SAIS(
    QObject::connect(udp_socket, &QUdpSocket::connected,
                     this, [&] ()
    {
-      emit socket_msg(QString("[INFO] Socket connected (%1)").arg(udp_socket->state()));
+      emit smarter_protocol_cm_msg(QString("[INFO] Socket connected (%1)").arg(udp_socket->state()));
    });
 
    QObject::connect(udp_socket, &QUdpSocket::disconnected, this, [&]
                     ()
    {
-      emit socket_msg(QString("[INFO] Socket disconnected (%1)").arg(udp_socket->state()));
+      emit smarter_protocol_cm_msg(QString("[INFO] Socket disconnected (%1)").arg(udp_socket->state()));
    });
 
    QObject::connect(udp_socket, &QUdpSocket::errorOccurred, this, [&]
                     (QAbstractSocket::SocketError)
    {
-      emit socket_msg(QString("[ERROR] Socket error (%1), SAIS offline?").arg(udp_socket->errorString()));
+      emit smarter_protocol_cm_msg(QString("[ERROR] Socket error (%1), SAIS offline?").arg(udp_socket->errorString()));
    });
 
    QObject::connect(udp_socket, &QUdpSocket::readyRead,
@@ -74,7 +74,7 @@ void Smarter_Protocol_CM::connect_to_SAIS(
                          local_port,
                          QAbstractSocket::ReuseAddressHint))
    {
-      emit socket_msg(QString("Cannot bind to port %1 : %2")
+      emit smarter_protocol_cm_msg(QString("[ERROR] Cannot bind to port %1 : %2")
                       .arg(local_port)
                       .arg(udp_socket->errorString()));
       return;
@@ -89,7 +89,7 @@ void Smarter_Protocol_CM::disconnect_from_SAIS()
    {
       if (udp_socket->state() == QAbstractSocket::UnconnectedState)
       {
-         emit socket_msg(QString("[INFO] Socket already disconnected!"));
+         emit smarter_protocol_cm_msg(QString("[INFO] Socket already disconnected!"));
       }
       else
       {
@@ -150,7 +150,7 @@ void Smarter_Protocol_CM::write_haptic_conf(const QJsonDocument& json_doc)
    }
    else
    {
-      emit socket_msg(
+      emit smarter_protocol_cm_msg(
                QString("haptic_configuration_type in json is unexpected: '%1'")
                .arg(haptic_conf_type));
    }
@@ -163,7 +163,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 
    if (byte_encoded < 0)
    {
-      emit socket_msg(QString("[ERROR] Cannot encode msg id: %1")
+      emit smarter_protocol_cm_msg(QString("[ERROR] Cannot encode msg id: %1")
                       .arg(smarter_msg_id_to_str(msg_id)));
       return;
    }
@@ -174,7 +174,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
 
    if (bytes_sent < 0)
    {
-      emit socket_msg(QString("[ERROR] udp_socket->write failed for msg id: %1 '%2'")
+      emit smarter_protocol_cm_msg(QString("[ERROR] udp_socket->write failed for msg id: %1 '%2'")
                       .arg(smarter_msg_id_to_str(msg_id))
                       .arg(udp_socket->errorString()));
       return;
@@ -201,7 +201,7 @@ void Smarter_Protocol_CM::recv_smarter_msg()
 
          case SMARTER_INVALID_PACKET:
          {
-            emit socket_msg(QString("[WARN] Got invalid packet: <%1> Maybe is not registered?")
+            emit smarter_protocol_cm_msg(QString("[WARN] Got invalid packet: <%1> Maybe is not registered?")
                             .arg(data.toHex(' ')));
          } break;
 
@@ -386,7 +386,7 @@ void Smarter_Protocol_CM::recv_smarter_msg()
          } break;
 
          default:
-            emit socket_msg(QString("[WARN] Got unhandled packet with id: %1 (%2)")
+            emit smarter_protocol_cm_msg(QString("[WARN] Got unhandled packet with id: %1 (%2)")
                             .arg(id)
                             .arg(smarter_msg_id_to_str(id)));
          break;
