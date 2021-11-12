@@ -238,7 +238,6 @@ void Smarter_Protocol_CM::recv_smarter_msg()
             }
          } break;
 
-
          case SMARTER_MSG1_STATE_ID:
          {
             smarter_msg1_state msg = {};

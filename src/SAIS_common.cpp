@@ -119,6 +119,7 @@ QJsonDocument to_json(smarter_msg_ss msg)
       QJsonObject pos_grad;
       pos_grad["pos"] = msg.ss_table.pg_negative[i].pos;
       pos_grad["grad"] = msg.ss_table.pg_negative[i].grad;
+      pos_grad["index"] = static_cast<int>(i);
 
       pg_negative.append(pos_grad);
    }
@@ -134,6 +135,7 @@ QJsonDocument to_json(smarter_msg_ss msg)
       QJsonObject pos_grad;
       pos_grad["pos"] = msg.ss_table.pg_positive[i].pos;
       pos_grad["grad"] = msg.ss_table.pg_positive[i].grad;
+      pos_grad["index"] = static_cast<int>(i);
 
       pg_positive.append(pos_grad);
    }
@@ -169,6 +171,7 @@ QJsonDocument to_json(smarter_msg_zg msg)
       QJsonObject detent;
       detent["pos"]   = msg.zg_table.de[i].pos;
       detent["force"] = msg.zg_table.de[i].force;
+      detent["index"] = static_cast<int>(i);
 
       de.append(detent);
    }
@@ -184,6 +187,7 @@ QJsonDocument to_json(smarter_msg_zg msg)
       QJsonObject gate;
       gate["pos"]   = msg.zg_table.ga[i].pos;
       gate["force"] = msg.zg_table.ga[i].force;
+      gate["index"] = static_cast<int>(i);
 
       ga.append(gate);
    }
@@ -609,8 +613,9 @@ build_msg_write_ss_from_json_doc(const QJsonDocument& doc)
    {
       const auto& elem = pg_positive[i].toObject();
 
-      msg.ss_table.pg_positive[i].grad = elem["grad"].toInt();
-      msg.ss_table.pg_positive[i].pos = elem["pos"].toInt();
+      int index = elem["index"].toInt();
+      msg.ss_table.pg_positive[index].grad = elem["grad"].toInt();
+      msg.ss_table.pg_positive[index].pos  = elem["pos"].toInt();
    }
 
    const QJsonArray& pg_negative =
@@ -622,8 +627,9 @@ build_msg_write_ss_from_json_doc(const QJsonDocument& doc)
    {
       const auto& elem = pg_negative[i];
 
-      msg.ss_table.pg_negative[i].grad = elem["grad"].toInt();
-      msg.ss_table.pg_negative[i].pos = elem["pos"].toInt();
+      int index = elem["index"].toInt();
+      msg.ss_table.pg_negative[index].grad = elem["grad"].toInt();
+      msg.ss_table.pg_negative[index].pos  = elem["pos"].toInt();
    }
 
    return msg;
@@ -657,8 +663,9 @@ build_msg_write_zg_from_json_doc(const QJsonDocument& doc)
    {
       const auto& elem = de[i].toObject();
 
-      msg.zg_table.de[i].pos = elem["pos"].toInt();
-      msg.zg_table.de[i].force = elem["force"].toInt();
+      int index = elem["index"].toInt();
+      msg.zg_table.de[index].pos   = elem["pos"].toInt();
+      msg.zg_table.de[index].force = elem["force"].toInt();
    }
 
    const QJsonArray& ga =
@@ -670,8 +677,9 @@ build_msg_write_zg_from_json_doc(const QJsonDocument& doc)
    {
       const auto& elem = ga[i].toObject();
 
-      msg.zg_table.ga[i].pos = elem["pos"].toInt();
-      msg.zg_table.ga[i].force = elem["force"].toInt();
+      int index = elem["index"].toInt();
+      msg.zg_table.ga[index].pos   = elem["pos"].toInt();
+      msg.zg_table.ga[index].force = elem["force"].toInt();
    }
 
    return msg;
