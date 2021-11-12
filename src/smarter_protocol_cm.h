@@ -30,7 +30,7 @@ public slots:
 
 signals:
 
-   void smarter_protocol_cm_msg(QString msg);
+   void smarter_protocol_cm_msg(const QString& msg);
 
    void msg_SAIS_request_ok(smarter_msg_ok msg);
    void msg_SAIS_request_failed(smarter_msg_fail msg);
