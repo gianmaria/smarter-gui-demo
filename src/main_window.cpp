@@ -243,11 +243,6 @@ void Main_Window::on_pb_connect_clicked()
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            this, [&](smarter_msg_4dof msg)
    {
-      //qInfo() << "Axis1:" << msg.axis1 <<
-      //           "Axis2:" << msg.axis2 <<
-      //           "Axis3:" << msg.axis3 <<
-      //           "Axis4:" << msg.axis4;
-
       QList<QPushButton*> all_buttons = ui->tab_widget->findChildren<QPushButton*>();
 
       for (qsizetype i = 0;
@@ -269,6 +264,13 @@ void Main_Window::on_pb_connect_clicked()
             }
          }
       }
+
+      constexpr SM_int16 button_value_threshold = 700;
+      ui->pb_b3->setChecked(msg.axis1 > button_value_threshold);
+      ui->pb_b4->setChecked(msg.axis1 < -button_value_threshold);
+      ui->pb_b5->setChecked(msg.axis2 > button_value_threshold);
+      ui->pb_b6->setChecked(msg.axis2 < -button_value_threshold);
+
    });
 
 
