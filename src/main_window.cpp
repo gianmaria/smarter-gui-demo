@@ -7,10 +7,12 @@
 #include <QJsonObject>
 #include <QKeyEvent>
 #include <QKeyEvent>
+#include <QKeySequence>
 #include <QMessageBox>
 #include <QNetworkDatagram>
 #include <QNetworkInterface>
 #include <QSettings>
+#include <QShortcut>
 
 extern "C" {
 #include "smarter_protocol_streaming.h"
@@ -40,6 +42,22 @@ Main_Window::Main_Window(QWidget *parent)
    ui->axis_3->set_axis_name("Axis 2 (YAW)");
    ui->axis_3->set_dof_id(DOF_Id::YAW);
    ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
+
+   auto* shortcut = new QShortcut(
+                       QKeySequence(Qt::CTRL | Qt::Key_Return),
+                       ui->te_haptic_conf);
+
+   connect(shortcut, &QShortcut::activated,
+           this, [&] ()
+   {
+      if (ui->pb_write_config_dof_1->isEnabled())
+         ui->pb_write_config_dof_1->click();
+      else if(ui->pb_write_config_dof_2->isEnabled())
+         ui->pb_write_config_dof_2->click();
+      else if (ui->pb_write_config_dof_3->isEnabled())
+         ui->pb_write_config_dof_3->click();
+   });
+
 }
 
 Main_Window::~Main_Window()
@@ -253,9 +271,64 @@ void Main_Window::on_pb_connect_clicked()
       }
    });
 
-   smarter_protocol_cm->connect_to_SAIS(ui->le_joystick_ip->text(),
-                         ui->le_joystick_port->text().toUShort(),
-                         ui->le_local_port->text().toUShort());
+
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_request_ok,
+           this, [&]
+           (smarter_msg_ok msg_ok)
+   {
+      QString msg;
+
+      if (msg_ok.request_code == SMARTER_MSG_WRITE_SS_ID)
+         msg = "New configuration for SS table written succesfully.";
+      else if (msg_ok.request_code == SMARTER_MSG_WRITE_ZG_ID)
+         msg = "New configuration for ZG table written succesfully.";
+      else
+         return; // is not for us
+
+      QMessageBox::information(this, windowTitle(),
+                               msg);
+
+      if (ui->pb_write_config_dof_1->isEnabled())
+         ui->pb_read_config_dof_1->click();
+      else if(ui->pb_write_config_dof_2->isEnabled())
+         ui->pb_read_config_dof_2->click();
+      else if (ui->pb_write_config_dof_3->isEnabled())
+         ui->pb_read_config_dof_3->click();
+
+   });
+
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_request_failed,
+           this, [&]
+           (smarter_msg_fail msg_fail)
+   {
+      QString msg;
+
+      if (msg_fail.request_code == SMARTER_MSG_WRITE_SS_ID)
+         msg = QString("FAIL to write new configuration for SS table.\n"
+               "SAIS says: %1")
+               .arg(reinterpret_cast<char*>(msg_fail.error_string));
+      else if (msg_fail.request_code == SMARTER_MSG_WRITE_ZG_ID)
+         msg = QString("FAIL to write new configuration for ZG table.\n"
+               "SAIS says: %1")
+               .arg(reinterpret_cast<char*>(msg_fail.error_string));
+      else
+         return; // is not for us
+
+      QMessageBox::critical(this, windowTitle(),
+                            msg);
+
+      if (ui->pb_write_config_dof_1->isEnabled())
+         ui->pb_read_config_dof_1->click();
+      else if(ui->pb_write_config_dof_2->isEnabled())
+         ui->pb_read_config_dof_2->click();
+      else if (ui->pb_write_config_dof_3->isEnabled())
+         ui->pb_read_config_dof_3->click();
+   });
+
+   smarter_protocol_cm->connect_to_SAIS(
+            ui->le_joystick_ip->text(),
+            ui->le_joystick_port->text().toUShort(),
+            ui->le_local_port->text().toUShort());
 }
 
 void Main_Window::on_pb_disconnect_clicked()
@@ -422,17 +495,16 @@ void Main_Window::on_pb_write_config_dof_1_clicked()
    prepare_msg_for_write_haptic_configuration();
 }
 
-
 void Main_Window::on_pb_write_config_dof_2_clicked()
 {
    prepare_msg_for_write_haptic_configuration();
 }
 
-
 void Main_Window::on_pb_write_config_dof_3_clicked()
 {
    prepare_msg_for_write_haptic_configuration();
 }
+
 
 void Main_Window::prepare_msg_for_write_haptic_configuration()
 {
