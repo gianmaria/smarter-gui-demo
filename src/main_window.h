@@ -36,9 +36,9 @@ private slots:
    void on_pb_go_standby_clicked();
    void on_pb_read_status_clicked();
 
+   void on_pb_read_config_dof_0_clicked();
    void on_pb_read_config_dof_1_clicked();
    void on_pb_read_config_dof_2_clicked();
-   void on_pb_read_config_dof_3_clicked();
 
    void update_labels_haptic_config(const QString& dof_id,
                                     const QString& dof_type,
@@ -48,9 +48,9 @@ private slots:
 
    void on_pb_clear_haptic_conf_clicked();
 
+   void on_pb_write_config_dof_0_clicked();
    void on_pb_write_config_dof_1_clicked();
    void on_pb_write_config_dof_2_clicked();
-   void on_pb_write_config_dof_3_clicked();
 
    void prepare_msg_for_write_haptic_configuration();
 

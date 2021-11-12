@@ -50,12 +50,12 @@ Main_Window::Main_Window(QWidget *parent)
    connect(shortcut, &QShortcut::activated,
            this, [&] ()
    {
-      if (ui->pb_write_config_dof_1->isEnabled())
+      if (ui->pb_write_config_dof_0->isEnabled())
+         ui->pb_write_config_dof_0->click();
+      else if(ui->pb_write_config_dof_1->isEnabled())
          ui->pb_write_config_dof_1->click();
-      else if(ui->pb_write_config_dof_2->isEnabled())
+      else if (ui->pb_write_config_dof_2->isEnabled())
          ui->pb_write_config_dof_2->click();
-      else if (ui->pb_write_config_dof_3->isEnabled())
-         ui->pb_write_config_dof_3->click();
    });
 
 }
@@ -185,15 +185,15 @@ void Main_Window::on_pb_connect_clicked()
       switch(static_cast<DOF_Id>(json.object()["dof"].toInt()))
       {
          case DOF_Id::ROLL:
-            ui->pb_write_config_dof_1->setEnabled(true);
+            ui->pb_write_config_dof_0->setEnabled(true);
          break;
 
          case DOF_Id::PITCH:
-            ui->pb_write_config_dof_2->setEnabled(true);
+            ui->pb_write_config_dof_1->setEnabled(true);
          break;
 
          case DOF_Id::YAW:
-            ui->pb_write_config_dof_3->setEnabled(true);
+            ui->pb_write_config_dof_2->setEnabled(true);
          break;
 
          default:
@@ -224,15 +224,15 @@ void Main_Window::on_pb_connect_clicked()
       switch(static_cast<DOF_Id>(json.object()["dof"].toInt()))
       {
          case DOF_Id::ROLL:
-            ui->pb_write_config_dof_1->setEnabled(true);
+            ui->pb_write_config_dof_0->setEnabled(true);
          break;
 
          case DOF_Id::PITCH:
-            ui->pb_write_config_dof_2->setEnabled(true);
+            ui->pb_write_config_dof_1->setEnabled(true);
          break;
 
          case DOF_Id::YAW:
-            ui->pb_write_config_dof_3->setEnabled(true);
+            ui->pb_write_config_dof_2->setEnabled(true);
          break;
 
          default:
@@ -288,12 +288,12 @@ void Main_Window::on_pb_connect_clicked()
       QMessageBox::information(this, windowTitle(),
                                msg);
 
-      if (ui->pb_write_config_dof_1->isEnabled())
+      if (ui->pb_write_config_dof_0->isEnabled())
+         ui->pb_read_config_dof_0->click();
+      else if(ui->pb_write_config_dof_1->isEnabled())
          ui->pb_read_config_dof_1->click();
-      else if(ui->pb_write_config_dof_2->isEnabled())
+      else if (ui->pb_write_config_dof_2->isEnabled())
          ui->pb_read_config_dof_2->click();
-      else if (ui->pb_write_config_dof_3->isEnabled())
-         ui->pb_read_config_dof_3->click();
 
    });
 
@@ -317,12 +317,12 @@ void Main_Window::on_pb_connect_clicked()
       QMessageBox::critical(this, windowTitle(),
                             msg);
 
-      if (ui->pb_write_config_dof_1->isEnabled())
+      if (ui->pb_write_config_dof_0->isEnabled())
+         ui->pb_read_config_dof_0->click();
+      else if(ui->pb_write_config_dof_1->isEnabled())
          ui->pb_read_config_dof_1->click();
-      else if(ui->pb_write_config_dof_2->isEnabled())
+      else if (ui->pb_write_config_dof_2->isEnabled())
          ui->pb_read_config_dof_2->click();
-      else if (ui->pb_write_config_dof_3->isEnabled())
-         ui->pb_read_config_dof_3->click();
    });
 
    smarter_protocol_cm->connect_to_SAIS(
@@ -373,7 +373,7 @@ void Main_Window::on_pb_read_status_clicked()
 
 
 
-void Main_Window::on_pb_read_config_dof_1_clicked()
+void Main_Window::on_pb_read_config_dof_0_clicked()
 {
    if (smarter_protocol_cm)
    {
@@ -383,7 +383,7 @@ void Main_Window::on_pb_read_config_dof_1_clicked()
    else add_log_msg("[ERROR] Not connected!");
 }
 
-void Main_Window::on_pb_read_config_dof_2_clicked()
+void Main_Window::on_pb_read_config_dof_1_clicked()
 {
    if (smarter_protocol_cm)
    {
@@ -393,7 +393,7 @@ void Main_Window::on_pb_read_config_dof_2_clicked()
    else add_log_msg("[ERROR] Not connected!");
 }
 
-void Main_Window::on_pb_read_config_dof_3_clicked()
+void Main_Window::on_pb_read_config_dof_2_clicked()
 {
    if (smarter_protocol_cm)
    {
@@ -484,11 +484,16 @@ void Main_Window::on_pb_refresh_ips_clicked()
 void Main_Window::on_pb_clear_haptic_conf_clicked()
 {
     update_labels_haptic_config("", "", "");
+    ui->pb_write_config_dof_0->setEnabled(false);
     ui->pb_write_config_dof_1->setEnabled(false);
     ui->pb_write_config_dof_2->setEnabled(false);
-    ui->pb_write_config_dof_3->setEnabled(false);
 }
 
+
+void Main_Window::on_pb_write_config_dof_0_clicked()
+{
+   prepare_msg_for_write_haptic_configuration();
+}
 
 void Main_Window::on_pb_write_config_dof_1_clicked()
 {
@@ -496,11 +501,6 @@ void Main_Window::on_pb_write_config_dof_1_clicked()
 }
 
 void Main_Window::on_pb_write_config_dof_2_clicked()
-{
-   prepare_msg_for_write_haptic_configuration();
-}
-
-void Main_Window::on_pb_write_config_dof_3_clicked()
 {
    prepare_msg_for_write_haptic_configuration();
 }
