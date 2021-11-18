@@ -13,6 +13,7 @@
 #include <QNetworkInterface>
 #include <QSettings>
 #include <QShortcut>
+#include <QTimer>
 
 extern "C" {
 #include "smarter_protocol_streaming.h"
@@ -551,5 +552,15 @@ void Main_Window::prepare_msg_for_write_haptic_configuration()
    }
 
    smarter_protocol_cm->write_haptic_conf(json_doc);
+}
+
+
+void Main_Window::on_pb_send_rt_haptic_pos_clicked()
+{
+   int pos = ui->le_rt_haptic_pos->text().toInt();
+   qInfo() << QTime::currentTime().toString() << "sending pos:" << pos;
+   smarter_protocol_cm->command_position(DOF_Id::PITCH,
+                                         pos);
+
 }
 

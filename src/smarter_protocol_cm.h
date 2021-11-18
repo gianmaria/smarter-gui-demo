@@ -28,6 +28,7 @@ public slots:
    void write_SAIS_status(SAIS_Status status);
    void write_haptic_conf(const QJsonDocument& json_doc);
 
+   void command_position(DOF_Id dof_id, int pos);
 signals:
 
    void smarter_protocol_cm_msg(const QString& msg);

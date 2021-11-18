@@ -89,7 +89,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_log">
        <attribute name="title">
@@ -751,13 +751,52 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_ss">
+      <widget class="QWidget" name="tab_real_time_haptic">
        <property name="toolTipDuration">
         <number>-1</number>
        </property>
        <attribute name="title">
-        <string>Table SS</string>
+        <string>Real-time Haptic</string>
        </attribute>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Position</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_rt_haptic_pos">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>40</y>
+          <width>191</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_send_rt_haptic_pos">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>40</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send Position</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_zg">
        <attribute name="title">
