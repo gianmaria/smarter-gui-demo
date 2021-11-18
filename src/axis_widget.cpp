@@ -96,7 +96,12 @@ void Axis_Widget::on_axis_pos_valueChanged(int value)
    else
       f_val = 99.99f;
 
-   ui->axis_pos_lbl->setText(QString::asprintf("%+5.2f mm", f_val));
+   if (dof_type == DOF_Type::ROTATIONAL)
+      ui->axis_pos_lbl->setText(QString::asprintf("%+5.2f °", f_val));
+   else if (dof_type == DOF_Type::LINEAR)
+      ui->axis_pos_lbl->setText(QString::asprintf("%+5.2f mm", f_val));
+   else
+      ui->axis_pos_lbl->setText("???");
 }
 
 
@@ -111,7 +116,13 @@ void Axis_Widget::on_axis_velocity_valueChanged(int value)
    else
       f_val = 99.99f;
 
-   ui->label_velocity->setText(QString::asprintf("Velocity: %5.2f mm/s", f_val));
+   if (dof_type == DOF_Type::ROTATIONAL)
+      ui->label_velocity->setText(QString::asprintf("Velocity: %5.2f °/s", f_val));
+   else if (dof_type == DOF_Type::LINEAR)
+      ui->label_velocity->setText(QString::asprintf("Velocity: %5.2f mm/s", f_val));
+   else
+      ui->label_velocity->setText("???");
+
 }
 
 
