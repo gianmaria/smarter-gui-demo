@@ -32,17 +32,17 @@ Main_Window::Main_Window(QWidget *parent)
 
    ui->pb_refresh_ips->click();
 
-   ui->axis_1->set_axis_name("Axis 0 (ROLL)");
-   ui->axis_1->set_dof_id(DOF_Id::ROLL);
+   ui->axis_0->set_axis_name("Axis 0 (ROLL)");
+   ui->axis_0->set_dof_id(DOF_Id::ROLL);
+   ui->axis_0->set_dof_type(DOF_Type::ROTATIONAL);
+
+   ui->axis_1->set_axis_name("Axis 1 (PITCH)");
+   ui->axis_1->set_dof_id(DOF_Id::PITCH);
    ui->axis_1->set_dof_type(DOF_Type::ROTATIONAL);
 
-   ui->axis_2->set_axis_name("Axis 1 (PITCH)");
-   ui->axis_2->set_dof_id(DOF_Id::PITCH);
+   ui->axis_2->set_axis_name("Axis 2 (YAW)");
+   ui->axis_2->set_dof_id(DOF_Id::YAW);
    ui->axis_2->set_dof_type(DOF_Type::ROTATIONAL);
-
-   ui->axis_3->set_axis_name("Axis 2 (YAW)");
-   ui->axis_3->set_dof_id(DOF_Id::YAW);
-   ui->axis_3->set_dof_type(DOF_Type::ROTATIONAL);
 
    auto* shortcut = new QShortcut(
                        QKeySequence(Qt::CTRL | Qt::Key_Return),
@@ -150,18 +150,18 @@ void Main_Window::on_pb_connect_clicked()
 
 
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
+           ui->axis_0, &Axis_Widget::refresh_4dof);
+   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_1, &Axis_Widget::refresh_4dof);
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
            ui->axis_2, &Axis_Widget::refresh_4dof);
-   connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_4dof,
-           ui->axis_3, &Axis_Widget::refresh_4dof);
 
    // TODO: aggiungere per tutti gli altri messaggi
    //       msg2_state, msg3_state, msg4_state
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_msg1_state,
            this, [&](smarter_msg1_state msg)
    {
-      ui->axis_1->refresh_dof(msg.pvf);
+      ui->axis_0->refresh_dof(msg.pvf);
    });
 
    connect(smarter_protocol_cm, &SmarterPCM::msg_SAIS_haptic_conf_ss,
@@ -561,7 +561,7 @@ void Main_Window::on_pb_send_rt_haptic_pos_clicked()
 
    qInfo() << QTime::currentTime().toString() << "sending pos:" << pos;
 
-   smarter_protocol_cm->command_position( ui->axis_1->get_dof_id(),
+   smarter_protocol_cm->command_position(ui->axis_1->get_dof_id(),
                                          ui->axis_1->get_dof_type(),
                                          pos);
 }

@@ -89,7 +89,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_log">
        <attribute name="title">
@@ -479,7 +479,7 @@
          </layout>
         </item>
         <item>
-         <widget class="Axis_Widget" name="axis_1" native="true">
+         <widget class="Axis_Widget" name="axis_0" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -502,7 +502,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Axis_Widget" name="axis_2" native="true">
+         <widget class="Axis_Widget" name="axis_1" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -519,7 +519,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Axis_Widget" name="axis_3" native="true">
+         <widget class="Axis_Widget" name="axis_2" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
             <horstretch>0</horstretch>
