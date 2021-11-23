@@ -29,6 +29,9 @@ public slots:
    void set_dof_id(DOF_Id id);
    void set_dof_type(DOF_Type type);
 
+   DOF_Type get_dof_type();
+   DOF_Id get_dof_id();
+
    void refresh_4dof(smarter_msg_4dof msg);
    void refresh_dof(pos_vel_force pvf);
 

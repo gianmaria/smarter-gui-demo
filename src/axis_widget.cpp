@@ -32,6 +32,16 @@ void Axis_Widget::set_dof_type(DOF_Type type)
    ui->axis_type->setText(QString("Type: %1").arg(to_str(dof_type)));
 }
 
+DOF_Type Axis_Widget::get_dof_type()
+{
+   return dof_type;
+}
+
+DOF_Id Axis_Widget::get_dof_id()
+{
+   return dof_id;
+}
+
 void Axis_Widget::set_axis_pos(int pos)
 {
    if (pos > ui->axis_pos->maximum())
