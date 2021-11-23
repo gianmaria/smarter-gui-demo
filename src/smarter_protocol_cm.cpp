@@ -241,6 +241,35 @@ void Smarter_Protocol_CM::recv_smarter_msg()
                                     id, &msg);
             if (packet_len > 0)
             {
+               auto invert_me_senpai = [](unsigned char* data, size_t data_len)
+               {
+                  // data = "oD\0g\0\0"  -->  Dog\0\0\0
+
+                  // 0 1    len:2
+                  // a \0
+
+                  // 0 1 2 3    len:4
+                  // d o g \0
+
+                  // 0 1 2 3 4 5  len:6
+                  // h o m e r \0
+
+                  if (data_len % 2 != 0)
+                     return; // swap only even size buffers
+
+                  for (size_t i = 0;
+                       i < data_len;
+                       i += 2)
+                  {
+                     unsigned char tmp = data[i];
+                     data[i] = data[i+1];
+                     data[i+1] = tmp;
+                  }
+               };
+
+               invert_me_senpai(msg.error_string,
+                                sizeof(msg.error_string));
+
                emit msg_SAIS_request_failed(msg);
             }
             else
