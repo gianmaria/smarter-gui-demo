@@ -156,12 +156,16 @@ void Smarter_Protocol_CM::write_haptic_conf(const QJsonDocument& json_doc)
    }
 }
 
-void Smarter_Protocol_CM::command_position(DOF_Id dof_id, int pos)
+void Smarter_Protocol_CM::command_position(DOF_Id dof_id, DOF_Type dof_type,
+                                           int pos)
 {
    smarter_msg_send_ref msg_send_ref = {};
    msg_send_ref.request_code = SMARTER_MSG_SEND_REF_ID;
    msg_send_ref.dof = static_cast<SM_uchar>(dof_id);
-   msg_send_ref.pvf_selector = 0x1; // 0x1 -> pos, 0x4 -> force, 0x0 -> reset reference
+   msg_send_ref.pvf_selector = 0x1; // 0x1 -> pos
+                                    // 0x4 -> force
+                                    // 0x0 -> reset reference
+   msg_send_ref.pvf.dof_type = static_cast<SM_uchar>(dof_type);
    msg_send_ref.pvf.position = pos;
 
    send_smarter_msg(SMARTER_MSG_SEND_REF_ID, &msg_send_ref);
@@ -175,7 +179,7 @@ void Smarter_Protocol_CM::send_smarter_msg(smarter_msg_id msg_id, void* msg)
    if (byte_encoded < 0)
    {
       emit smarter_protocol_cm_msg(QString("[ERROR] Cannot encode msg id: %1")
-                      .arg(smarter_msg_id_to_str(msg_id)));
+                                   .arg(smarter_msg_id_to_str(msg_id)));
       return;
    }
 

@@ -558,9 +558,11 @@ void Main_Window::prepare_msg_for_write_haptic_configuration()
 void Main_Window::on_pb_send_rt_haptic_pos_clicked()
 {
    int pos = ui->le_rt_haptic_pos->text().toInt();
-   qInfo() << QTime::currentTime().toString() << "sending pos:" << pos;
-   smarter_protocol_cm->command_position(DOF_Id::PITCH,
-                                         pos);
 
+   qInfo() << QTime::currentTime().toString() << "sending pos:" << pos;
+
+   smarter_protocol_cm->command_position( ui->axis_1->get_dof_id(),
+                                         ui->axis_1->get_dof_type(),
+                                         pos);
 }
 

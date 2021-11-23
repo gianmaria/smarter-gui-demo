@@ -19,7 +19,8 @@ public:
    explicit Smarter_Protocol_CM(QObject *parent = nullptr);
 
 public slots:
-   void connect_to_SAIS(const QString& ip, quint16 port, quint16 local_port);
+   void connect_to_SAIS(const QString& ip, quint16 port,
+                        quint16 local_port);
    void disconnect_from_SAIS();
 
    void read_SAIS_status();
@@ -28,7 +29,8 @@ public slots:
    void write_SAIS_status(SAIS_Status status);
    void write_haptic_conf(const QJsonDocument& json_doc);
 
-   void command_position(DOF_Id dof_id, int pos);
+   void command_position(DOF_Id dof_id, DOF_Type dof_type,
+                         int pos);
 signals:
 
    void smarter_protocol_cm_msg(const QString& msg);
