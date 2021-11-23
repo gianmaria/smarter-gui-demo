@@ -32,6 +32,9 @@ Main_Window::Main_Window(QWidget *parent)
 
    ui->pb_refresh_ips->click();
 
+   // TODO: fare in modo che il dof type e il dof id
+   //       vengano settati automaticamente richiedendo
+   //       la tabella di configurazione SS o ZG
    ui->axis_0->set_axis_name("Axis 0 (ROLL)");
    ui->axis_0->set_dof_id(DOF_Id::ROLL);
    ui->axis_0->set_dof_type(DOF_Type::ROTATIONAL);
@@ -104,7 +107,7 @@ void Main_Window::add_log_msg(const QString& msg)
    QString text = QString("%1 - %2").arg(now.toString("hh:mm:ss"), msg);
    ui->te_log->appendPlainText(text);
 
-   ui->statusbar->showMessage(msg, 5000);
+   ui->statusbar->showMessage(text, 5000);
 }
 
 
@@ -266,6 +269,7 @@ void Main_Window::on_pb_connect_clicked()
          }
       }
 
+      // TODO: mettere qesta soglia da qualche parte?
       constexpr SM_int16 button_value_threshold = 700;
       ui->pb_b3->setChecked(msg.axis1 > button_value_threshold);
       ui->pb_b4->setChecked(msg.axis1 < -button_value_threshold);
@@ -561,8 +565,35 @@ void Main_Window::on_pb_send_rt_haptic_pos_clicked()
 
    qInfo() << QTime::currentTime().toString() << "sending pos:" << pos;
 
-   smarter_protocol_cm->command_position(ui->axis_1->get_dof_id(),
-                                         ui->axis_1->get_dof_type(),
-                                         pos);
+   Axis_Widget* axis = nullptr;
+
+   DOF_Id cb_dof_id = static_cast<DOF_Id>(ui->cb_dof_id->currentIndex());
+
+   switch (cb_dof_id)
+   {
+      case DOF_Id::ROLL:
+         axis = ui->axis_0;
+      break;
+      case DOF_Id::PITCH:
+         axis = ui->axis_1;
+      break;
+      case DOF_Id::YAW:
+         axis = ui->axis_2;
+      break;
+
+      default:
+      break;
+   }
+
+   if (axis)
+   {
+      smarter_protocol_cm->command_position(axis->get_dof_id(),
+                                            axis->get_dof_type(),
+                                            pos);
+   }
+   else
+   {
+      add_log_msg("[ERROR] DOF ID in combo box is invalid!");
+   }
 }
 
