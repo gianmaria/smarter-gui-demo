@@ -597,3 +597,16 @@ void Main_Window::on_pb_send_rt_haptic_pos_clicked()
    }
 }
 
+
+void Main_Window::on_pb_reset_haptic_pos_clicked()
+{
+   smarter_protocol_cm->reset_command_position(ui->axis_0->get_dof_id(),
+                                               ui->axis_0->get_dof_type());
+
+   smarter_protocol_cm->reset_command_position(ui->axis_1->get_dof_id(),
+                                               ui->axis_1->get_dof_type());
+
+   smarter_protocol_cm->reset_command_position(ui->axis_2->get_dof_id(),
+                                               ui->axis_2->get_dof_type());
+}
+

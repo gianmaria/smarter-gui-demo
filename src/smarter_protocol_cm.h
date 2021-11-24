@@ -31,6 +31,9 @@ public slots:
 
    void command_position(DOF_Id dof_id, DOF_Type dof_type,
                          int pos);
+
+   void reset_command_position(DOF_Id dof_id, DOF_Type dof_type);
+
 signals:
 
    void smarter_protocol_cm_msg(const QString& msg);

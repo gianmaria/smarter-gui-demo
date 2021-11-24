@@ -56,6 +56,8 @@ private slots:
 
    void on_pb_send_rt_haptic_pos_clicked();
 
+   void on_pb_reset_haptic_pos_clicked();
+
 private:
    Ui::Main_Window *ui;
    Smarter_Protocol_CM* smarter_protocol_cm = nullptr;
